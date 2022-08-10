@@ -1,12 +1,76 @@
 <resources>
-    <string name="app_name">banchan</string>
-    <string name="action_settings">Settings</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
+    <!-- 인수가 필요한 경우 끝에 _value 를 붙였습니다 -->
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="app_name">ORDERING</string>
+
+    <!-- home -->
+    <string name="tab_best">기획전</string>
+    <string name="tab_main">든든한 메인요리</string>
+    <string name="tab_soup">뜨끈한 국물요리</string>
+    <string name="tab_side">정갈한 밑반찬</string>
+
+    <string name="header_best">한 번 주문하면\n두 번 반하는 반찬들</string>
+    <string name="header_main">모두가 좋아하는\n든든한 메인 요리</string>
+    <string name="header_soup">정성이 담긴\n뜨끈뜨끈 국물 요리</string>
+    <string name="header_side">식탁을 풍성하게 하는\n정갈한 밑반찬</string>
+
+    <string name="list_total_value">총 %d개 상품</string>
+
+    <string name="filter_base">기본 정렬순</string>
+    <string name="filter_descending">금액 높은순</string> <!-- 내림차순 : 금액 높은게 먼저 나옴 -->
+    <string name="filter_ascending">금액 낮은순</string>
+    <string name="filter_discount">할인율순</string>
+
+    <string name="menu_discount_value">%d%</string>
+    <string name="menu_price_value">%,d원</string>
+
+    <!-- cart bottom sheet -->
+    <string name="bottom_sheet_title">장바구니 담기</string>
+    <string name="bottom_sheet_cancel">취소</string>
+    <string name="bottom_sheet_add_value">%d개 담기</string>
+
+    <!-- cart dialog -->
+    <string name="dialog_title">선택한 상품이 장바구니에 담겼습니다.</string>
+    <string name="dialog_cart">장바구니 확인</string>
+    <string name="dialog_shopping">계속 쇼핑하기</string>
+
+    <!-- detail -->
+    <string name="detail_point">적립금</string>
+    <string name="detail_delivery_info">배송정보</string>
+    <string name="detail_delivery_fee">배송비</string>
+    <string name="detail_count">수량</string>
+    <string name="detail_total_price">총 주문금액</string>
+    <string name="detail_add">주문하기</string>
+
+    <!-- cart -->
+    <string name="cart_title">Cart</string>
+    <string name="cart_uncheck">선택 해제</string>
+    <string name="cart_check_all">전체 선택</string>
+    <string name="cart_delete">선택 삭제</string>
+    <string name="cart_price">상품 주문 금액</string>
+    <string name="cart_delivery_fee">배송료</string>
+    <string name="cart_total">총 주문 금액</string>
+    <string name="cart_minimum_check">최소주문금액을 확인해주세요</string>
+    <string name="cart_order_value">%,d원 주문하기</string>
+    <string name="cart_free_alarm_value">%,d원을 더 담으면 무료배송!</string>
+    <string name="cart_recently_title">최근 본 상품</string>
+    <string name="cart_recently_all">전체보기</string>
+
+    <!-- order -->
+    <string name="order_delivering">주문이 접수되었습니다.</string>
+    <string name="order_delivered">배송이 완료되었습니다.</string>
+    <string name="order_time">배송까지 남은 시간</string>
+    <string name="order_time_value">%d분</string>
+    <string name="order_total_count">주문한 상품</string>
+    <string name="order_total_count_value">총 %d개</string>
+    <string name="order_total_price">총 결제 금액</string>
+
+    <!-- order list -->
+    <string name="order_list_title">Order List</string>
+    <string name="order_list_delivering">배송 준비중</string>
+    <string name="order_list_delivered">배송 완료</string>
+    <string name="order_list_item_count_value">%s 외 %d개</string>
+
+    <!-- recently -->
+    <string name="recently_title">Recently viewed products</string>
 </resources>
