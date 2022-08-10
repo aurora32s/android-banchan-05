@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="TabTextAppearance" parent="@style/TextAppearance.AppCompat">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="HeaderText" parent="@android:style/Widget.TextView">
+        <item name="android:textSize">32sp</item>
+        <item name="android:textColor">@color/greyScaleBlack</item>
+    </style>
+</resources>
