@@ -39,7 +39,7 @@ class HomeFragment : Fragment() {
         it.vpHome.offscreenPageLimit = list.size
 
         TabLayoutMediator(it.tlHome,it.vpHome) { tab, position ->
-            tab.setText(tabList[position])
+            tab.text = tabList[position]
         }.attach()
     }
 

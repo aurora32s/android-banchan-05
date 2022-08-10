@@ -13,7 +13,7 @@ class HomeAdapter :RecyclerView.Adapter<ModelViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: ModelViewHolder, position: Int) {
-        holder.bind(itemList[position] as UiModel.Header)
+        holder.bind(itemList[position] as UiModel.CategoryTitle)
     }
 
     override fun getItemCount() = itemList.size
@@ -24,7 +24,7 @@ class HomeAdapter :RecyclerView.Adapter<ModelViewHolder>() {
 }
 
 class ModelViewHolder(val binding: ItemHomeHeaderBinding) : RecyclerView.ViewHolder(binding.root){
-    fun bind(model : UiModel.Header) {
+    fun bind(model : UiModel.CategoryTitle) {
         binding.tvHeader.text = model.title
     }
 }

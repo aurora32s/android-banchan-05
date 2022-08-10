@@ -27,18 +27,26 @@ class BestFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initHeader()
         initRecyclerView()
     }
 
+    private fun initHeader() = binding?.let {
+        it.tvHeader.text = getString(R.string.header_best)
+        it.tvChip.text = getString(R.string.tab_best)
+    }
+
     private fun initRecyclerView() = binding?.let {
-        it.rvBest.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
+        it.rvBest.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         val homeAdapter = HomeAdapter()
         it.rvBest.adapter = homeAdapter
 
-        homeAdapter.submitList(listOf(UiModel.Header(
-            id = 1,
-            title = getString(R.string.header_best)
-        )))
+        homeAdapter.submitList(
+            (1..10).map {
+                UiModel.CategoryTitle(title = "$it category")
+            }
+        )
     }
 
     companion object {
