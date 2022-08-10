@@ -6,11 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.seom.banchan.R
 import com.seom.banchan.databinding.FragmentBestBinding
-import com.seom.banchan.ui.adapter.HomeAdapter
-import com.seom.banchan.ui.model.home.UiModel
+import com.seom.banchan.domain.model.MenuModel
+import com.seom.banchan.ui.adapter.ModelRecyclerAdapter
+import com.seom.banchan.ui.model.CellType
+import com.seom.banchan.ui.model.home.CategoryMenuModel
+import com.seom.banchan.ui.model.home.HomeMenuModel
 
 class BestFragment : Fragment() {
     private var _binding: FragmentBestBinding? = null
@@ -39,12 +41,31 @@ class BestFragment : Fragment() {
     private fun initRecyclerView() = binding?.let {
         it.rvBest.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        val homeAdapter = HomeAdapter()
+        val homeAdapter = ModelRecyclerAdapter<CategoryMenuModel>()
         it.rvBest.adapter = homeAdapter
 
         homeAdapter.submitList(
-            (1..10).map {
-                UiModel.CategoryTitle(title = "$it category")
+            (1..10).map { categoryId ->
+                CategoryMenuModel(
+                    id = categoryId.toLong(),
+                    type = CellType.MENU_LIST_CELL,
+                    categoryName = "category $categoryId",
+                    menus = (1..10).map { menuId ->
+                        HomeMenuModel(
+                            id = menuId.toLong(),
+                            menu = MenuModel(
+                                id = "H$menuId",
+                                name = "menu $menuId",
+                                deliveryType = emptyList(),
+                                image = "",
+                                description = "",
+                                salePrice = 1000,
+                                normalPrice = 1000
+                            ),
+                            discountRate = menuId
+                        )
+                    }
+                )
             }
         )
     }
