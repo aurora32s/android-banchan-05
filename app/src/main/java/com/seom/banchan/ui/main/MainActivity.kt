@@ -1,4 +1,4 @@
-package com.seom.banchan
+package com.seom.banchan.ui.main
 
 import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
