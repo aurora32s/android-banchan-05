@@ -3,6 +3,8 @@
 
     <string name="app_name">ORDERING</string>
 
+    <string name="main_title">ORDERING</string>
+
     <!-- home -->
     <string name="tab_best">기획전</string>
     <string name="tab_main">든든한 메인요리</string>
