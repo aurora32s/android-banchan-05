@@ -103,7 +103,6 @@ class DetailFragment(
             }
         })
     }
-
     companion object {
         const val TAG = ".DetailFragment"
         fun newInstance(menuId: String) = DetailFragment(menuId)
