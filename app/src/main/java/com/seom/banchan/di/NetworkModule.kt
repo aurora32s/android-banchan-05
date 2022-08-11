@@ -17,15 +17,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
 import java.util.concurrent.TimeUnit
 
-@Module
-@InstallIn(SingletonComponent::class)
-abstract class DataSourceModule {
-    @Binds
-    abstract fun bindMenuDataSource(
-        menuDataSource: MenuDataSourceImpl
-    ): MenuDataSource
-}
-
 // API
 @Module
 @InstallIn(SingletonComponent::class)
