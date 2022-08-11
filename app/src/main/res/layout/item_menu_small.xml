@@ -28,12 +28,15 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_menu_name"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:textColor="@color/greyScaleBlack"
             android:textSize="14sp"
             android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@id/iv_menu_thumbnail"
             app:layout_constraintStart_toStartOf="@id/iv_menu_thumbnail"
             app:layout_constraintTop_toBottomOf="@id/iv_menu_thumbnail"
             app:text="@{menu.menu.name}"
@@ -41,11 +44,14 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_menu_description"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:textColor="@color/greyScaleDefault"
             android:textSize="12sp"
             android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@id/iv_menu_thumbnail"
             app:layout_constraintStart_toStartOf="@id/iv_menu_thumbnail"
             app:layout_constraintTop_toBottomOf="@id/tv_menu_name"
             app:text="@{menu.menu.description}"
@@ -84,8 +90,9 @@
             android:textSize="12sp"
             app:layout_constraintStart_toStartOf="@id/iv_menu_thumbnail"
             app:layout_constraintTop_toBottomOf="@id/tv_menu_discountRate"
-            app:visibilityByData="@{menu.menu.salePrice}"
-            tools:text="hello world" />
+            app:visibilityByData="@{menu.menu.normalPrice}"
+            app:strikeThrough="@{true}"
+            tools:text="hello world"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

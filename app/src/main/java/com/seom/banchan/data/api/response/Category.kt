@@ -1,7 +1,17 @@
 package com.seom.banchan.data.api.response
 
+import com.google.gson.annotations.SerializedName
+import com.seom.banchan.domain.model.CategoryModel
+
 data class Category(
-    val id: String,
+    @SerializedName("category_id")
+    val categoryId: String,
     val name: String,
     val items: List<Menu>
+)
+
+fun Category.toModel() = CategoryModel(
+    id = categoryId,
+    name = name,
+    menus = items.map { it.toModel() }
 )

@@ -7,7 +7,9 @@ import androidx.databinding.DataBindingUtil
 import com.seom.banchan.R
 import com.seom.banchan.databinding.ActivityMainBinding
 import com.seom.banchan.ui.home.HomeFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private var _binding : ActivityMainBinding? = null
     private val binding get() = _binding

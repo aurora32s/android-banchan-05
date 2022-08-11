@@ -16,7 +16,6 @@ import com.seom.banchan.R
 fun ImageView.load(
     imageUrl: String
 ) {
-    println(imageUrl)
     Glide.with(this.context)
         .load(imageUrl)
         .diskCacheStrategy(DiskCacheStrategy.ALL)
