@@ -91,7 +91,8 @@
             app:layout_constraintStart_toStartOf="@id/iv_menu_thumbnail"
             app:layout_constraintTop_toBottomOf="@id/tv_menu_discountRate"
             app:visibilityByData="@{menu.menu.normalPrice}"
-            tools:text="hello world" />
+            app:strikeThrough="@{true}"
+            tools:text="hello world"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -1,5 +1,6 @@
 package com.seom.banchan.util.ext
 
+import android.graphics.Paint
 import android.widget.TextView
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
@@ -22,4 +23,9 @@ fun TextView.setVisibilityByData(data: Int?) {
     } else {
         isVisible = true
     }
+}
+
+@BindingAdapter("strikeThrough")
+fun TextView.strikeThrough(use: Boolean) {
+    paintFlags = if (use) paintFlags or Paint.STRIKE_THRU_TEXT_FLAG else 0
 }
