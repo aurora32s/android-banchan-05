@@ -23,7 +23,7 @@
     <string name="filter_ascending">금액 낮은순</string>
     <string name="filter_discount">할인율순</string>
 
-    <string name="menu_discount_value">%d%</string>
+    <string name="menu_discount_value">%d%%</string>
     <string name="menu_price_value">%,d원</string>
 
     <!-- cart bottom sheet -->
@@ -75,4 +75,13 @@
 
     <!-- recently -->
     <string name="recently_title">Recently viewed products</string>
+
+    <!-- tab list -->
+    <string-array name="tab_list">
+        <item>기획전</item>
+        <item>든든한 메인요리</item>
+        <item>뜨끈한 국물요리</item>
+        <item>정갈한 밑반찬</item>
+    </string-array>
+
 </resources>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="menu"
+            type="com.seom.banchan.ui.model.home.HomeMenuModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="4dp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_menu_thumbnail"
+            android:layout_width="160dp"
+            android:layout_height="0dp"
+            app:imageSrc="@{menu.menu.image}"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_menu_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/greyScaleBlack"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/iv_menu_thumbnail"
+            app:layout_constraintTop_toBottomOf="@id/iv_menu_thumbnail"
+            app:text="@{menu.menu.name}"
+            tools:text="hello world" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_menu_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/greyScaleDefault"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/iv_menu_thumbnail"
+            app:layout_constraintTop_toBottomOf="@id/tv_menu_name"
+            app:text="@{menu.menu.description}"
+            tools:text="hello world" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_menu_discountRate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingEnd="8dp"
+            android:text="@{@string/menu_discount_value(menu.discountRate)}"
+            android:textColor="@color/primaryAccent"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@id/iv_menu_thumbnail"
+            app:layout_constraintTop_toBottomOf="@id/tv_menu_description"
+            app:visibilityByData="@{menu.discountRate}"
+            tools:text="hello world" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_menu_salePrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{@string/menu_price_value(menu.menu.salePrice == 0 ? menu.menu.normalPrice :menu.menu.salePrice)}"
+            android:textColor="@color/greyScaleBlack"
+            android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@id/tv_menu_discountRate"
+            app:layout_constraintTop_toTopOf="@id/tv_menu_discountRate"
+            tools:text="hello world" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_menu_normalPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{@string/menu_price_value(menu.menu.normalPrice)}"
+            android:textColor="@color/greyScaleDefault"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="@id/iv_menu_thumbnail"
+            app:layout_constraintTop_toBottomOf="@id/tv_menu_discountRate"
+            app:visibilityByData="@{menu.menu.salePrice}"
+            tools:text="hello world" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
