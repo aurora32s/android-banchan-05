@@ -2,6 +2,7 @@ package com.seom.banchan.ui.home.best
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.seom.banchan.R
 import com.seom.banchan.domain.model.toUiModel
 import com.seom.banchan.domain.usecase.GetMenuWithCategoriesUseCase
 import com.seom.banchan.ui.model.Model
@@ -21,7 +22,7 @@ class BestViewModel @Inject constructor(
         get() = _bestMenus
 
     private val baseMenu = listOf<Model>(
-        HeaderMenuModel(id="header",title="hello world")
+        HeaderMenuModel(id = "header", title = R.string.header_best, chipTitle = R.string.tab_best)
     )
 
     fun fetchBestMenus() = viewModelScope.launch {
