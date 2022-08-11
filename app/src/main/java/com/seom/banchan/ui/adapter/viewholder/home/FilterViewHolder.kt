@@ -1,13 +1,9 @@
 package com.seom.banchan.ui.adapter.viewholder.home
 
-import android.content.Context
+import android.util.Log
 import com.seom.banchan.databinding.ItemHomeFilterBinding
-import com.seom.banchan.databinding.ItemHomeHeaderBinding
 import com.seom.banchan.ui.adapter.viewholder.ModelViewHolder
 import com.seom.banchan.ui.model.home.FilterMenuModel
-import com.seom.banchan.ui.model.home.HeaderMenuModel
-import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.qualifiers.ActivityContext
 import javax.inject.Inject
 
 class FilterViewHolder @Inject constructor(
@@ -15,6 +11,6 @@ class FilterViewHolder @Inject constructor(
 ) : ModelViewHolder<FilterMenuModel>(binding) {
 
     override fun bind(model: FilterMenuModel) {
-
+        binding.filter = model
     }
 }

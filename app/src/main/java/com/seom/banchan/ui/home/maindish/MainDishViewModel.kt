@@ -3,7 +3,7 @@ package com.seom.banchan.ui.home.maindish
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seom.banchan.R
-import com.seom.banchan.domain.model.toUiModel
+import com.seom.banchan.domain.model.*
 import com.seom.banchan.domain.usecase.GetMenuWithCategoriesUseCase
 import com.seom.banchan.ui.model.Model
 import com.seom.banchan.ui.model.home.FilterMenuModel
@@ -18,22 +18,42 @@ import javax.inject.Inject
 class MainDishViewModel @Inject constructor(
     private val getMenuWithCategoriesUseCase: GetMenuWithCategoriesUseCase
 ) : ViewModel() {
-    private val _bestMenus = MutableStateFlow<List<Model>>(emptyList())
-    val bestMenus: StateFlow<List<Model>>
-        get() = _bestMenus
+    private val _rowData = MutableStateFlow<List<MenuModel>>(emptyList())
+    private val rowData: StateFlow<List<MenuModel>>
+        get() = _rowData
+
+    private val _mainDishMenus = MutableStateFlow<List<Model>>(emptyList())
+    val mainDishMenus: StateFlow<List<Model>>
+        get() = _mainDishMenus
 
     private val baseMenu = listOf<Model>(
         HeaderMenuModel(id = "header", title = R.string.header_main),
         FilterMenuModel(id = "filter")
     )
 
+    private val _toggle = (baseMenu[1] as FilterMenuModel).toggle // 개선 필요
+    val toggle: StateFlow<Boolean>
+        get() = _toggle
+
     fun fetchBestMenus() = viewModelScope.launch {
         getMenuWithCategoriesUseCase()
             .onSuccess { result ->
-                _bestMenus.value = baseMenu + result.map { it.toUiModel() }
+                _rowData.value = result[0].menus
+                _mainDishMenus.value = baseMenu + result.map { it.toUiModel() }[0].menus
             }
             .onFailure {
                 println(it)
             }
+    }
+
+    fun updateViewMode() {
+        if (rowData.value.isNotEmpty()) {
+            _mainDishMenus.value =
+                baseMenu + if (toggle.value) rowData.value.map {
+                    it.toHomeMenuLinearModel()
+                } else rowData.value.map {
+                    it.toHomeMenuGridModel()
+                }
+        }
     }
 }

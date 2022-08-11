@@ -4,9 +4,9 @@ import com.seom.banchan.domain.model.MenuModel
 import com.seom.banchan.ui.model.CellType
 import com.seom.banchan.ui.model.Model
 
-data class HomeMenuModel(
+data class HomeMenuLinearModel(
     override val id: String,
-    override val type: CellType = CellType.MENU_CELL,
+    override val type: CellType = CellType.MENU_LINEAR_CELL,
     val menu: MenuModel,
     val discountRate: Int, // 소수점 버림
     val count: Int = 0, // 선택 개수

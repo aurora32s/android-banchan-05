@@ -7,5 +7,5 @@ data class CategoryMenuModel(
     override val id: String,
     override val type: CellType = CellType.MENU_LIST_CELL,
     val categoryName: String,
-    val menus: List<HomeMenuModel>
+    val menus: List<Model>
 ) : Model(id, type)
