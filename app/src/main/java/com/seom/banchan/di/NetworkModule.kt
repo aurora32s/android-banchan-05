@@ -1,6 +1,10 @@
 package com.seom.banchan.di
 
 import com.seom.banchan.BuildConfig
+import com.seom.banchan.data.api.MenuApiService
+import com.seom.banchan.data.source.MenuDataSource
+import com.seom.banchan.data.source.remote.MenuDataSourceImpl
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -13,12 +17,30 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
 import java.util.concurrent.TimeUnit
 
+@Module
+@InstallIn(SingletonComponent::class)
+abstract class DataSourceModule {
+    @Binds
+    abstract fun bindMenuDataSource(
+        menuDataSource: MenuDataSourceImpl
+    ): MenuDataSource
+}
+
 // API
+@Module
+@InstallIn(SingletonComponent::class)
+object NetworkModule {
+    @Provides
+    fun provideMenuApiService(
+        retrofit: Retrofit
+    ) = retrofit.create(MenuApiService::class.java)
+}
+
 
 // Retrofit Builder
 @Module
 @InstallIn(SingletonComponent::class)
-object NetworkModule {
+object RetrofitModule {
     @Provides
     fun provideRetrofit(
         okHttpClient: OkHttpClient,
