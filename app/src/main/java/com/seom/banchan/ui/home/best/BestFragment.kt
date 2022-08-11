@@ -48,16 +48,16 @@ class BestFragment : Fragment() {
                         id = categoryId.toLong(),
                         type = CellType.MENU_LIST_CELL,
                         categoryName = "category $categoryId",
-                        menus = (1..10).map { menuId ->
+                        menus = (0..10).map { menuId ->
                             HomeMenuModel(
                                 id = menuId.toLong(),
                                 menu = MenuModel(
                                     id = "H$menuId",
                                     name = "menu $menuId",
                                     deliveryType = emptyList(),
-                                    image = "",
-                                    description = "",
-                                    salePrice = 1000,
+                                    image = "http://public.codesquad.kr/jk/storeapp/data/main/1155_ZIP_P_0081_T.jpg",
+                                    description = "description $menuId",
+                                    salePrice = menuId * 1000,
                                     normalPrice = 1000
                                 ),
                                 discountRate = menuId

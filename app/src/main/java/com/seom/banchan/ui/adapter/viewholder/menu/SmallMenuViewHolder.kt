@@ -8,6 +8,6 @@ class SmallMenuViewHolder(
     private val binding: ItemMenuSmallBinding
 ) : ModelViewHolder<HomeMenuModel>(binding) {
     override fun bind(model: HomeMenuModel) {
-        binding.tvMenuName.text = model.menu.name
+        binding.menu = model
     }
 }

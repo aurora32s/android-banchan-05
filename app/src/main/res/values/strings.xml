@@ -23,7 +23,7 @@
     <string name="filter_ascending">금액 낮은순</string>
     <string name="filter_discount">할인율순</string>
 
-    <string name="menu_discount_value">%d%</string>
+    <string name="menu_discount_value">%d%%</string>
     <string name="menu_price_value">%,d원</string>
 
     <!-- cart bottom sheet -->
