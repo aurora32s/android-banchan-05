@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity(), BaseFragment.FragmentNavigation {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = DataBindingUtil.setContentView(
-            this,R.layout.activity_main
+            this, R.layout.activity_main
         )
 
         binding?.let {
