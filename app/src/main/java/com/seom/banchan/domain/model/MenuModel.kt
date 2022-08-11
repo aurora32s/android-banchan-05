@@ -1,6 +1,7 @@
 package com.seom.banchan.domain.model
 
 import com.seom.banchan.ui.model.home.HomeMenuModel
+import java.lang.Math.ceil
 
 data class MenuModel(
     val id: String,
@@ -15,5 +16,5 @@ data class MenuModel(
 fun MenuModel.toHomeMenuModel() = HomeMenuModel(
     id = id,
     menu = this,
-    discountRate = (normalPrice / salePrice * 100)
+    discountRate = if (normalPrice == 0) 0 else ceil((1 - (salePrice / normalPrice.toDouble())) * 100).toInt()
 )

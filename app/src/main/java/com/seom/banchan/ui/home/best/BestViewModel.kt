@@ -1,14 +1,14 @@
 package com.seom.banchan.ui.home.best
 
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seom.banchan.domain.model.toUiModel
 import com.seom.banchan.domain.usecase.GetMenuWithCategoriesUseCase
-import com.seom.banchan.ui.model.home.CategoryMenuModel
+import com.seom.banchan.ui.model.Model
+import com.seom.banchan.ui.model.home.HeaderMenuModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -16,14 +16,18 @@ import javax.inject.Inject
 class BestViewModel @Inject constructor(
     private val getMenuWithCategoriesUseCase: GetMenuWithCategoriesUseCase
 ) : ViewModel() {
-    private val _bestMenus = MutableLiveData<List<CategoryMenuModel>>(emptyList())
-    val bestMenus: LiveData<List<CategoryMenuModel>>
+    private val _bestMenus = MutableStateFlow<List<Model>>(emptyList())
+    val bestMenus: StateFlow<List<Model>>
         get() = _bestMenus
+
+    private val baseMenu = listOf<Model>(
+        HeaderMenuModel(id="header",title="hello world")
+    )
 
     fun fetchBestMenus() = viewModelScope.launch {
         getMenuWithCategoriesUseCase()
             .onSuccess { result ->
-                _bestMenus.value = result.map { it.toUiModel() }
+                _bestMenus.value = baseMenu + result.map { it.toUiModel() }
             }
             .onFailure {
                 println(it)

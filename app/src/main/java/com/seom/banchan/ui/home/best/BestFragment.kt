@@ -43,11 +43,12 @@ class BestFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
 
-        viewModel.bestMenus.observe(viewLifecycleOwner) {
-            println(it)
-        }
-
+        initObserver()
         viewModel.fetchBestMenus()
+    }
+
+    private fun initObserver() {
+        lifecycleScope.launch { viewModel.bestMenus.collect { homeAdapter.submitList(it) } }
     }
 
     private fun initRecyclerView() = binding?.let {
