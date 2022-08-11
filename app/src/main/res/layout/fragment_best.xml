@@ -5,54 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="202dp"
-                android:background="@color/primarySurface"
-                android:paddingHorizontal="16dp">
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tv_chip"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:background="@drawable/background_chip"
-                    android:gravity="center"
-                    android:minWidth="56dp"
-                    android:paddingHorizontal="14dp"
-                    android:paddingVertical="8dp"
-                    android:textColor="@color/greyScaleBlack"
-                    android:textSize="10sp"
-                    android:textStyle="bold"
-                    android:visibility="visible"
-                    app:layout_constraintBottom_toTopOf="@id/tv_header"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_chainStyle="packed" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tv_header"
-                    style="@style/HeaderText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="start"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_chip"
-                    tools:text="@string/header_best" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
-    </com.google.android.material.appbar.AppBarLayout>
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_best"
         android:layout_width="match_parent"
