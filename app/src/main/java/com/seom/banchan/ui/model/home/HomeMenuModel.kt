@@ -6,7 +6,7 @@ import com.seom.banchan.ui.model.Model
 
 data class HomeMenuModel(
     override val id: String,
-    override val type: CellType = CellType.MENU_CELL,
+    override val type: CellType = CellType.MENU_CELL_VERTICAL,
     val menu: MenuModel,
     val discountRate: Int, // 소수점 버림
     val count: Int = 0, // 선택 개수

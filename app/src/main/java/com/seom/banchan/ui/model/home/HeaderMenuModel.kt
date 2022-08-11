@@ -10,5 +10,5 @@ data class HeaderMenuModel(
     @StringRes
     val title: Int,
     @StringRes
-    val chipTitle: Int?
+    val chipTitle: Int? = null
 ) : Model(id, type)
