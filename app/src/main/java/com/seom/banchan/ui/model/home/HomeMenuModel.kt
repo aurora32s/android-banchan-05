@@ -5,7 +5,7 @@ import com.seom.banchan.ui.model.CellType
 import com.seom.banchan.ui.model.Model
 
 data class HomeMenuModel(
-    override val id: Long,
+    override val id: String,
     override val type: CellType = CellType.MENU_CELL,
     val menu: MenuModel,
     val discountRate: Int, // 소수점 버림

@@ -1,5 +1,6 @@
 package com.seom.banchan.ui.adapter
 
+import android.annotation.SuppressLint
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.seom.banchan.ui.adapter.viewholder.ModelViewHolder
@@ -24,7 +25,9 @@ class ModelRecyclerAdapter<M : Model> : RecyclerView.Adapter<ModelViewHolder<M>>
         holder.bind(modelList[position] as M)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun submitList(newList: List<Model>?) {
         newList?.let { modelList = newList }
+        notifyDataSetChanged()
     }
 }

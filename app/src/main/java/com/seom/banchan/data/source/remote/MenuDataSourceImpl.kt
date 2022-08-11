@@ -7,12 +7,12 @@ import com.seom.banchan.data.source.MenuDataSource
 import com.seom.banchan.domain.model.CategoryModel
 import javax.inject.Inject
 
-class MenuDataSourceImpl(
+class MenuDataSourceImpl @Inject constructor(
     private val menuApiService: MenuApiService
 ) : MenuDataSource {
     override suspend fun getBestMenus(): Result<List<CategoryModel>> = try {
         val response = menuApiService.getBestMenus()
-
+        println(response)
         if (response.isSuccessful) {
             val result = response.body()
             if (result != null) {

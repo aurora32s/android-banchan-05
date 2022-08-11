@@ -11,7 +11,9 @@ import com.seom.banchan.R
 import com.seom.banchan.databinding.FragmentHomeBinding
 import com.seom.banchan.ui.adapter.FragmentPagerAdapter
 import com.seom.banchan.ui.home.best.BestFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
     private var _binding : FragmentHomeBinding? = null
     private val binding get() = _binding

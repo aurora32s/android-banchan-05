@@ -24,7 +24,7 @@ object NetworkModule {
     @Provides
     fun provideMenuApiService(
         retrofit: Retrofit
-    ) = retrofit.create(MenuApiService::class.java)
+    ): MenuApiService = retrofit.create(MenuApiService::class.java)
 }
 
 
@@ -40,7 +40,7 @@ object RetrofitModule {
         return Retrofit.Builder()
             .client(okHttpClient)
             .addConverterFactory(converter)
-            .baseUrl("")
+            .baseUrl("https://api.codesquad.kr/onban/")
             .build()
     }
 }
@@ -69,7 +69,7 @@ object HttpClientModule {
         }
         return OkHttpClient
             .Builder()
-            .connectTimeout(5, TimeUnit.SECONDS)
+            .connectTimeout(3, TimeUnit.SECONDS)
             .addInterceptor(interceptor)
             .build()
     }
