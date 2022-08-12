@@ -18,10 +18,10 @@
 
     <string name="list_total_value">총 %d개 상품</string>
 
-    <string name="filter_base">기본 정렬순</string>
-    <string name="filter_descending">금액 높은순</string> <!-- 내림차순 : 금액 높은게 먼저 나옴 -->
-    <string name="filter_ascending">금액 낮은순</string>
-    <string name="filter_discount">할인율순</string>
+    <string name="sort_base">기본 정렬순</string>
+    <string name="sort_descending">금액 높은순</string> <!-- 내림차순 : 금액 높은게 먼저 나옴 -->
+    <string name="sort_ascending">금액 낮은순</string>
+    <string name="sort_discount">할인율순</string>
 
     <string name="menu_discount_value">%d%%</string>
     <string name="menu_price_value">%,d원</string>
@@ -61,7 +61,7 @@
     <!-- order -->
     <string name="order_delivering">주문이 접수되었습니다.</string>
     <string name="order_delivered">배송이 완료되었습니다.</string>
-    <string name="order_time">배송까지 남은 시간</string>
+    <string name="order_time">배송까지 h남은 시간</string>
     <string name="order_time_value">%d분</string>
     <string name="order_total_count">주문한 상품</string>
     <string name="order_total_count_value">총 %d개</string>
@@ -83,5 +83,9 @@
         <item>뜨끈한 국물요리</item>
         <item>정갈한 밑반찬</item>
     </string-array>
+
+    <!-- view Holder id -->
+    <string name="header_view_holder">header</string>
+    <string name="total_view_holder">total</string>
 
 </resources>

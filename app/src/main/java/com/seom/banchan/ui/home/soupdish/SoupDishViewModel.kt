@@ -18,42 +18,18 @@ import javax.inject.Inject
 class SoupDishViewModel @Inject constructor(
     private val getSoupMenusUseCase: GetSoupMenusUseCase
 ) : ViewModel() {
-    private val _rowData = MutableStateFlow<List<MenuModel>>(emptyList())
-    private val rowData: StateFlow<List<MenuModel>>
-        get() = _rowData
 
     private val _soupDishMenus = MutableStateFlow<List<Model>>(emptyList())
     val soupDishMenus: StateFlow<List<Model>>
         get() = _soupDishMenus
 
-    private val baseMenu = listOf<Model>(
-        HeaderMenuModel(id = "header", title = R.string.header_soup),
-        FilterMenuModel(id = "filter")
-    )
-
-    private val _toggle = (baseMenu[1] as FilterMenuModel).toggle // 개선 필요
-    val toggle: StateFlow<Boolean>
-        get() = _toggle
-
     fun fetchSoupMenus() = viewModelScope.launch {
         getSoupMenusUseCase()
             .onSuccess { result ->
-                _rowData.value = result
-                _soupDishMenus.value = baseMenu + result.map { it.toHomeMenuGridModel() }
+                _soupDishMenus.value = result.map { it.toHomeMenuGridModel() }
             }
             .onFailure {
                 println(it)
             }
-    }
-
-    fun updateViewMode() {
-        if (rowData.value.isNotEmpty()) {
-            _soupDishMenus.value =
-                baseMenu + if (toggle.value) rowData.value.map {
-                    it.toHomeMenuLinearModel()
-                } else rowData.value.map {
-                    it.toHomeMenuGridModel()
-                }
-        }
     }
 }

@@ -6,5 +6,6 @@ enum class CellType {
     MENU_CELL,
     MENU_LINEAR_CELL,
     MENU_GRID_CELL,
-    FILTER_CELL
+    FILTER_CELL,
+    TOTAL_CELL
 }

@@ -9,10 +9,14 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.seom.banchan.R
 import com.seom.banchan.databinding.FragmentSoupDishBinding
 import com.seom.banchan.ui.adapter.ModelRecyclerAdapter
 import com.seom.banchan.ui.model.CellType
 import com.seom.banchan.ui.model.Model
+import com.seom.banchan.ui.model.home.HeaderMenuModel
+import com.seom.banchan.ui.model.home.TotalMenuModel
+import com.seom.banchan.util.ext.setGridLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -46,44 +50,25 @@ class SoupDishFragment : Fragment() {
     private fun initObserver() {
         lifecycleScope.launch {
             viewModel.soupDishMenus.collect {
-                homeAdapter.submitList(it)
-            }
-
-        }
-        lifecycleScope.launch {
-            viewModel.toggle.collect {
-                if (!it) changeGridLayoutManager() else changeLinearLayoutManager()
-                viewModel.updateViewMode()
+                homeAdapter.submitList(
+                    listOf(
+                        HeaderMenuModel(
+                            id = getString(R.string.header_view_holder),
+                            title = R.string.header_soup
+                        ),
+                        TotalMenuModel(
+                            id = getString(R.string.total_view_holder),
+                            count = it.size
+                        )
+                    ) + it
+                )
             }
         }
     }
 
     private fun initRecyclerView() = binding?.let {
         it.rvSoupDish.adapter = homeAdapter
-    }
-
-    private fun changeGridLayoutManager() {
-        binding?.let {
-            val layoutManager = GridLayoutManager(requireContext(), 2)
-            layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-                override fun getSpanSize(position: Int): Int {
-                    return when (it.rvSoupDish.adapter?.getItemViewType(position)) {
-                        CellType.MENU_GRID_CELL.ordinal -> 1
-                        else -> 2
-                    }
-                }
-            }
-
-            it.rvSoupDish.layoutManager = layoutManager
-        }
-
-    }
-
-    private fun changeLinearLayoutManager() {
-        binding?.let {
-            it.rvSoupDish.layoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        }
+        it.rvSoupDish.setGridLayoutManager(requireContext())
     }
 
     companion object {

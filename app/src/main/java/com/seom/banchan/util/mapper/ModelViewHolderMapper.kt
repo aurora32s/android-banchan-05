@@ -7,6 +7,7 @@ import com.seom.banchan.ui.adapter.viewholder.ModelViewHolder
 import com.seom.banchan.ui.adapter.viewholder.home.BestMenuViewHolder
 import com.seom.banchan.ui.adapter.viewholder.home.FilterViewHolder
 import com.seom.banchan.ui.adapter.viewholder.home.HeaderViewHolder
+import com.seom.banchan.ui.adapter.viewholder.home.TotalViewHolder
 import com.seom.banchan.ui.adapter.viewholder.menu.GridMenuViewHolder
 import com.seom.banchan.ui.adapter.viewholder.menu.LinearMenuViewHolder
 import com.seom.banchan.ui.adapter.viewholder.menu.SmallMenuViewHolder
@@ -33,6 +34,9 @@ object ModelViewHolderMapper {
             )
             CellType.FILTER_CELL -> FilterViewHolder(
                 ItemHomeFilterBinding.inflate(inflater, parent, false)
+            )
+            CellType.TOTAL_CELL -> TotalViewHolder(
+                ItemHomeTotalBinding.inflate(inflater, parent, false)
             )
             CellType.MENU_LINEAR_CELL -> LinearMenuViewHolder(
                 ItemMenuLinearBinding.inflate(inflater, parent, false)
