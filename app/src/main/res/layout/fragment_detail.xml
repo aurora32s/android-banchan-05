@@ -1,304 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
-
     <data>
-
         <variable
             name="detail"
             type="com.seom.banchan.ui.model.detail.DetailMenuModel" />
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="false">
+        android:layout_height="match_parent">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appbar"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent">
+            android:layout_height="?android:attr/actionBarSize"
+            android:background="@color/white"
+            android:padding="4dp"
+            app:contentInsetStart="0dp"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <com.google.android.material.appbar.CollapsingToolbarLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
+                android:layout_height="match_parent">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_menu_small_thumbnail"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    app:corner="@{50}"
+                    app:imageUrl="@{detail.detailMenu.images[0]}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintDimensionRatio="1:1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                    <androidx.viewpager2.widget.ViewPager2
-                        android:id="@+id/vp_menu_image"
-                        android:layout_width="match_parent"
-                        android:layout_height="320dp"
-                        app:layout_constraintDimensionRatio="1:1"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:paddingStart="8dp"
+                    android:text="@{detail.detailMenu.name}"
+                    android:textColor="@color/greyScaleBlack"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/tv_menu_small_discountRate"
+                    app:layout_constraintStart_toEndOf="@id/iv_menu_small_thumbnail"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                    <LinearLayout
-                        android:id="@+id/ll_indicator"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="start"
-                        android:orientation="horizontal"
-                        android:paddingHorizontal="10dp"
-                        android:paddingVertical="16dp"
-                        android:paddingBottom="16dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_menu_small_discountRate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingEnd="4dp"
+                    android:text="@{@string/menu_discount_value(detail.discountRate)}"
+                    android:textColor="@color/primaryAccent"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/tv_menu_small_salePrice"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:visibilityByData="@{detail.discountRate}"
+                    tools:text="hello world" />
 
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/cv_menu_info"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="8dp"
-                        android:layout_marginTop="-15dp"
-                        app:cardCornerRadius="10dp"
-                        app:cardElevation="20dp"
-                        app:contentPadding="15dp"
-                        app:layout_constraintTop_toBottomOf="@id/vp_menu_image">
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:id="@+id/tv_menu_name"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:textColor="@color/black"
-                                android:textSize="28sp"
-                                android:textStyle="bold"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:text="@{detail.detailMenu.name}" />
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:id="@+id/tv_menu_discountRate"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="8dp"
-                                android:paddingEnd="4dp"
-                                android:text="@{@string/menu_discount_value(detail.discountRate)}"
-                                android:textColor="@color/primaryAccent"
-                                android:textSize="18sp"
-                                app:layout_constraintStart_toStartOf="@id/tv_menu_name"
-                                app:layout_constraintTop_toBottomOf="@id/tv_menu_name"
-                                app:visibilityByData="@{detail.discountRate}"
-                                tools:text="hello world" />
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:id="@+id/tv_menu_salePrice"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:paddingEnd="8dp"
-                                android:text="@{@string/menu_price_value(detail.detailMenu.salePrice == 0 ? detail.detailMenu.normalPrice :detail.detailMenu.salePrice)}"
-                                android:textColor="@color/black"
-                                android:textSize="18sp"
-                                app:layout_constraintStart_toEndOf="@id/tv_menu_discountRate"
-                                app:layout_constraintTop_toTopOf="@id/tv_menu_discountRate"
-                                tools:text="hello world" />
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:id="@+id/tv_menu_normalPrice"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@{@string/menu_price_value(detail.detailMenu.normalPrice)}"
-                                android:textColor="@color/greyScaleDefault"
-                                android:textSize="14sp"
-                                app:layout_constraintBottom_toBottomOf="@id/tv_menu_discountRate"
-                                app:layout_constraintStart_toEndOf="@id/tv_menu_salePrice"
-                                app:strikeThrough="@{true}"
-                                app:visibilityByData="@{detail.detailMenu.normalPrice}"
-                                tools:text="hello world" />
-
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    </androidx.cardview.widget.CardView>
-
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/cv_menu_detail"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="8dp"
-                        android:layout_marginTop="6dp"
-                        android:layout_marginBottom="8dp"
-                        app:cardCornerRadius="10dp"
-                        app:cardElevation="20dp"
-                        app:contentPaddingLeft="15dp"
-                        app:contentPaddingRight="15dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/cv_menu_info">
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:paddingVertical="24dp">
-
-                            <LinearLayout
-                                android:id="@+id/ll_point"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:paddingBottom="16dp"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent">
-
-                                <androidx.appcompat.widget.AppCompatTextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="2"
-                                    android:text="적립금"
-                                    android:textColor="@color/greyScaleDefault"
-                                    android:textSize="14sp" />
-
-                                <androidx.appcompat.widget.AppCompatTextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="8"
-                                    android:textColor="@color/greyScaleDefault"
-                                    android:textSize="14sp"
-                                    app:text="@{@string/menu_price_value(detail.detailMenu.point)}" />
-
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:id="@+id/ll_delivery_info"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:paddingBottom="16dp"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@id/ll_point">
-
-                                <androidx.appcompat.widget.AppCompatTextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="2"
-                                    android:text="배송정보"
-                                    android:textColor="@color/greyScaleDefault"
-                                    android:textSize="14sp" />
-
-                                <androidx.appcompat.widget.AppCompatTextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="8"
-                                    android:textColor="@color/greyScaleDefault"
-                                    android:textSize="14sp"
-                                    app:text="@{detail.detailMenu.deliveryInfo}" />
-
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:id="@+id/ll_delivery_fee"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@id/ll_delivery_info">
-
-                                <androidx.appcompat.widget.AppCompatTextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="2"
-                                    android:text="배송비"
-                                    android:textColor="@color/greyScaleDefault"
-                                    android:textSize="14sp" />
-
-                                <androidx.appcompat.widget.AppCompatTextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="8"
-                                    android:textColor="@color/greyScaleDefault"
-                                    android:textSize="14sp"
-                                    app:text="@{detail.detailMenu.deliveryFee}" />
-
-                            </LinearLayout>
-
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-                    </androidx.cardview.widget.CardView>
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?android:attr/actionBarSize"
-                    android:background="@color/white"
-                    android:padding="4dp"
-                    app:contentInsetStart="0dp"
-                    app:layout_collapseMode="pin">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:id="@+id/iv_menu_small_thumbnail"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            app:corner="@{50}"
-                            app:imageUrl="@{detail.detailMenu.images[0]}"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintDimensionRatio="1:1"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:paddingStart="8dp"
-                            android:text="@{detail.detailMenu.name}"
-                            android:textColor="@color/greyScaleBlack"
-                            android:textSize="16sp"
-                            android:textStyle="bold"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@id/tv_menu_small_discountRate"
-                            app:layout_constraintStart_toEndOf="@id/iv_menu_small_thumbnail"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/tv_menu_small_discountRate"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingEnd="4dp"
-                            android:text="@{@string/menu_discount_value(detail.discountRate)}"
-                            android:textColor="@color/primaryAccent"
-                            android:textSize="18sp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@id/tv_menu_small_salePrice"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:visibilityByData="@{detail.discountRate}"
-                            tools:text="hello world" />
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/tv_menu_small_salePrice"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingEnd="8dp"
-                            android:text="@{@string/menu_price_value(detail.detailMenu.salePrice == 0 ? detail.detailMenu.normalPrice :detail.detailMenu.salePrice)}"
-                            android:textColor="@color/black"
-                            android:textSize="18sp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            tools:text="hello world" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </androidx.appcompat.widget.Toolbar>
-            </com.google.android.material.appbar.CollapsingToolbarLayout>
-        </com.google.android.material.appbar.AppBarLayout>
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_menu_small_salePrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingEnd="8dp"
+                    android:text="@{@string/menu_price_value(detail.detailMenu.salePrice == 0 ? detail.detailMenu.normalPrice :detail.detailMenu.salePrice)}"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="hello world" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.appcompat.widget.Toolbar>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_menu_info"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
-            android:paddingHorizontal="16dp"
-            android:paddingTop="10dp"
             android:paddingBottom="100dp"
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
 
@@ -309,9 +95,7 @@
             android:background="@color/white"
             android:elevation="2dp"
             android:orientation="vertical"
-            app:behavior_hideable="true"
-            app:behavior_peekHeight="120dp"
-            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+            app:layout_constraintBottom_toBottomOf="parent">
 
             <View
                 android:layout_width="match_parent"
@@ -320,6 +104,5 @@
 
         </LinearLayout>
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

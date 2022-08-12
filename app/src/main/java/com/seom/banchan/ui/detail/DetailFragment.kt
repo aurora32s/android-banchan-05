@@ -65,58 +65,14 @@ class DetailFragment(
             discountRate = ceil((1 - (menuDetailInfo.salePrice / menuDetailInfo.normalPrice.toDouble())) * 100).toInt()
         )
         binding?.detail = detailMenu
-        initViewPager(detailMenu.detailMenu.images)
-        bindViewPager()
         initRecyclerView(detailMenu)
         initAppbar()
     }
 
-    private fun initViewPager(images: List<String>) = binding?.let {
-        it.vpMenuImage.offscreenPageLimit = 1
-
-        val imageSliderAdapter = ModelRecyclerAdapter<ImageSliderModel>()
-        it.vpMenuImage.adapter = imageSliderAdapter
-
-        imageSliderAdapter.submitList(images.map { image ->
-            ImageSliderModel(
-                imageUrl = image,
-                type = CellType.IMAGE_SLIDER_CELL
-            )
-        })
-        initIndicator(images.size)
-    }
-
-    private fun bindViewPager() = binding?.vpMenuImage?.registerOnPageChangeCallback(object :
-        ViewPager2.OnPageChangeCallback() {
-        override fun onPageSelected(position: Int) {
-            super.onPageSelected(position)
-            setCurrentIndicator(position)
-        }
-    })
-
-    private fun initIndicator(count: Int) = binding?.let {
-        (0 until count).forEach { index ->
-            it.llIndicator.addIconImageView(R.drawable.ic_normal_indicator, 10)
-        }
-
-        setCurrentIndicator(0)
-    }
-
-    private fun setCurrentIndicator(position: Int) = binding?.let {
-        for (index in 0 until it.llIndicator.childCount) {
-            (it.llIndicator.getChildAt(index) as ImageView).setIconDrawable(
-                if (index == position) R.drawable.ic_active_indicator
-                else R.drawable.ic_normal_indicator
-            )
-        }
-    }
-
     private fun initRecyclerView(detailMenuModel: DetailMenuModel) = binding?.let {
-//        val detailItem = listOf(
-//            detailMenuModel,
-//            detailMenuModel.detailMenu
-//        ) +
-        val detailItem = detailMenuModel.detailMenu.detailImages.map {
+        val detailItem = listOf(
+            detailMenuModel,
+        ) +  detailMenuModel.detailMenu.detailImages.map {
             ImageSliderModel(imageUrl = it, type = CellType.IMAGE_LIST_CELL)
         }
 
@@ -129,23 +85,24 @@ class DetailFragment(
     }
 
     private fun initAppbar() = binding?.let {
-        it.appbar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
-            val topPadding = 300f.fromDpToPx().toFloat()
-            val realAlphaScrollHeight = appBarLayout.measuredHeight - appBarLayout.totalScrollRange
-            val abstractOffset = abs(verticalOffset)
-
-            val realAlphaVerticalOffset: Float =
-                if (abstractOffset - topPadding < 0) 0f else abstractOffset - topPadding
-
-            if (abstractOffset < topPadding) {
-                it.toolbar.alpha = 0f
-                return@OnOffsetChangedListener
-            }
-
-            val percentage = realAlphaVerticalOffset / realAlphaScrollHeight
-            it.toolbar.alpha =
-                1 - (if (1 - percentage * 2 < 0) 0f else 1 - percentage * 2)
-        })
+//        it.rvMenuInfo.setOnScrollChangeListener()
+//        (AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
+//            val topPadding = 300f.fromDpToPx().toFloat()
+//            val realAlphaScrollHeight = appBarLayout.measuredHeight - appBarLayout.totalScrollRange
+//            val abstractOffset = abs(verticalOffset)
+//
+//            val realAlphaVerticalOffset: Float =
+//                if (abstractOffset - topPadding < 0) 0f else abstractOffset - topPadding
+//
+//            if (abstractOffset < topPadding) {
+//                it.toolbar.alpha = 0f
+//                return@OnOffsetChangedListener
+//            }
+//
+//            val percentage = realAlphaVerticalOffset / realAlphaScrollHeight
+//            it.toolbar.alpha =
+//                1 - (if (1 - percentage * 2 < 0) 0f else 1 - percentage * 2)
+//        })
     }
 
     companion object {
