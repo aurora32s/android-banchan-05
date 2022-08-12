@@ -3,8 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+<<<<<<< HEAD
         <entry key="app/src/main/res/drawable/background_chip.xml" value="0.1005" />
         <entry key="app/src/main/res/drawable/background_toggle_on.xml" value="0.10840557861328126" />
+=======
+        <entry key="app/src/main/res/drawable/ic_active_indicator.xml" value="0.1" />
+>>>>>>> 1ef98ca ([FEAT] #8 - 상세 화면 상단 이미지 슬라이드 및 indicator UI 구성 완료)
         <entry key="app/src/main/res/drawable/ic_cart.xml" value="0.2135" />
         <entry key="app/src/main/res/drawable/ic_cart_action.xml" value="0.2135" />
         <entry key="app/src/main/res/drawable/ic_grid.xml" value="0.1005" />
@@ -28,9 +32,13 @@
         <entry key="app/src/main/res/layout/item_dish_menu.xml" value="0.2259963768115942" />
         <entry key="app/src/main/res/layout/item_home_filter.xml" value="0.2259963768115942" />
         <entry key="app/src/main/res/layout/item_home_header.xml" value="0.29891304347826086" />
+<<<<<<< HEAD
         <entry key="app/src/main/res/layout/item_menu_grid.xml" value="0.2259963768115942" />
         <entry key="app/src/main/res/layout/item_menu_large.xml" value="0.375" />
         <entry key="app/src/main/res/layout/item_menu_linear.xml" value="0.2259963768115942" />
+=======
+        <entry key="app/src/main/res/layout/item_image_slider.xml" value="0.140625" />
+>>>>>>> 1ef98ca ([FEAT] #8 - 상세 화면 상단 이미지 슬라이드 및 indicator UI 구성 완료)
         <entry key="app/src/main/res/layout/item_menu_small.xml" value="0.2848101265822785" />
         <entry key="app/src/main/res/layout/view_toggle.xml" value="1.0" />
         <entry key="app/src/main/res/menu/menu_main.xml" value="0.17916666666666667" />

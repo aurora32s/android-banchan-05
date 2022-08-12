@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="image"
+            type="com.seom.banchan.ui.model.imageSlider.ImageSliderModel" />
+    </data>
+
+    <androidx.appcompat.widget.AppCompatImageView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/iv_menu_thumbnail"
+        app:imageSrc="@{image.imageUrl}"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop" />
+</layout>
