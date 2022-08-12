@@ -1,11 +1,9 @@
-package com.seom.banchan.ui.home.soup
+package com.seom.banchan.ui.home.soupdish
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seom.banchan.R
 import com.seom.banchan.domain.model.*
-import com.seom.banchan.domain.usecase.GetMainMenusUseCase
-import com.seom.banchan.domain.usecase.GetMenuWithCategoriesUseCase
 import com.seom.banchan.domain.usecase.GetSoupMenusUseCase
 import com.seom.banchan.ui.model.Model
 import com.seom.banchan.ui.model.home.FilterMenuModel
@@ -24,9 +22,9 @@ class SoupDishViewModel @Inject constructor(
     private val rowData: StateFlow<List<MenuModel>>
         get() = _rowData
 
-    private val _mainDishMenus = MutableStateFlow<List<Model>>(emptyList())
-    val mainDishMenus: StateFlow<List<Model>>
-        get() = _mainDishMenus
+    private val _soupDishMenus = MutableStateFlow<List<Model>>(emptyList())
+    val soupDishMenus: StateFlow<List<Model>>
+        get() = _soupDishMenus
 
     private val baseMenu = listOf<Model>(
         HeaderMenuModel(id = "header", title = R.string.header_soup),
@@ -37,11 +35,11 @@ class SoupDishViewModel @Inject constructor(
     val toggle: StateFlow<Boolean>
         get() = _toggle
 
-    fun fetchMainMenus() = viewModelScope.launch {
+    fun fetchSoupMenus() = viewModelScope.launch {
         getSoupMenusUseCase()
             .onSuccess { result ->
                 _rowData.value = result
-                _mainDishMenus.value = baseMenu + result.map { it.toHomeMenuGridModel() }
+                _soupDishMenus.value = baseMenu + result.map { it.toHomeMenuGridModel() }
             }
             .onFailure {
                 println(it)
@@ -50,7 +48,7 @@ class SoupDishViewModel @Inject constructor(
 
     fun updateViewMode() {
         if (rowData.value.isNotEmpty()) {
-            _mainDishMenus.value =
+            _soupDishMenus.value =
                 baseMenu + if (toggle.value) rowData.value.map {
                     it.toHomeMenuLinearModel()
                 } else rowData.value.map {

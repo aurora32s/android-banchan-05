@@ -1,4 +1,4 @@
-package com.seom.banchan.ui.home.soup
+package com.seom.banchan.ui.home.soupdish
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -40,12 +40,12 @@ class SoupDishFragment : Fragment() {
         initRecyclerView()
 
         initObserver()
-        viewModel.fetchMainMenus()
+        viewModel.fetchSoupMenus()
     }
 
     private fun initObserver() {
         lifecycleScope.launch {
-            viewModel.mainDishMenus.collect {
+            viewModel.soupDishMenus.collect {
                 homeAdapter.submitList(it)
             }
 
