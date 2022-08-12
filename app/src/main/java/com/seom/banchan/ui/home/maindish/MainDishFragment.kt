@@ -8,9 +8,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.seom.banchan.R
 import com.seom.banchan.databinding.FragmentMainDishBinding
 import com.seom.banchan.ui.adapter.ModelRecyclerAdapter
 import com.seom.banchan.ui.model.Model
+import com.seom.banchan.ui.model.home.FilterMenuModel
+import com.seom.banchan.ui.model.home.HeaderMenuModel
 import com.seom.banchan.util.ext.setGridLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -44,7 +47,14 @@ class MainDishFragment : Fragment() {
     private fun initObserver() {
         lifecycleScope.launch {
             viewModel.mainDishMenus.collect {
-                homeAdapter.submitList(it)
+                homeAdapter.submitList(
+                    listOf(
+                        HeaderMenuModel(id = getString(R.string.header_view_holder), title = R.string.header_main),
+                        FilterMenuModel(id = getString(R.string.filter_view_holder), onToggle = { it ->
+                            viewModel.updateToggle(it)
+                        })
+                    ) + it
+                )
             }
         }
         lifecycleScope.launch {
@@ -58,7 +68,6 @@ class MainDishFragment : Fragment() {
     private fun initRecyclerView() = binding?.let {
         it.rvMainDish.run {
             adapter = homeAdapter
-            // setGridLayoutManager(requireContext())
         }
     }
 

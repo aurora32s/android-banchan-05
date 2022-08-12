@@ -32,18 +32,11 @@ class MainDishViewModel @Inject constructor(
     val toggle: StateFlow<Boolean>
         get() = _toggle
 
-    private val baseMenu = listOf<Model>(
-        HeaderMenuModel(id = "header", title = R.string.header_main),
-        FilterMenuModel(id = "filter", onToggle = { it ->
-            _toggle.value = it
-        })
-    )
-
     fun fetchMainMenus() = viewModelScope.launch {
         getMainMenusUseCase()
             .onSuccess { result ->
                 _rowData.value = result
-                _mainDishMenus.value = baseMenu + result.map { it.toHomeMenuGridModel() }
+                _mainDishMenus.value = result.map { it.toHomeMenuGridModel() }
             }
             .onFailure {
                 println(it)
@@ -53,11 +46,15 @@ class MainDishViewModel @Inject constructor(
     fun updateViewMode() {
         if (rowData.value.isNotEmpty()) {
             _mainDishMenus.value =
-                baseMenu + if (toggle.value) rowData.value.map {
+                if (toggle.value) rowData.value.map {
                     it.toHomeMenuLinearModel()
                 } else rowData.value.map {
                     it.toHomeMenuGridModel()
                 }
         }
+    }
+
+    fun updateToggle(toggle : Boolean) {
+        _toggle.value = toggle
     }
 }

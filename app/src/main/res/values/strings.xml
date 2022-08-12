@@ -87,5 +87,6 @@
     <!-- view Holder id -->
     <string name="header_view_holder">header</string>
     <string name="total_view_holder">total</string>
+    <string name="filter_view_holder">filter</string>
 
 </resources>
