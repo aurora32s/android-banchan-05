@@ -1,5 +1,6 @@
 package com.seom.banchan.ui.home.maindish
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seom.banchan.R
@@ -27,14 +28,16 @@ class MainDishViewModel @Inject constructor(
     val mainDishMenus: StateFlow<List<Model>>
         get() = _mainDishMenus
 
-    private val baseMenu = listOf<Model>(
-        HeaderMenuModel(id = "header", title = R.string.header_main),
-        FilterMenuModel(id = "filter")
-    )
-
-    private val _toggle = (baseMenu[1] as FilterMenuModel).toggle // 개선 필요
+    private val _toggle = MutableStateFlow<Boolean>(false)
     val toggle: StateFlow<Boolean>
         get() = _toggle
+
+    private val baseMenu = listOf<Model>(
+        HeaderMenuModel(id = "header", title = R.string.header_main),
+        FilterMenuModel(id = "filter", onToggle = { it ->
+            _toggle.value = it
+        })
+    )
 
     fun fetchMainMenus() = viewModelScope.launch {
         getMainMenusUseCase()

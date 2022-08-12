@@ -10,5 +10,10 @@ class FilterViewHolder (
 
     override fun bind(model: FilterMenuModel) {
         binding.filter = model
+        binding.rgFilter.setOnCheckedChangeListener { _, _ ->
+            model.onToggle(
+                binding.rbLinear.isChecked
+            )
+        }
     }
 }

@@ -7,5 +7,5 @@ import kotlinx.coroutines.flow.MutableStateFlow
 data class FilterMenuModel(
     override val id: String,
     override val type: CellType = CellType.FILTER_CELL,
-    var toggle : MutableStateFlow<Boolean> = MutableStateFlow(false)
+    val onToggle : (Boolean) -> Unit
 ) : Model(id, type)

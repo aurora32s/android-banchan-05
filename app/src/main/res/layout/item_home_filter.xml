@@ -14,32 +14,32 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-
-        <androidx.appcompat.widget.AppCompatToggleButton
-            android:id="@+id/tgb_grid"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:textOn="@null"
-            android:textOff="@null"
-            android:checked="@={filter.toggle}"
-            android:background="@drawable/selector_toggle_grid"
+        <RadioGroup
+            android:id="@+id/rg_filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="16dp"
             android:layout_marginVertical="24dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.appcompat.widget.AppCompatToggleButton
-            android:id="@+id/tgb_linear"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:textOn="@null"
-            android:textOff="@null"
-            android:checked="@={!filter.toggle}"
-            android:background="@drawable/selector_toggle_linear"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/tgb_grid"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:orientation="horizontal">
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/rb_grid"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@drawable/selector_toggle_grid"
+                android:checked="true"
+                android:button="@null"
+                />
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/rb_linear"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:checked="false"
+                android:background="@drawable/selector_toggle_linear"
+                android:button="@null"/>
+        </RadioGroup>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
