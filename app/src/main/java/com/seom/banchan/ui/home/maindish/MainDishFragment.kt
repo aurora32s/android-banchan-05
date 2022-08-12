@@ -40,7 +40,7 @@ class MainDishFragment : Fragment() {
         initRecyclerView()
 
         initObserver()
-        viewModel.fetchBestMenus()
+        viewModel.fetchMainMenus()
     }
 
     private fun initObserver() {

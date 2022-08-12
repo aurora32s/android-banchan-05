@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seom.banchan.R
 import com.seom.banchan.domain.model.*
+import com.seom.banchan.domain.usecase.GetMainMenusUseCase
 import com.seom.banchan.domain.usecase.GetMenuWithCategoriesUseCase
 import com.seom.banchan.ui.model.Model
 import com.seom.banchan.ui.model.home.FilterMenuModel
@@ -16,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainDishViewModel @Inject constructor(
-    private val getMenuWithCategoriesUseCase: GetMenuWithCategoriesUseCase
+    private val getMainMenusUseCase: GetMainMenusUseCase
 ) : ViewModel() {
     private val _rowData = MutableStateFlow<List<MenuModel>>(emptyList())
     private val rowData: StateFlow<List<MenuModel>>
@@ -35,11 +36,11 @@ class MainDishViewModel @Inject constructor(
     val toggle: StateFlow<Boolean>
         get() = _toggle
 
-    fun fetchBestMenus() = viewModelScope.launch {
-        getMenuWithCategoriesUseCase()
+    fun fetchMainMenus() = viewModelScope.launch {
+        getMainMenusUseCase()
             .onSuccess { result ->
-                _rowData.value = result[0].menus
-                _mainDishMenus.value = baseMenu + result.map { it.toUiModel() }[0].menus
+                _rowData.value = result
+                _mainDishMenus.value = baseMenu + result.map { it.toHomeMenuGridModel() }
             }
             .onFailure {
                 println(it)
