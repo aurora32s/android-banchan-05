@@ -109,7 +109,7 @@ class DetailFragment(
 
     private fun initRecyclerView(detailMenuModel: DetailMenuModel) = binding?.let {
         val detailItem = listOf(
-            detailMenuModel,
+//            detailMenuModel,
             detailMenuModel.detailMenu
         ) + detailMenuModel.detailMenu.detailImages.map {
             ImageSliderModel(imageUrl = it, type = CellType.IMAGE_LIST_CELL)

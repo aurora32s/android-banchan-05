@@ -32,10 +32,11 @@
                     <androidx.viewpager2.widget.ViewPager2
                         android:id="@+id/vp_menu_image"
                         android:layout_width="match_parent"
-                        android:layout_height="360dp"
+                        android:layout_height="320dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintDimensionRatio="1:1"/>
 
                     <LinearLayout
                         android:id="@+id/ll_indicator"
@@ -50,13 +51,14 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <androidx.cardview.widget.CardView
+                        android:id="@+id/cv_menu_info"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="16dp"
-                        android:layout_marginTop="-30dp"
+                        android:layout_marginHorizontal="8dp"
+                        android:layout_marginTop="-15dp"
                         app:cardCornerRadius="10dp"
-                        app:cardElevation="16dp"
-                        app:contentPadding="24dp"
+                        app:cardElevation="20dp"
+                        app:contentPadding="15dp"
                         app:layout_constraintTop_toBottomOf="@id/vp_menu_image">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
@@ -116,6 +118,107 @@
 
                     </androidx.cardview.widget.CardView>
 
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cv_menu_detail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="8dp"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginBottom="8dp"
+                        app:cardCornerRadius="10dp"
+                        app:cardElevation="20dp"
+                        app:contentPaddingLeft="15dp"
+                        app:contentPaddingRight="15dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/cv_menu_info">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingVertical="24dp">
+
+                            <LinearLayout
+                                android:id="@+id/ll_point"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:paddingBottom="16dp"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent">
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="2"
+                                    android:text="적립금"
+                                    android:textColor="@color/greyScaleDefault"
+                                    android:textSize="14sp" />
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="8"
+                                    android:textColor="@color/greyScaleDefault"
+                                    android:textSize="14sp"
+                                    app:text="@{@string/menu_price_value(detail.detailMenu.point)}" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/ll_delivery_info"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:paddingBottom="16dp"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/ll_point">
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="2"
+                                    android:text="배송정보"
+                                    android:textColor="@color/greyScaleDefault"
+                                    android:textSize="14sp" />
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="8"
+                                    android:textColor="@color/greyScaleDefault"
+                                    android:textSize="14sp"
+                                    app:text="@{detail.detailMenu.deliveryInfo}" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/ll_delivery_fee"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/ll_delivery_info">
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="2"
+                                    android:text="배송비"
+                                    android:textColor="@color/greyScaleDefault"
+                                    android:textSize="14sp" />
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="8"
+                                    android:textColor="@color/greyScaleDefault"
+                                    android:textSize="14sp"
+                                    app:text="@{detail.detailMenu.deliveryFee}" />
+
+                            </LinearLayout>
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </androidx.cardview.widget.CardView>
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>
