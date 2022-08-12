@@ -8,6 +8,7 @@ import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.appbar.AppBarLayout
 import com.seom.banchan.R
 import com.seom.banchan.databinding.FragmentDetailBinding
 import com.seom.banchan.ui.adapter.ModelRecyclerAdapter
@@ -17,7 +18,9 @@ import com.seom.banchan.ui.model.detail.DetailMenuModel
 import com.seom.banchan.ui.model.detail.MenuDetailModel
 import com.seom.banchan.ui.model.imageSlider.ImageSliderModel
 import com.seom.banchan.util.ext.addIconImageView
+import com.seom.banchan.util.ext.fromDpToPx
 import com.seom.banchan.util.ext.setIconDrawable
+import kotlin.math.abs
 import kotlin.math.ceil
 
 class DetailFragment(
@@ -59,12 +62,13 @@ class DetailFragment(
         )
         val detailMenu = DetailMenuModel(
             detailMenu = menuDetailInfo,
-            discountRate = ceil(menuDetailInfo.salePrice / menuDetailInfo.normalPrice.toDouble() * 100).toInt()
+            discountRate = ceil((1 - (menuDetailInfo.salePrice / menuDetailInfo.normalPrice.toDouble())) * 100).toInt()
         )
         binding?.detail = detailMenu
         initViewPager(detailMenu.detailMenu.images)
         bindViewPager()
         initRecyclerView(detailMenu)
+        initAppbar()
     }
 
     private fun initViewPager(images: List<String>) = binding?.let {
@@ -122,6 +126,26 @@ class DetailFragment(
         val menuDetailAdapter = ModelRecyclerAdapter<Model>()
         it.rvMenuInfo.adapter = menuDetailAdapter
         menuDetailAdapter.submitList(detailItem)
+    }
+
+    private fun initAppbar() = binding?.let {
+        it.appbar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
+            val topPadding = 300f.fromDpToPx().toFloat()
+            val realAlphaScrollHeight = appBarLayout.measuredHeight - appBarLayout.totalScrollRange
+            val abstractOffset = abs(verticalOffset)
+
+            val realAlphaVerticalOffset: Float =
+                if (abstractOffset - topPadding < 0) 0f else abstractOffset - topPadding
+
+            if (abstractOffset < topPadding) {
+                it.toolbar.alpha = 0f
+                return@OnOffsetChangedListener
+            }
+
+            val percentage = realAlphaVerticalOffset / realAlphaScrollHeight
+            it.toolbar.alpha =
+                1 - (if (1 - percentage * 2 < 0) 0f else 1 - percentage * 2)
+        })
     }
 
     companion object {
