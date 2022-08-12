@@ -6,7 +6,7 @@ import com.seom.banchan.ui.adapter.viewholder.ModelViewHolder
 import com.seom.banchan.ui.model.home.FilterMenuModel
 import javax.inject.Inject
 
-class FilterViewHolder @Inject constructor(
+class FilterViewHolder (
     private val binding: ItemHomeFilterBinding
 ) : ModelViewHolder<FilterMenuModel>(binding) {
 

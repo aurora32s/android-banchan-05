@@ -6,7 +6,7 @@ import com.seom.banchan.ui.adapter.viewholder.ModelViewHolder
 import com.seom.banchan.ui.model.home.HeaderMenuModel
 import javax.inject.Inject
 
-class HeaderViewHolder @Inject constructor(
+class HeaderViewHolder (
     private val binding: ItemHomeHeaderBinding
 ) : ModelViewHolder<HeaderMenuModel>(binding) {
 
