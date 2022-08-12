@@ -10,59 +10,67 @@
             type="com.seom.banchan.ui.model.detail.DetailMenuModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingVertical="24dp">
+        app:cardCornerRadius="10dp"
+        app:cardElevation="16dp"
+        app:contentPadding="24dp">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_menu_name"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:textSize="32sp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:text="@{detail.detailMenu.name}" />
+            android:layout_height="wrap_content">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_menu_discountRate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:paddingEnd="4dp"
-            android:text="@{@string/menu_discount_value(detail.discountRate)}"
-            android:textColor="@color/primaryAccent"
-            android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="@id/tv_menu_name"
-            app:layout_constraintTop_toBottomOf="@id/tv_menu_name"
-            app:visibilityByData="@{detail.discountRate}"
-            tools:text="hello world" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_menu_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toTopOf="parent"
+                app:text="@{detail.detailMenu.name}" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_menu_salePrice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingEnd="8dp"
-            android:text="@{@string/menu_price_value(detail.detailMenu.salePrice == 0 ? detail.detailMenu.normalPrice :detail.detailMenu.salePrice)}"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            app:layout_constraintStart_toEndOf="@id/tv_menu_discountRate"
-            app:layout_constraintTop_toTopOf="@id/tv_menu_discountRate"
-            tools:text="hello world" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_menu_discountRate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:paddingEnd="4dp"
+                android:text="@{@string/menu_discount_value(detail.discountRate)}"
+                android:textColor="@color/primaryAccent"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="@id/tv_menu_name"
+                app:layout_constraintTop_toBottomOf="@id/tv_menu_name"
+                app:visibilityByData="@{detail.discountRate}"
+                tools:text="hello world" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_menu_normalPrice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{@string/menu_price_value(detail.detailMenu.normalPrice)}"
-            android:textColor="@color/greyScaleDefault"
-            android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="@id/tv_menu_discountRate"
-            app:layout_constraintStart_toEndOf="@id/tv_menu_salePrice"
-            app:strikeThrough="@{true}"
-            app:visibilityByData="@{detail.detailMenu.normalPrice}"
-            tools:text="hello world" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_menu_salePrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingEnd="8dp"
+                android:text="@{@string/menu_price_value(detail.detailMenu.salePrice == 0 ? detail.detailMenu.normalPrice :detail.detailMenu.salePrice)}"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                app:layout_constraintStart_toEndOf="@id/tv_menu_discountRate"
+                app:layout_constraintTop_toTopOf="@id/tv_menu_discountRate"
+                tools:text="hello world" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_menu_normalPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{@string/menu_price_value(detail.detailMenu.normalPrice)}"
+                android:textColor="@color/greyScaleDefault"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@id/tv_menu_discountRate"
+                app:layout_constraintStart_toEndOf="@id/tv_menu_salePrice"
+                app:strikeThrough="@{true}"
+                app:visibilityByData="@{detail.detailMenu.normalPrice}"
+                tools:text="hello world" />
 
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
 </layout>

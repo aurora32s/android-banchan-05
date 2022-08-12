@@ -61,6 +61,7 @@ class DetailFragment(
             detailMenu = menuDetailInfo,
             discountRate = ceil(menuDetailInfo.salePrice / menuDetailInfo.normalPrice.toDouble() * 100).toInt()
         )
+        binding?.detail = detailMenu
         initViewPager(detailMenu.detailMenu.images)
         bindViewPager()
         initRecyclerView(detailMenu)
@@ -107,7 +108,10 @@ class DetailFragment(
     }
 
     private fun initRecyclerView(detailMenuModel: DetailMenuModel) = binding?.let {
-        val detailItem = listOf(detailMenuModel) + detailMenuModel.detailMenu.detailImages.map {
+        val detailItem = listOf(
+            detailMenuModel,
+            detailMenuModel.detailMenu
+        ) + detailMenuModel.detailMenu.detailImages.map {
             ImageSliderModel(imageUrl = it, type = CellType.IMAGE_LIST_CELL)
         }
 
