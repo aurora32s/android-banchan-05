@@ -12,6 +12,7 @@ import com.seom.banchan.databinding.FragmentHomeBinding
 import com.seom.banchan.ui.adapter.FragmentPagerAdapter
 import com.seom.banchan.ui.home.best.BestFragment
 import com.seom.banchan.ui.home.maindish.MainDishFragment
+import com.seom.banchan.ui.home.soup.SoupDishFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -37,7 +38,7 @@ class HomeFragment : Fragment() {
         val list = listOf(
             BestFragment.newInstance(),
             MainDishFragment.newInstance(),
-            MainDishFragment.newInstance(),
+            SoupDishFragment.newInstance(),
             MainDishFragment.newInstance())
 
         val pagerAdapter = FragmentPagerAdapter(this@HomeFragment, list)
