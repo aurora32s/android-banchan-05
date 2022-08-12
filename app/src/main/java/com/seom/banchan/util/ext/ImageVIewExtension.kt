@@ -8,16 +8,21 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.resource.bitmap.CenterInside
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 
 
-@BindingAdapter("imageSrc")
+@BindingAdapter(value = ["imageUrl", "corner"], requireAll = false)
 fun ImageView.load(
-    imageUrl: String
+    imageUrl: String,
+    corner: Float = 0f
 ) {
     Glide.with(this.context)
         .load(imageUrl)
         .diskCacheStrategy(DiskCacheStrategy.ALL)
-        .fitCenter()
+        .apply {
+            if (corner > 0) transform(CenterInside(), RoundedCorners(corner.fromDpToPx()))
+        }
         .into(this)
 }
 
