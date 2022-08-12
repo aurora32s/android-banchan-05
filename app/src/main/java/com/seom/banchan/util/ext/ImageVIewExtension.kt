@@ -11,7 +11,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.CenterInside
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 
-
 @BindingAdapter(value = ["imageUrl", "corner"], requireAll = false)
 fun ImageView.load(
     imageUrl: String,
