@@ -1,12 +1,14 @@
 package com.seom.banchan.ui.detail
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.appbar.AppBarLayout
 import com.seom.banchan.R
@@ -72,7 +74,8 @@ class DetailFragment(
     private fun initRecyclerView(detailMenuModel: DetailMenuModel) = binding?.let {
         val detailItem = listOf(
             detailMenuModel,
-        ) +  detailMenuModel.detailMenu.detailImages.map {
+//            detailMenuModel.detailMenu
+        ) + detailMenuModel.detailMenu.detailImages.map {
             ImageSliderModel(imageUrl = it, type = CellType.IMAGE_LIST_CELL)
         }
 
@@ -85,24 +88,20 @@ class DetailFragment(
     }
 
     private fun initAppbar() = binding?.let {
-//        it.rvMenuInfo.setOnScrollChangeListener()
-//        (AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
-//            val topPadding = 300f.fromDpToPx().toFloat()
-//            val realAlphaScrollHeight = appBarLayout.measuredHeight - appBarLayout.totalScrollRange
-//            val abstractOffset = abs(verticalOffset)
-//
-//            val realAlphaVerticalOffset: Float =
-//                if (abstractOffset - topPadding < 0) 0f else abstractOffset - topPadding
-//
-//            if (abstractOffset < topPadding) {
-//                it.toolbar.alpha = 0f
-//                return@OnOffsetChangedListener
-//            }
-//
-//            val percentage = realAlphaVerticalOffset / realAlphaScrollHeight
-//            it.toolbar.alpha =
-//                1 - (if (1 - percentage * 2 < 0) 0f else 1 - percentage * 2)
-//        })
+        var totalScroll = 0F
+        it.rvMenuInfo.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                totalScroll += dy
+
+                val topPadding = 300f.fromDpToPx().toFloat()
+                if (totalScroll > topPadding) {
+                    it.toolbar.alpha = 1f
+                } else {
+                    it.toolbar.alpha = 0f
+                }
+            }
+        })
     }
 
     companion object {
