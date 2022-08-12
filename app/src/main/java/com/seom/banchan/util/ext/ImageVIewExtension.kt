@@ -17,7 +17,7 @@ fun ImageView.load(
     Glide.with(this.context)
         .load(imageUrl)
         .diskCacheStrategy(DiskCacheStrategy.ALL)
-        .centerCrop()
+        .fitCenter()
         .into(this)
 }
 

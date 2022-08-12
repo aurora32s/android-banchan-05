@@ -8,5 +8,8 @@ enum class CellType {
     MENU_GRID_CELL,
     FILTER_CELL,
     TOTAL_CELL,
-    IMAGE_SLIDER
+
+    IMAGE_SLIDER_CELL,
+    IMAGE_LIST_CELL,
+    MENU_DETAIL_INFO_CELL
 }

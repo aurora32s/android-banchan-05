@@ -28,10 +28,12 @@
         <entry key="app/src/main/res/layout/fragment_best.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_detail.xml" value="0.140625" />
         <entry key="app/src/main/res/layout/fragment_first.xml" value="0.17916666666666667" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.14166666666666666" />
         <entry key="app/src/main/res/layout/item_best_menu.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item_dish_menu.xml" value="0.2259963768115942" />
         <entry key="app/src/main/res/layout/item_home_filter.xml" value="0.2259963768115942" />
         <entry key="app/src/main/res/layout/item_home_header.xml" value="0.29891304347826086" />
+<<<<<<< HEAD
 <<<<<<< HEAD
         <entry key="app/src/main/res/layout/item_menu_grid.xml" value="0.2259963768115942" />
         <entry key="app/src/main/res/layout/item_menu_large.xml" value="0.375" />
@@ -41,6 +43,13 @@
 >>>>>>> 1ef98ca ([FEAT] #8 - 상세 화면 상단 이미지 슬라이드 및 indicator UI 구성 완료)
         <entry key="app/src/main/res/layout/item_menu_small.xml" value="0.2848101265822785" />
         <entry key="app/src/main/res/layout/view_toggle.xml" value="1.0" />
+=======
+        <entry key="app/src/main/res/layout/item_image_list.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/item_image_slider.xml" value="0.140625" />
+        <entry key="app/src/main/res/layout/item_menu_detail.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/item_menu_info.xml" value="0.14166666666666666" />
+        <entry key="app/src/main/res/layout/item_menu_small.xml" value="0.1" />
+>>>>>>> c419be4 ([FEAT] #8 - 상세 화면의 메뉴 정보와 상세 설명 이미지 UI 추가 완료)
         <entry key="app/src/main/res/menu/menu_main.xml" value="0.17916666666666667" />
       </map>
     </option>
