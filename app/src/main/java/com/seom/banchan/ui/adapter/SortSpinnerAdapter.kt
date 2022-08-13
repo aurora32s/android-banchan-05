@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import com.seom.banchan.R
+import com.seom.banchan.data.api.SortCriteria
 import com.seom.banchan.databinding.ItemSpinnerBinding
 import com.seom.banchan.databinding.LayoutSpinnerBinding
 import com.seom.banchan.ui.model.Sort
@@ -34,4 +35,5 @@ class SortSpinnerAdapter(
             if(getItem(position).isChecked) View.VISIBLE else View.GONE
         return binding.root
     }
+
 }

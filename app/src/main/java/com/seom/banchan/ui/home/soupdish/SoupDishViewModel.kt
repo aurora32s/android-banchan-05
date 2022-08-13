@@ -1,8 +1,10 @@
 package com.seom.banchan.ui.home.soupdish
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seom.banchan.R
+import com.seom.banchan.data.api.SortCriteria
 import com.seom.banchan.domain.model.*
 import com.seom.banchan.domain.usecase.GetSoupMenusUseCase
 import com.seom.banchan.ui.model.Model
@@ -31,5 +33,9 @@ class SoupDishViewModel @Inject constructor(
             .onFailure {
                 println(it)
             }
+    }
+
+    fun updateSort(sortCriteria: SortCriteria) {
+        Log.d("sort Start",sortCriteria.name)
     }
 }
