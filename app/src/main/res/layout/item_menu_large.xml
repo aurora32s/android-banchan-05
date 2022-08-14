@@ -9,7 +9,7 @@
 
         <variable
             name="menu"
-            type="com.seom.banchan.ui.model.home.HomeMenuLinearModel" />
+            type="com.seom.banchan.ui.model.home.HomeMenuLargeModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

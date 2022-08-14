@@ -2,6 +2,7 @@ package com.seom.banchan.ui.home.soupdish
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.seom.banchan.domain.model.toHomeMenuModel
 import com.seom.banchan.R
 import com.seom.banchan.data.api.SortCriteria
 import com.seom.banchan.domain.model.*
@@ -36,7 +37,7 @@ class SoupDishViewModel @Inject constructor(
         getSoupMenusUseCase(defaultSortItems().get(position).sortCriteria)
             .onSuccess { result ->
                 _soupDishUiState.value = soupDishUiState.value.copy(
-                    soupMenus = result.map { it.toHomeMenuGridModel() }
+                    soupMenus = result.map { it.toHomeMenuModel() }
                 )
             }
             .onFailure {

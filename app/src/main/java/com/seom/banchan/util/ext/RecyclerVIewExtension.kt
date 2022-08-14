@@ -10,7 +10,7 @@ fun RecyclerView.setGridLayoutManager(context : Context){
     gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
         override fun getSpanSize(position: Int): Int {
             return when (adapter?.getItemViewType(position)) {
-                CellType.MENU_GRID_CELL.ordinal -> 1
+                CellType.MENU_CELL.ordinal -> 1
                 else -> 2
             }
         }

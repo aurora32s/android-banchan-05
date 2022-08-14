@@ -2,10 +2,10 @@ package com.seom.banchan.ui.home.maindish
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.seom.banchan.R
-import com.seom.banchan.domain.model.*
+import com.seom.banchan.domain.model.MenuModel
+import com.seom.banchan.domain.model.toHomeMenuLinearModel
+import com.seom.banchan.domain.model.toHomeMenuModel
 import com.seom.banchan.domain.usecase.GetMainMenusUseCase
-import com.seom.banchan.ui.home.sidedish.SideDishUiState
 import com.seom.banchan.ui.model.Model
 import com.seom.banchan.ui.model.Sort
 import com.seom.banchan.ui.model.defaultSortItems
@@ -43,7 +43,7 @@ class MainDishViewModel @Inject constructor(
                     mainMenus = if (toggleState.value.viewModeToggle) result.map {
                         it.toHomeMenuLinearModel()
                     } else result.map {
-                        it.toHomeMenuGridModel()
+                        it.toHomeMenuModel()
                     }
                 )
             }
@@ -65,7 +65,7 @@ class MainDishViewModel @Inject constructor(
             mainMenus = if (toggle) models.map {
                 it.toHomeMenuLinearModel()
             } else models.map {
-                it.toHomeMenuGridModel()
+                it.toHomeMenuModel()
             }
         )
     }

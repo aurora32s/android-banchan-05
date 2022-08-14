@@ -2,6 +2,7 @@ package com.seom.banchan.ui.home.sidedish
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.seom.banchan.domain.model.toHomeMenuModel
 import com.seom.banchan.R
 import com.seom.banchan.domain.model.*
 import com.seom.banchan.domain.usecase.GetSideMenusUseCase
@@ -34,7 +35,7 @@ class SideDishViewModel @Inject constructor(
         getSideMenusUseCase(defaultSortItems().get(position).sortCriteria)
             .onSuccess { result ->
                 _sideDishUiState.value = sideDishUiState.value.copy(
-                    sideMenus = result.map { it.toHomeMenuGridModel() }
+                    sideMenus = result.map { it.toHomeMenuModel() }
                 )
             }
             .onFailure {
