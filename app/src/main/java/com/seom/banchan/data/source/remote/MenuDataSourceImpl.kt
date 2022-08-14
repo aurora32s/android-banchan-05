@@ -1,6 +1,9 @@
 package com.seom.banchan.data.source.remote
 
 import com.seom.banchan.data.api.MenuApiService
+import com.seom.banchan.data.api.SortCriteria
+import com.seom.banchan.data.api.response.BestMenuResponse
+import com.seom.banchan.data.api.response.toModel
 import com.seom.banchan.data.api.requestApi
 import com.seom.banchan.data.api.response.best.toModel
 import com.seom.banchan.data.api.response.detail.DetailMenuResponse
@@ -15,7 +18,6 @@ import javax.inject.Inject
 class MenuDataSourceImpl @Inject constructor(
     private val menuApiService: MenuApiService
 ) : MenuDataSource {
-
     override suspend fun getBestMenus(): Result<List<CategoryModel>> = try {
         val response = menuApiService.getBestMenus()
         if (response.isSuccessful) {
@@ -32,12 +34,12 @@ class MenuDataSourceImpl @Inject constructor(
         Result.failure<Nothing>(exception)
     }
 
-    override suspend fun getMainMenus(): Result<List<MenuModel>> = try {
+    override suspend fun getMainMenus(sortCriteria: SortCriteria): Result<List<MenuModel>> = try {
         val response = menuApiService.getMainMenus()
         if (response.isSuccessful) {
             val result = response.body()
             if (result != null) {
-                Result.success(result.body.map { menu -> menu.toModel() })
+                Result.success(result.body.map { menu -> menu.toModel() }.sortByCriteria(sortCriteria))
             } else {
                 Result.success(emptyList())
             }
@@ -48,12 +50,12 @@ class MenuDataSourceImpl @Inject constructor(
         Result.failure<Nothing>(exception)
     }
 
-    override suspend fun getSoupMenus(): Result<List<MenuModel>> = try {
+    override suspend fun getSoupMenus(sortCriteria: SortCriteria): Result<List<MenuModel>> = try {
         val response = menuApiService.getSoupMenus()
         if (response.isSuccessful) {
             val result = response.body()
             if (result != null) {
-                Result.success(result.body.map { menu -> menu.toModel() })
+                Result.success(result.body.map { menu -> menu.toModel() }.sortByCriteria(sortCriteria))
             } else {
                 Result.success(emptyList())
             }
@@ -64,12 +66,12 @@ class MenuDataSourceImpl @Inject constructor(
         Result.failure<Nothing>(exception)
     }
 
-    override suspend fun getSideMenus(): Result<List<MenuModel>> = try {
+    override suspend fun getSideMenus(sortCriteria: SortCriteria): Result<List<MenuModel>> = try {
         val response = menuApiService.getSideMenus()
         if (response.isSuccessful) {
             val result = response.body()
             if (result != null) {
-                Result.success(result.body.map { menu -> menu.toModel() })
+                Result.success(result.body.map { menu -> menu.toModel() }.sortByCriteria(sortCriteria))
             } else {
                 Result.success(emptyList())
             }
@@ -92,5 +94,19 @@ class MenuDataSourceImpl @Inject constructor(
             // remote api 통신 중 문제가 발생한 exception
             Result.failure<Nothing>(exception)
         }
+    }
+}
+fun List<MenuModel>.sortByCriteria(sortCriteria: SortCriteria) : List<MenuModel>{
+    return when(sortCriteria){
+        SortCriteria.ASCENDING -> sortedBy {
+           it.salePrice
+        }
+        SortCriteria.DESCENDING -> sortedByDescending {
+            it.salePrice
+        }
+        SortCriteria.DISCOUNT_RATE -> sortedByDescending {
+            if (it.salePrice == 0) 0 else Math.ceil((1 - (it.salePrice / it.normalPrice.toDouble())) * 100).toInt()
+        }
+        SortCriteria.BASE -> this
     }
 }

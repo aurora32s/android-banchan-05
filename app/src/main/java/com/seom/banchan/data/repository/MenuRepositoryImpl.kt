@@ -1,5 +1,6 @@
 package com.seom.banchan.data.repository
 
+import com.seom.banchan.data.api.SortCriteria
 import com.seom.banchan.data.source.MenuDataSource
 import com.seom.banchan.domain.model.detail.DetailMenuModel
 import com.seom.banchan.domain.model.home.CategoryModel
@@ -15,16 +16,16 @@ class MenuRepositoryImpl @Inject constructor(
         return menuDataSource.getBestMenus()
     }
 
-    override suspend fun getMainMenus(): Result<List<MenuModel>>  {
-        return menuDataSource.getMainMenus()
+    override suspend fun getMainMenus(sortCriteria: SortCriteria): Result<List<MenuModel>>  {
+        return menuDataSource.getMainMenus(sortCriteria)
     }
 
-    override suspend fun getSoupMenus(): Result<List<MenuModel>>  {
-        return menuDataSource.getSoupMenus()
+    override suspend fun getSoupMenus(sortCriteria: SortCriteria): Result<List<MenuModel>>  {
+        return menuDataSource.getSoupMenus(sortCriteria)
     }
 
-    override suspend fun getSideMenus(): Result<List<MenuModel>> {
-        return menuDataSource.getSideMenus()
+    override suspend fun getSideMenus(sortCriteria : SortCriteria): Result<List<MenuModel>>  {
+        return menuDataSource.getSideMenus(sortCriteria)
     }
 
     // 특정 menu 의 상세 정보 요청

@@ -1,5 +1,6 @@
 package com.seom.banchan.domain.usecase
 
+import com.seom.banchan.data.api.SortCriteria
 import com.seom.banchan.di.IODispatcher
 import com.seom.banchan.domain.model.home.MenuModel
 import com.seom.banchan.domain.repository.MenuRepository
@@ -18,7 +19,9 @@ class GetSideMenusUseCase @Inject constructor(
     @IODispatcher
     private val ioDispatcher: CoroutineDispatcher
 ) {
-    suspend operator fun invoke(): Result<List<MenuModel>> = withContext(ioDispatcher) {
-        menuRepository.getSideMenus()
+    suspend operator fun invoke(
+        sortCriteria: SortCriteria
+    ): Result<List<MenuModel>> = withContext(ioDispatcher) {
+        menuRepository.getSideMenus(sortCriteria)
     }
 }

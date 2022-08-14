@@ -1,5 +1,8 @@
 package com.seom.banchan.domain.repository
 
+import com.seom.banchan.data.api.SortCriteria
+import com.seom.banchan.domain.model.CategoryModel
+import com.seom.banchan.domain.model.MenuModel
 import com.seom.banchan.domain.model.detail.DetailMenuModel
 import com.seom.banchan.domain.model.home.CategoryModel
 import com.seom.banchan.domain.model.home.MenuModel
@@ -10,11 +13,11 @@ interface MenuRepository {
      */
     suspend fun getBestMenus(): Result<List<CategoryModel>>
 
-    suspend fun getMainMenus(): Result<List<MenuModel>>
+    suspend fun getMainMenus(sortCriteria: SortCriteria): Result<List<MenuModel>>
 
-    suspend fun getSoupMenus(): Result<List<MenuModel>>
+    suspend fun getSoupMenus(sortCriteria : SortCriteria): Result<List<MenuModel>>
 
-    suspend fun getSideMenus(): Result<List<MenuModel>>
+    suspend fun getSideMenus(sortCriteria : SortCriteria): Result<List<MenuModel>>
 
     /**
      * 특정 메뉴의 상세 정보 요청
