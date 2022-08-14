@@ -1,7 +1,7 @@
 package com.seom.banchan.data.api.response.best
 
 import com.google.gson.annotations.SerializedName
-import com.seom.banchan.domain.model.CategoryModel
+import com.seom.banchan.domain.model.home.CategoryModel
 
 data class Category(
     @SerializedName("category_id")

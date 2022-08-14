@@ -5,7 +5,7 @@
 
         <variable
             name="detail"
-            type="com.seom.banchan.ui.model.detail.DetailMenuModel" />
+            type="com.seom.banchan.ui.model.detail.DetailMenuUiModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

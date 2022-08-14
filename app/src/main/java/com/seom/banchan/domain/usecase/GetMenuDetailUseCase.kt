@@ -7,7 +7,6 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-@ViewModelScoped
 class GetMenuDetailUseCase @Inject constructor(
     private val menuRepository: MenuRepository,
     @IODispatcher

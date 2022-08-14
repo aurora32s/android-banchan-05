@@ -7,20 +7,20 @@ import com.seom.banchan.databinding.ItemMenuInfoBinding
 import com.seom.banchan.ui.adapter.ModelRecyclerAdapter
 import com.seom.banchan.ui.adapter.viewholder.ModelViewHolder
 import com.seom.banchan.ui.model.CellType
-import com.seom.banchan.ui.model.detail.DetailMenuModel
+import com.seom.banchan.ui.model.detail.DetailMenuUiModel
 import com.seom.banchan.ui.model.imageSlider.ImageSliderModel
 import com.seom.banchan.util.ext.addIconImageView
 import com.seom.banchan.util.ext.setIconDrawable
 
 class MenuInfoViewHolder(
     private val binding: ItemMenuInfoBinding
-) : ModelViewHolder<DetailMenuModel>(binding) {
+) : ModelViewHolder<DetailMenuUiModel>(binding) {
 
-    override fun bind(model: DetailMenuModel) {
+    override fun bind(model: DetailMenuUiModel) {
         binding.detail = model
 
-        initViewPager(model.detailMenu.images)
-        bindViewPager()
+//        initViewPager(model.detailMenu.images)
+//        bindViewPager()
     }
 
     private fun initViewPager(images: List<String>) = with(binding) {

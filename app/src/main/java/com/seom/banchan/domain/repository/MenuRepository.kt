@@ -4,7 +4,6 @@ import com.seom.banchan.domain.model.detail.DetailMenuModel
 import com.seom.banchan.domain.model.home.CategoryModel
 import com.seom.banchan.domain.model.home.MenuModel
 
-
 interface MenuRepository {
     /**
      * 기획전 메뉴 정보 요청
