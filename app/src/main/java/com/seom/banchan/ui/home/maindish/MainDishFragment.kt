@@ -12,6 +12,7 @@ import com.seom.banchan.R
 import com.seom.banchan.databinding.FragmentMainDishBinding
 import com.seom.banchan.ui.adapter.ModelRecyclerAdapter
 import com.seom.banchan.ui.model.Model
+import com.seom.banchan.ui.model.defaultSortItems
 import com.seom.banchan.ui.model.home.FilterMenuModel
 import com.seom.banchan.ui.model.home.HeaderMenuModel
 import com.seom.banchan.util.ext.setGridLayoutManager
@@ -41,26 +42,35 @@ class MainDishFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
         initObserver()
-        viewModel.fetchMainMenus()
+        viewModel.fetchSortedMainMenus(0)
     }
 
     private fun initObserver() {
         lifecycleScope.launch {
-            viewModel.mainDishMenus.collect {
+            viewModel.mainDishUiState.collect {
                 homeAdapter.submitList(
                     listOf(
                         HeaderMenuModel(id = getString(R.string.header_view_holder), title = R.string.header_main),
-                        FilterMenuModel(id = getString(R.string.filter_view_holder), onToggle = { it ->
-                            viewModel.updateToggle(it)
-                        })
-                    ) + it
+                        FilterMenuModel(
+                            id = getString(R.string.filter_view_holder),
+                            togglePosition = viewModel.toggleState.value.selectedTogglePosition,
+                            onToggle = { it ->
+                                viewModel.updateToggle(it)
+                            },
+                            position = viewModel.mainDishUiState.value.selectedSortPosition,
+                            sortByItems = viewModel.mainDishUiState.value.defaultSortItems,
+                            onSort = {
+                                viewModel.fetchSortedMainMenus(position = it)
+                            }
+                        )
+                    ) + it.mainMenus
                 )
             }
         }
+
         lifecycleScope.launch {
-            viewModel.toggle.collect {
-                if (!it) changeGridLayoutManager() else changeLinearLayoutManager()
-                viewModel.updateViewMode()
+            viewModel.toggleState.collect {
+                viewModel.updateViewMode(it.viewModeToggle)
             }
         }
     }
@@ -68,20 +78,7 @@ class MainDishFragment : Fragment() {
     private fun initRecyclerView() = binding?.let {
         it.rvMainDish.run {
             adapter = homeAdapter
-        }
-    }
-
-    private fun changeGridLayoutManager() {
-        binding?.let {
-            it.rvMainDish.setGridLayoutManager(requireContext())
-        }
-
-    }
-
-    private fun changeLinearLayoutManager() {
-        binding?.let {
-            it.rvMainDish.layoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            setGridLayoutManager(requireContext())
         }
     }
 
