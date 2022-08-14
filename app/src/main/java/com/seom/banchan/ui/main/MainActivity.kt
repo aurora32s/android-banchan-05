@@ -2,17 +2,21 @@ package com.seom.banchan.ui.main
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import com.seom.banchan.R
 import com.seom.banchan.databinding.ActivityMainBinding
+import com.seom.banchan.ui.base.BaseFragment
 import com.seom.banchan.ui.home.HomeFragment
+import com.seom.banchan.util.navigation.FragmentNavigationController
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), BaseFragment.FragmentNavigation {
     private var _binding : ActivityMainBinding? = null
     private val binding get() = _binding
+
+    lateinit var fragmentNavigationController : FragmentNavigationController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,7 +24,9 @@ class MainActivity : AppCompatActivity() {
             this,R.layout.activity_main
         )
 
-        binding?.lifecycleOwner = this
+        binding?.let {
+            it.lifecycleOwner = this
+        }
 
         initToolbar()
         initContainer()
@@ -33,6 +39,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initContainer() = binding?.let {
-        supportFragmentManager.beginTransaction().add(it.flMain.id,HomeFragment.newInstance(),HomeFragment.TAG).commit()
+        fragmentNavigationController = FragmentNavigationController(supportFragmentManager,it.flMain.id)
+        fragmentNavigationController.addFragment(HomeFragment.newInstance(),HomeFragment.TAG)
+    }
+
+    override fun addFragment(fragment: Fragment, fragmentTag: String?) {
+        fragmentNavigationController.addFragment(fragment,fragmentTag)
     }
 }
