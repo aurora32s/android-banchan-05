@@ -13,7 +13,7 @@ data class Data(
     @SerializedName("point")
     val point: String?, // 적립금
     @SerializedName("prices")
-    val prices: List<String>?, // 가격(원가, 할인가)
+    val prices: List<String>, // 가격(원가, 할인가)
     @SerializedName("product_description")
     val productDescription: String?, // 메뉴 이름
     @SerializedName("thumb_images")

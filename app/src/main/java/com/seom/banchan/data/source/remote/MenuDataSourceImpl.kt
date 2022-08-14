@@ -1,15 +1,21 @@
 package com.seom.banchan.data.source.remote
 
 import com.seom.banchan.data.api.MenuApiService
+import com.seom.banchan.data.api.requestApi
 import com.seom.banchan.data.api.response.best.toModel
+import com.seom.banchan.data.api.response.detail.DetailMenuResponse
+import com.seom.banchan.data.api.response.detail.toModel
 import com.seom.banchan.data.source.MenuDataSource
-import com.seom.banchan.domain.model.CategoryModel
-import com.seom.banchan.domain.model.MenuModel
+import com.seom.banchan.domain.model.detail.DetailMenuModel
+import com.seom.banchan.domain.model.home.CategoryModel
+import com.seom.banchan.domain.model.home.MenuModel
+import com.seom.banchan.util.ext.EmptyResponseException
 import javax.inject.Inject
 
 class MenuDataSourceImpl @Inject constructor(
     private val menuApiService: MenuApiService
 ) : MenuDataSource {
+
     override suspend fun getBestMenus(): Result<List<CategoryModel>> = try {
         val response = menuApiService.getBestMenus()
         if (response.isSuccessful) {
@@ -72,5 +78,19 @@ class MenuDataSourceImpl @Inject constructor(
         }
     } catch (exception: Exception) {
         Result.failure<Nothing>(exception)
+    }
+
+    // 특정 메뉴의 상세 정보 요청
+    override suspend fun getMenuDetail(id: String): Result<DetailMenuModel> {
+        return try {
+            val response = requestApi { menuApiService.getMenuDetail(id) }
+            Result.success(response.toModel())
+        } catch (exception: EmptyResponseException) {
+            // 특정 menu id 정보를 찾지 못했다면 exception 발생
+            Result.failure<Nothing>(exception)
+        } catch (exception: Exception) {
+            // remote api 통신 중 문제가 발생한 exception
+            Result.failure<Nothing>(exception)
+        }
     }
 }

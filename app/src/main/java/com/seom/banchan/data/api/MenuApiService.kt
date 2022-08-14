@@ -22,8 +22,8 @@ interface MenuApiService {
 
     /**
      * 메뉴 상세 정보 요청
-     * detail_hash: 요청할 메뉴의 hash 값
+     * @param (detail_hash) 메뉴 hash id
      */
     @GET("detail/{detail_hash}")
-    suspend fun getMenuDetail(@Path("detail_hash") menuId: String): Response<DetailMenuResponse>
+    suspend fun getMenuDetail(@Path("detail_hash") id: String): Response<DetailMenuResponse>
 }
