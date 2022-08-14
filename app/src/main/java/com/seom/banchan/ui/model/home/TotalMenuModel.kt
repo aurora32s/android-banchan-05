@@ -3,9 +3,8 @@ package com.seom.banchan.ui.model.home
 import com.seom.banchan.ui.model.CellType
 import com.seom.banchan.ui.model.Model
 
-data class CategoryMenuModel(
+data class TotalMenuModel(
     override val id: String,
-    override val type: CellType = CellType.MENU_LIST_CELL,
-    val categoryName: String,
-    val menus: List<Model>
+    override val type: CellType = CellType.TOTAL_CELL,
+    val count : Int
 ) : Model(id, type)

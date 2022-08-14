@@ -5,12 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.seom.banchan.R
 import com.seom.banchan.databinding.FragmentHomeBinding
 import com.seom.banchan.ui.adapter.FragmentPagerAdapter
 import com.seom.banchan.ui.home.best.BestFragment
+import com.seom.banchan.ui.home.maindish.MainDishFragment
+import com.seom.banchan.ui.home.sidedish.SideDishFragment
+import com.seom.banchan.ui.home.soupdish.SoupDishFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -33,7 +35,12 @@ class HomeFragment : Fragment() {
     }
 
     private fun initViewPager() = binding?.let {
-        val list = listOf(BestFragment.newInstance(),BestFragment.newInstance(),BestFragment.newInstance(),BestFragment.newInstance())
+        val list = listOf(
+            BestFragment.newInstance(),
+            MainDishFragment.newInstance(),
+            SoupDishFragment.newInstance(),
+            SideDishFragment.newInstance())
+
         val pagerAdapter = FragmentPagerAdapter(this@HomeFragment, list)
         val tabList = resources.getStringArray(R.array.tab_list)
 
