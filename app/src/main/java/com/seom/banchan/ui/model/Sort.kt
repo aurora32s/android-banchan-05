@@ -17,14 +17,23 @@ fun defaultSortItems() = listOf(
     ),
     Sort(
         R.string.sort_descending,
-        SortCriteria.DESCENDING
+        SortCriteria.DESCENDING,
+        false
     ),
     Sort(
         R.string.sort_ascending,
-        SortCriteria.ASCENDING
+        SortCriteria.ASCENDING,
+        false
     ),
     Sort(
         R.string.sort_discount,
-        SortCriteria.DISCOUNT_RATE
+        SortCriteria.DISCOUNT_RATE,
+        true
     )
 )
+
+fun List<Sort>.selectedSortItem(position: Int) {
+    forEachIndexed { index, sort ->
+        sort.isChecked = index == position
+    }
+}

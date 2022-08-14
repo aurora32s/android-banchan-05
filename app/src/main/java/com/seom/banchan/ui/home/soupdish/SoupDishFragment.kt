@@ -7,12 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.seom.banchan.R
 import com.seom.banchan.databinding.FragmentSoupDishBinding
 import com.seom.banchan.ui.adapter.ModelRecyclerAdapter
-import com.seom.banchan.ui.model.CellType
 import com.seom.banchan.ui.model.Model
 import com.seom.banchan.ui.model.home.HeaderMenuModel
 import com.seom.banchan.ui.model.home.TotalMenuModel
@@ -44,27 +41,27 @@ class SoupDishFragment : Fragment() {
         initRecyclerView()
 
         initObserver()
-        viewModel.fetchSoupMenus()
     }
 
     private fun initObserver() {
         lifecycleScope.launch {
-            viewModel.soupDishMenus.collect {
-                homeAdapter.submitList(
-                    listOf(
-                        HeaderMenuModel(
-                            id = getString(R.string.header_view_holder),
-                            title = R.string.header_soup
-                        ),
-                        TotalMenuModel(
-                            id = getString(R.string.total_view_holder),
-                            count = it.size,
-                            onSort = {
-                                viewModel.updateSort(it)
-                            }
-                        )
-                    ) + it
-                )
+            viewModel.soupDishUiState.collect {
+                homeAdapter.submitList(listOf(
+                    HeaderMenuModel(
+                        id = getString(R.string.header_view_holder),
+                        title = R.string.header_side
+                    ),
+                    TotalMenuModel(
+                        id = getString(R.string.total_view_holder),
+                        count = it.soupMenus.size,
+                        position = viewModel.soupDishUiState.value.selectedSortPosition,
+                        sortByItems = viewModel.soupDishUiState.value.defaultSortItems,
+                        onSort = { position ->
+                            viewModel.fetchSortedSoupMenus(position)
+
+                        }
+                    )
+                ) + it.soupMenus)
             }
         }
     }

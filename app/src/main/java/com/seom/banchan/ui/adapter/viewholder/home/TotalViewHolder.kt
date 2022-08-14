@@ -19,6 +19,7 @@ class TotalViewHolder (
             items = model.sortByItems,
         )
         binding.spSort.adapter = adapter
+        binding.spSort.setSelection(model.position)
         binding.spSort.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
@@ -28,7 +29,7 @@ class TotalViewHolder (
                     id: Long
                 ) {
                     model.run {
-                        onSort(model.sortByItems[position].sortCriteria)
+                        onSort(position)
                         sortByItems.forEachIndexed { idx, item ->
                             item.isChecked = position == idx
                         }
@@ -38,8 +39,6 @@ class TotalViewHolder (
                 override fun onNothingSelected(p0: AdapterView<*>?) {
 
                 }
-
             }
-
     }
 }
