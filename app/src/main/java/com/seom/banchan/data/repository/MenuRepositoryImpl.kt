@@ -1,10 +1,12 @@
 package com.seom.banchan.data.repository
 
 import com.seom.banchan.data.source.MenuDataSource
-import com.seom.banchan.domain.model.CategoryModel
-import com.seom.banchan.domain.model.MenuModel
+import com.seom.banchan.domain.model.detail.DetailMenuModel
+import com.seom.banchan.domain.model.home.CategoryModel
+import com.seom.banchan.domain.model.home.MenuModel
 import com.seom.banchan.domain.repository.MenuRepository
 import javax.inject.Inject
+
 
 class MenuRepositoryImpl @Inject constructor(
     private val menuDataSource: MenuDataSource
@@ -21,7 +23,12 @@ class MenuRepositoryImpl @Inject constructor(
         return menuDataSource.getSoupMenus()
     }
 
-    override suspend fun getSideMenus(): Result<List<MenuModel>>  {
+    override suspend fun getSideMenus(): Result<List<MenuModel>> {
         return menuDataSource.getSideMenus()
+    }
+
+    // 특정 menu 의 상세 정보 요청
+    override suspend fun getMenuDetail(menuId: String): Result<DetailMenuModel> {
+        return menuDataSource.getMenuDetail(menuId)
     }
 }

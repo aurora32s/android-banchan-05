@@ -10,7 +10,7 @@ import com.seom.banchan.util.ext.toIntPrice
  */
 data class DetailMenuResponse(
     @SerializedName("data")
-    val data: Data,
+    val data: Menu,
     @SerializedName("hash")
     val hash: String
 )

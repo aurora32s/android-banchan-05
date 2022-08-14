@@ -3,7 +3,7 @@ package com.seom.banchan.data.api.response.detail
 
 import com.google.gson.annotations.SerializedName
 
-data class Data(
+data class Menu(
     @SerializedName("delivery_fee")
     val deliveryFee: String?, // 배달 가격(string)
     @SerializedName("delivery_info")
