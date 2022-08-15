@@ -8,7 +8,6 @@ import com.seom.banchan.databinding.ItemHomeHeaderBinding
 import com.seom.banchan.databinding.ItemImageSliderBinding
 import com.seom.banchan.databinding.ItemMenuSmallBinding
 import com.seom.banchan.ui.adapter.viewholder.ModelViewHolder
-import com.seom.banchan.ui.adapter.viewholder.detail.DetailMenuViewHolder
 import com.seom.banchan.ui.adapter.viewholder.detail.MenuInfoViewHolder
 import com.seom.banchan.ui.adapter.viewholder.home.BestMenuViewHolder
 import com.seom.banchan.ui.adapter.viewholder.home.FilterViewHolder
@@ -57,9 +56,6 @@ object ModelViewHolderMapper {
             )
             CellType.IMAGE_LIST_CELL -> ImageListItemViewHolder(
                 ItemImageListBinding.inflate(inflater, parent, false)
-            )
-            CellType.MENU_DETAIL_EXTRA_CELL -> DetailMenuViewHolder(
-                ItemMenuDetailBinding.inflate(inflater, parent, false)
             )
             CellType.MENU_DETAIL_INFO_CELL -> MenuInfoViewHolder(
                 ItemMenuInfoBinding.inflate(inflater, parent, false)

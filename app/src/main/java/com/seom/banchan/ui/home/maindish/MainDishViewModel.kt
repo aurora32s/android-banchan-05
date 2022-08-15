@@ -5,6 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seom.banchan.R
 import com.seom.banchan.domain.model.*
+import com.seom.banchan.domain.model.home.MenuModel
+import com.seom.banchan.domain.model.home.toHomeMenuGridModel
+import com.seom.banchan.domain.model.home.toHomeMenuLinearModel
 import com.seom.banchan.domain.usecase.GetMainMenusUseCase
 import com.seom.banchan.domain.usecase.GetMenuWithCategoriesUseCase
 import com.seom.banchan.ui.model.Model

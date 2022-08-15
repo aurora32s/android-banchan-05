@@ -1,8 +1,7 @@
 package com.seom.banchan.domain.usecase
 
 import com.seom.banchan.di.IODispatcher
-import com.seom.banchan.domain.model.CategoryModel
-import com.seom.banchan.domain.model.MenuModel
+import com.seom.banchan.domain.model.home.MenuModel
 import com.seom.banchan.domain.repository.MenuRepository
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.CoroutineDispatcher
