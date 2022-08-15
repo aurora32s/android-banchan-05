@@ -6,7 +6,7 @@ import com.seom.banchan.domain.model.detail.DetailMenuModel
 import com.seom.banchan.util.ext.toIntPrice
 
 /**
- * 메뉴 상세 정보 서버 요청 reponse
+ * 메뉴 상세 정보 서버 요청 response
  */
 data class DetailMenuResponse(
     @SerializedName("data")

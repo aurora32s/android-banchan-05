@@ -19,11 +19,12 @@ class MenuInfoViewHolder(
     override fun bind(model: DetailMenuUiModel) {
         binding.detail = model
 
-//        initViewPager(model.detailMenu.images)
-//        bindViewPager()
+        initViewPager(model.detailMenu.images)
+        bindViewPager()
     }
 
-    private fun initViewPager(images: List<String>) = with(binding) {
+    private fun initViewPager(images: List<String>?) = with(binding) {
+        if (images == null) return
         vpMenuImage.offscreenPageLimit = 1
 
         val imageSliderAdapter = ModelRecyclerAdapter<ImageSliderModel>()
