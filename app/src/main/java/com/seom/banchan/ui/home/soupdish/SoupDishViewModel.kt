@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.seom.banchan.R
 import com.seom.banchan.data.api.SortCriteria
 import com.seom.banchan.domain.model.*
+import com.seom.banchan.domain.model.home.toHomeMenuGridModel
 import com.seom.banchan.domain.usecase.GetSoupMenusUseCase
 import com.seom.banchan.ui.model.Model
 import com.seom.banchan.ui.model.home.FilterMenuModel

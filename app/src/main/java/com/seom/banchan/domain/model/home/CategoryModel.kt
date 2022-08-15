@@ -1,4 +1,4 @@
-package com.seom.banchan.domain.model
+package com.seom.banchan.domain.model.home
 
 import com.seom.banchan.ui.model.home.CategoryMenuModel
 

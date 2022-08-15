@@ -1,35 +1,30 @@
 package com.seom.banchan.ui.detail
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.widget.ViewPager2
-import com.google.android.material.appbar.AppBarLayout
-import com.seom.banchan.R
 import com.seom.banchan.databinding.FragmentDetailBinding
 import com.seom.banchan.ui.adapter.ModelRecyclerAdapter
 import com.seom.banchan.ui.model.CellType
 import com.seom.banchan.ui.model.Model
-import com.seom.banchan.ui.model.detail.DetailMenuModel
-import com.seom.banchan.ui.model.detail.MenuDetailModel
+import com.seom.banchan.ui.model.detail.DetailMenuUiModel
 import com.seom.banchan.ui.model.imageSlider.ImageSliderModel
-import com.seom.banchan.util.ext.addIconImageView
 import com.seom.banchan.util.ext.fromDpToPx
-import com.seom.banchan.util.ext.setIconDrawable
-import kotlin.math.abs
-import kotlin.math.ceil
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
-class DetailFragment(
-    private val menuId: String
-) : Fragment() {
+@AndroidEntryPoint
+class DetailFragment: Fragment() {
     private var _binding: FragmentDetailBinding? = null
     private val binding get() = _binding
+
+    private val viewModel: DetailViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,41 +37,29 @@ class DetailFragment(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // mock data
-        val menuDetailInfo = MenuDetailModel(
-            id = "HBDEF",
-            images = listOf(
-                "http://public.codesquad.kr/jk/storeapp/data/main/1155_ZIP_P_0081_T.jpg",
-                "http://public.codesquad.kr/jk/storeapp/data/main/1155_ZIP_P_0081_S.jpg"
-            ),
-            name = "오리 주물럭_반조리",
-            point = 126,
-            deliveryInfo = "서울 경기 새벽 배송, 전국 택배 배송",
-            deliveryFee = "2,500원 (40,000원 이상 구매 시 무료)",
-            normalPrice = 15800,
-            salePrice = 12640,
-            detailImages = listOf(
-                "http://public.codesquad.kr/jk/storeapp/data/main/1155_ZIP_P_0081_D1.jpg",
-                "http://public.codesquad.kr/jk/storeapp/data/main/1155_ZIP_P_0081_D2.jpg",
-                "http://public.codesquad.kr/jk/storeapp/data/pakage_regular.jpg"
-            )
-        )
-        val detailMenu = DetailMenuModel(
-            detailMenu = menuDetailInfo,
-            discountRate = ceil((1 - (menuDetailInfo.salePrice / menuDetailInfo.normalPrice.toDouble())) * 100).toInt()
-        )
-        binding?.detail = detailMenu
-        initRecyclerView(detailMenu)
-        initAppbar()
+        lifecycleScope.launch {
+            viewModel.detailMenuModel.collect {
+                when (it) {
+                    is DetailUiState.Success -> {
+                        println(it.detailMenu)
+                        binding?.detail = it.detailMenu
+                        initRecyclerView(it.detailMenu)
+                        initAppbar()
+                    }
+                    DetailUiState.UnInitialized -> {
+                        viewModel.fetchData("HBDEF")
+                    }
+                }
+            }
+        }
     }
 
-    private fun initRecyclerView(detailMenuModel: DetailMenuModel) = binding?.let {
-        val detailItem = listOf(
-            detailMenuModel,
-//            detailMenuModel.detailMenu
-        ) + detailMenuModel.detailMenu.detailImages.map {
-            ImageSliderModel(imageUrl = it, type = CellType.IMAGE_LIST_CELL)
+    private fun initRecyclerView(detailMenuUiModel: DetailMenuUiModel) = binding?.let {
+        var detailItem = listOf<Model>(detailMenuUiModel)
+        detailMenuUiModel.detailMenu.detailImages?.let { image ->
+            detailItem += image.map {
+                ImageSliderModel(imageUrl = it, type = CellType.IMAGE_LIST_CELL)
+            }
         }
 
         it.rvMenuInfo.layoutManager =
@@ -106,6 +89,6 @@ class DetailFragment(
 
     companion object {
         const val TAG = ".DetailFragment"
-        fun newInstance(menuId: String) = DetailFragment(menuId)
+        fun newInstance() = DetailFragment()
     }
 }

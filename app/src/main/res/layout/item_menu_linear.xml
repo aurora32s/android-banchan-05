@@ -22,7 +22,7 @@
             android:id="@+id/iv_menu_thumbnail"
             android:layout_width="160dp"
             android:layout_height="0dp"
-            app:imageSrc="@{menu.menu.image}"
+            app:imageUrl="@{menu.menu.image}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintStart_toStartOf="parent"
@@ -43,7 +43,6 @@
             app:layout_constraintBottom_toTopOf="@id/tv_menu_description"
             app:layout_constraintStart_toEndOf="@id/iv_menu_thumbnail"
             app:layout_constraintTop_toTopOf="@id/iv_menu_thumbnail"
-            app:text="@{menu.menu.name}"
             tools:text="hello world" />
 
         <androidx.appcompat.widget.AppCompatTextView

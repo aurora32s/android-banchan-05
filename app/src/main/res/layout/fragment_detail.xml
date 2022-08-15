@@ -5,7 +5,7 @@
 
         <variable
             name="detail"
-            type="com.seom.banchan.ui.model.detail.DetailMenuModel" />
+            type="com.seom.banchan.ui.model.detail.DetailMenuUiModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -34,7 +34,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         app:corner="@{50}"
-                        app:imageUrl="@{detail.detailMenu.images[0]}"
+                        app:imageUrl="@{detail.detailMenu.images.size > 0 ? detail.detailMenu.images[0] : null}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintDimensionRatio="1:1"
                         app:layout_constraintStart_toStartOf="parent"
