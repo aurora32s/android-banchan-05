@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="detail"
+            type="com.seom.banchan.ui.model.detail.DetailMenuModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?android:attr/actionBarSize"
+                android:background="@color/white"
+                android:padding="4dp"
+                android:elevation="20dp"
+                app:contentInsetStart="0dp"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/iv_menu_small_thumbnail"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        app:corner="@{50}"
+                        app:imageUrl="@{detail.detailMenu.images[0]}"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintDimensionRatio="1:1"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:paddingStart="8dp"
+                        android:text="@{detail.detailMenu.name}"
+                        android:textColor="@color/greyScaleBlack"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/tv_menu_small_discountRate"
+                        app:layout_constraintStart_toEndOf="@id/iv_menu_small_thumbnail"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_menu_small_discountRate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingEnd="4dp"
+                        android:text="@{@string/menu_discount_value(detail.discountRate)}"
+                        android:textColor="@color/primaryAccent"
+                        android:textSize="18sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/tv_menu_small_salePrice"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:visibilityByData="@{detail.discountRate}"
+                        tools:text="hello world" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_menu_small_salePrice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingEnd="8dp"
+                        android:text="@{@string/menu_price_value(detail.detailMenu.salePrice == 0 ? detail.detailMenu.normalPrice :detail.detailMenu.salePrice)}"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="hello world" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.appcompat.widget.Toolbar>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_menu_info"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingBottom="100dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
