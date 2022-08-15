@@ -8,8 +8,8 @@ data class CategoryModel(
     val menus: List<MenuModel>
 )
 
-fun CategoryModel.toUiModel() = CategoryMenuModel(
+fun CategoryModel.toUiModel(isBest : Boolean = false) = CategoryMenuModel(
     id = id,
     categoryName = name,
-    menus = menus.map { it.toHomeMenuModel() }
+    menus = menus.map { it.toHomeMenuModel(isBest) }
 )

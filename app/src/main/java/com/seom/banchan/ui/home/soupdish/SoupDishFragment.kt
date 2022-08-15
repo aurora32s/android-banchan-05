@@ -9,7 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.seom.banchan.R
 import com.seom.banchan.databinding.FragmentSoupDishBinding
-import com.seom.banchan.ui.adapter.ItemDecoration
+import com.seom.banchan.ui.adapter.ItemDecoration.GridItemDecoration
 import com.seom.banchan.ui.adapter.ModelRecyclerAdapter
 import com.seom.banchan.ui.model.Model
 import com.seom.banchan.ui.model.home.HeaderMenuModel
@@ -70,7 +70,7 @@ class SoupDishFragment : Fragment() {
     private fun initRecyclerView() = binding?.let {
         it.rvSoupDish.adapter = homeAdapter
         it.rvSoupDish.setGridLayoutManager(requireContext())
-        it.rvSoupDish.addItemDecoration(ItemDecoration(requireContext(),true).decoration)
+        it.rvSoupDish.addItemDecoration(GridItemDecoration(requireContext(),true).decoration)
     }
 
     companion object {

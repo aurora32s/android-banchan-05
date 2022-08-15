@@ -4,6 +4,7 @@ import android.view.MotionEvent
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.seom.banchan.databinding.ItemBestMenuBinding
+import com.seom.banchan.ui.adapter.ItemDecoration.BestItemDecoration
 import com.seom.banchan.ui.adapter.ModelRecyclerAdapter
 import com.seom.banchan.ui.adapter.viewholder.ModelViewHolder
 import com.seom.banchan.ui.model.home.CategoryMenuModel
@@ -26,6 +27,7 @@ class BestMenuViewHolder(
         binding.rvBest.layoutManager =
             LinearLayoutManager(binding.root.context, LinearLayoutManager.HORIZONTAL, false)
         binding.rvBest.adapter = bestMenuAdapter
+        binding.rvBest.addItemDecoration(BestItemDecoration(binding.root.context).decoration)
         bestMenuAdapter.submitList(model.menus)
     }
 }

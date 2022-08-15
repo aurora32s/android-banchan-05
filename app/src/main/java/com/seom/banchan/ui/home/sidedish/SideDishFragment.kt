@@ -9,7 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.seom.banchan.R
 import com.seom.banchan.databinding.FragmentSideDishBinding
-import com.seom.banchan.ui.adapter.ItemDecoration
+import com.seom.banchan.ui.adapter.ItemDecoration.GridItemDecoration
 import com.seom.banchan.ui.adapter.ModelRecyclerAdapter
 import com.seom.banchan.ui.model.Model
 import com.seom.banchan.ui.model.defaultSortItems
@@ -70,7 +70,7 @@ class SideDishFragment : Fragment() {
     private fun initRecyclerView() = binding?.let {
         it.rvSideDish.adapter = homeAdapter
         it.rvSideDish.setGridLayoutManager(requireContext())
-        it.rvSideDish.addItemDecoration(ItemDecoration(requireContext(),true).decoration)
+        it.rvSideDish.addItemDecoration(GridItemDecoration(requireContext(),true).decoration)
     }
 
     companion object {

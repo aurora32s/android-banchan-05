@@ -28,7 +28,7 @@ class BestViewModel @Inject constructor(
     fun fetchBestMenus() = viewModelScope.launch {
         getMenuWithCategoriesUseCase()
             .onSuccess { result ->
-                _bestMenus.value = baseMenu + result.map { it.toUiModel() }
+                _bestMenus.value = baseMenu + result.map { it.toUiModel(true) }
             }
             .onFailure {
                 println(it)

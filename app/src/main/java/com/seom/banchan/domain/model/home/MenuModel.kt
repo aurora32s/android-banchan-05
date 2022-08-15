@@ -16,8 +16,9 @@ data class MenuModel(
     val recentlyTime : Long = 0
 ): Serializable
 
-fun MenuModel.toHomeMenuModel() = HomeMenuModel(
+fun MenuModel.toHomeMenuModel(isBest : Boolean = false) = HomeMenuModel(
     id = id,
+    isBest = isBest,
     menu = this,
     discountRate = if (normalPrice == 0) 0 else ceil((1 - (salePrice / normalPrice.toDouble())) * 100).toInt()
 )
