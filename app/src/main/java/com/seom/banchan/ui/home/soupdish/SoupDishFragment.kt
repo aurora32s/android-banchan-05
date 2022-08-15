@@ -58,7 +58,10 @@ class SoupDishFragment : Fragment() {
                         ),
                         TotalMenuModel(
                             id = getString(R.string.total_view_holder),
-                            count = it.size
+                            count = it.size,
+                            onSort = {
+                                viewModel.updateSort(it)
+                            }
                         )
                     ) + it
                 )

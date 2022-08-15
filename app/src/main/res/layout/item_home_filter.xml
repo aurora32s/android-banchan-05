@@ -43,16 +43,6 @@
                 android:checked="false" />
         </RadioGroup>
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/sort_base"
-            android:textColor="@color/greyScaleBlack"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/sp_sort"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
         <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/sp_sort"
             android:layout_width="wrap_content"

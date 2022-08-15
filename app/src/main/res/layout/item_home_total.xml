@@ -13,9 +13,9 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
+        android:layout_height="24dp"
         android:layout_marginVertical="24dp"
-        android:paddingHorizontal="16dp"
-        android:layout_height="24dp">
+        android:layout_marginHorizontal="16dp">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
@@ -27,20 +27,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/sort_base"
-            android:textColor="@color/greyScaleBlack"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/sp_sort"
-            app:layout_constraintTop_toTopOf="parent" />
-
 
         <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/sp_sort"
-            android:layout_width="wrap_content"
+            android:layout_width="124dp"
             android:layout_height="wrap_content"
+            android:background="@null"
+            android:dropDownWidth="110dp"
+            android:dropDownVerticalOffset="8dp"
+            android:gravity="end"
+            android:overlapAnchor="false"
+            android:popupBackground="@drawable/background_dropdown"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
