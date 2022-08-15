@@ -10,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.seom.banchan.R
 import com.seom.banchan.databinding.FragmentMainDishBinding
+import com.seom.banchan.ui.adapter.ItemDecoration
 import com.seom.banchan.ui.adapter.ModelRecyclerAdapter
 import com.seom.banchan.ui.model.Model
 import com.seom.banchan.ui.model.defaultSortItems
@@ -70,6 +71,7 @@ class MainDishFragment : Fragment() {
 
         lifecycleScope.launch {
             viewModel.toggleState.collect {
+                setItemDecoration(it.viewModeToggle)
                 viewModel.updateViewMode(it.viewModeToggle)
             }
         }
@@ -80,6 +82,12 @@ class MainDishFragment : Fragment() {
             adapter = homeAdapter
             setGridLayoutManager(requireContext())
         }
+    }
+
+    private fun setItemDecoration(toggle : Boolean) = binding?.rvMainDish?.let {
+        if(it.itemDecorationCount != 0)
+            it.removeItemDecorationAt(0)
+        it.addItemDecoration(ItemDecoration(requireContext(),!toggle).decoration)
     }
 
     companion object {
