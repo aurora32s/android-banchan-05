@@ -42,7 +42,7 @@ class BestFragment : BaseFragment() {
                     when (model.type) {
                         CellType.MENU_CELL -> {
                             (model as? HomeMenuModel)?.menu?.let {
-                                fragmentNavigation.addFragment(
+                                fragmentNavigation.replaceFragment(
                                     DetailFragment.newInstance(
                                         menuModel = it
                                     ),
