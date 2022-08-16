@@ -35,7 +35,7 @@ object ModelViewHolderMapper {
             CellType.MENU_LIST_CELL -> BestMenuViewHolder(
                 ItemBestMenuBinding.inflate(inflater, parent, false)
             )
-            CellType.MENU_CELL -> SmallMenuViewHolder(
+            CellType.MENU_CELL, CellType.MENU_RECENTLY_CELL -> SmallMenuViewHolder(
                 ItemMenuSmallBinding.inflate(inflater, parent, false)
             )
             CellType.FILTER_CELL -> FilterViewHolder(

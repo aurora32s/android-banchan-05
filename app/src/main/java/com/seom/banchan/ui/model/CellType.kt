@@ -5,6 +5,7 @@ enum class CellType {
     MENU_LIST_CELL,
     MENU_CELL,
     MENU_LARGE_CELL,
+    MENU_RECENTLY_CELL,
     FILTER_CELL,
     TOTAL_CELL,
     SORT_CELL,

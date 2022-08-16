@@ -17,11 +17,12 @@ data class MenuModel(
     val recentlyTime : Long = 0
 ): Serializable
 
-fun MenuModel.toHomeMenuModel(isBest : Boolean = false) = HomeMenuModel(
+fun MenuModel.toHomeMenuModel(isBest : Boolean = false,cellType: CellType = CellType.MENU_CELL) = HomeMenuModel(
     id = id,
     type = CellType.MENU_CELL,
     isBest = isBest,
     menu = this,
+    type = cellType,
     discountRate = if (normalPrice == 0) 0 else ceil((1 - (salePrice / normalPrice.toDouble())) * 100).toInt()
 )
 

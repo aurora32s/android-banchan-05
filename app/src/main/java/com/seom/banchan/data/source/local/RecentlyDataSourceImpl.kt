@@ -1,7 +1,7 @@
 package com.seom.banchan.data.source.local
 
 import com.seom.banchan.data.db.dao.RecentlyDao
-import com.seom.banchan.data.db.entity.toMenuModelList
+import com.seom.banchan.data.db.entity.toMenuModel
 import com.seom.banchan.data.db.entity.toRecentlyEntity
 import com.seom.banchan.data.source.RecentlyDataSource
 import com.seom.banchan.domain.model.home.MenuModel
@@ -14,7 +14,9 @@ class RecentlyDataSourceImpl @Inject constructor(
 ) : RecentlyDataSource {
     override suspend fun getRecentlys() : Flow<List<MenuModel>> {
         return recentlyDao.getRecentlys().map {
-            it.toMenuModelList()
+            it.map {
+                it.toMenuModel()
+            }
         }
     }
 

@@ -10,6 +10,10 @@
         <variable
             name="menu"
             type="com.seom.banchan.ui.model.home.HomeMenuModel" />
+
+        <variable
+            name="is_recently"
+            type="Boolean" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -62,6 +66,7 @@
             android:textColor="@color/greyScaleDefault"
             android:textSize="12sp"
             android:textStyle="bold"
+            android:visibility="@{is_recently ? View.GONE : View.VISIBLE}"
             app:layout_constraintEnd_toEndOf="@id/iv_menu_thumbnail"
             app:layout_constraintStart_toStartOf="@id/iv_menu_thumbnail"
             app:layout_constraintTop_toBottomOf="@id/tv_menu_name"
@@ -75,6 +80,7 @@
             android:paddingEnd="8dp"
             android:text="@{@string/menu_discount_value(menu.discountRate)}"
             android:textColor="@color/primaryAccent"
+            android:visibility="@{is_recently ? View.GONE : View.VISIBLE}"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="@id/iv_menu_thumbnail"
             app:layout_constraintTop_toBottomOf="@id/tv_menu_description"
@@ -93,16 +99,45 @@
             tools:text="hello world" />
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_menu_normalPrice_recently"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{@string/menu_price_value(menu.menu.normalPrice)}"
+            android:textColor="@color/greyScaleDefault"
+            android:textSize="12sp"
+            android:visibility="@{is_recently ? View.VISIBLE : View.GONE}"
+            android:layout_marginStart="4dp"
+            app:layout_constraintStart_toEndOf="@id/tv_menu_salePrice"
+            app:layout_constraintTop_toTopOf="@id/tv_menu_salePrice"
+            app:layout_constraintBottom_toBottomOf="@id/tv_menu_salePrice"
+            app:visibilityByData="@{menu.menu.normalPrice}"
+            app:strikeThrough="@{true}"
+            tools:text="hello world" />
+
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_menu_normalPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{@string/menu_price_value(menu.menu.normalPrice)}"
             android:textColor="@color/greyScaleDefault"
             android:textSize="12sp"
+            android:visibility="@{is_recently ? View.GONE : View.VISIBLE}"
             app:layout_constraintStart_toStartOf="@id/iv_menu_thumbnail"
-            app:layout_constraintTop_toBottomOf="@id/tv_menu_discountRate"
-            app:strikeThrough="@{true}"
+            app:layout_constraintTop_toBottomOf="@id/tv_menu_salePrice"
             app:visibilityByData="@{menu.menu.normalPrice}"
+            app:strikeThrough="@{true}"
+            tools:text="hello world" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_menu_recently_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="몇 시간 전"
+            android:textColor="@color/greyScaleDefault"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="@id/iv_menu_thumbnail"
+            app:layout_constraintTop_toBottomOf="@id/tv_menu_normalPrice"
+            android:visibility="@{is_recently ? View.VISIBLE : View.GONE}"
             tools:text="hello world" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
