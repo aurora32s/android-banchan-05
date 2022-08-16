@@ -20,7 +20,7 @@ class RecentlyDataSourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun upsertRecently(menuModel: MenuModel,recentlyTime : Long) {
-        recentlyDao.upsertRecently(menuModel.toRecentlyEntity(recentlyTime))
+    override suspend fun upsertRecently(menuModel: MenuModel) {
+        recentlyDao.upsertRecently(menuModel.toRecentlyEntity())
     }
 }

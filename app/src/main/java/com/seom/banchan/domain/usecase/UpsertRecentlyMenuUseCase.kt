@@ -13,11 +13,10 @@ class UpsertRecentlyMenuUseCase @Inject constructor(
     private val ioDispatcher: CoroutineDispatcher
 ) {
     suspend operator fun invoke(
-        menuModel: MenuModel,
-        recentlyTime: Long
+        menuModel: MenuModel
     ) = withContext(ioDispatcher) {
         recentlyRepository.upsertRecently(
-            menuModel, recentlyTime
+            menuModel
         )
     }
 }

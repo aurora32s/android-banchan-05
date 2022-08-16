@@ -6,5 +6,5 @@ import kotlinx.coroutines.flow.Flow
 interface RecentlyRepository {
     suspend fun getRecentlys() : Flow<List<MenuModel>>
 
-    suspend fun upsertRecently(menuModel: MenuModel,recentlyTime : Long)
+    suspend fun upsertRecently(menuModel: MenuModel)
 }

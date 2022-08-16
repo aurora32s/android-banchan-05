@@ -13,7 +13,7 @@ class RecentlyRepositoryImpl @Inject constructor(
        return recentlyDataSource.getRecentlys()
     }
 
-    override suspend fun upsertRecently(menuModel: MenuModel, recentlyTime : Long) {
-        recentlyDataSource.upsertRecently(menuModel,recentlyTime)
+    override suspend fun upsertRecently(menuModel: MenuModel) {
+        recentlyDataSource.upsertRecently(menuModel)
     }
 }
