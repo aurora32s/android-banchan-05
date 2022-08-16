@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.seom.banchan.databinding.FragmentBestBinding
 import com.seom.banchan.ui.adapter.ModelRecyclerAdapter
 import com.seom.banchan.ui.base.BaseFragment
+import com.seom.banchan.ui.detail.DetailFragment
+import com.seom.banchan.ui.home.HomeFragment
 import com.seom.banchan.ui.model.CellType
 import com.seom.banchan.ui.model.Model
 import com.seom.banchan.ui.model.home.CategoryMenuModel
@@ -32,7 +34,25 @@ class BestFragment : BaseFragment() {
 
     private val viewModel: BestViewModel by viewModels()
 
-    private lateinit var homeAdapter: ModelRecyclerAdapter<Model>
+    private val homeAdapter: ModelRecyclerAdapter<Model> by lazy {
+        ModelRecyclerAdapter(
+            modelAdapterListener =
+            object : ModelAdapterListener {
+                override fun onClick(model: Model) {
+                    when (model.type) {
+                        CellType.MENU_CELL -> {
+                            val menuId = model.id
+                            println(menuId)
+                            fragmentNavigation.addFragment(
+                                DetailFragment.newInstance(),
+                                DetailFragment.TAG
+                            )
+                        } // 메뉴 아이템 클릭
+                        else -> {}
+                    }
+                }
+            })
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -63,20 +83,6 @@ class BestFragment : BaseFragment() {
     private fun initRecyclerView() = binding?.let {
         it.rvBest.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-
-        if (::homeAdapter.isInitialized.not()) {
-            homeAdapter = ModelRecyclerAdapter(
-                modelAdapterListener =
-                object : ModelAdapterListener {
-                    override fun onClick(model: Model) {
-                        when (model.type) {
-                            CellType.MENU_CELL -> {
-                            } // 메뉴 아이템 클릭
-                            else -> {}
-                        }
-                    }
-                })
-        }
         it.rvBest.adapter = homeAdapter
     }
 
