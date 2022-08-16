@@ -11,7 +11,7 @@ class HeaderViewHolder (
     private val binding: ItemHomeHeaderBinding
 ) : ModelViewHolder<HeaderMenuModel>(binding) {
 
-    override fun bind(model: HeaderMenuModel) {
+    override fun bindData(model: HeaderMenuModel) {
         // TODO 중복 코드 방지 필요
         binding.tvHeader.text = binding.root.context.getString(model.title)
         binding.tvChip.isVisible = model.chipTitle != null

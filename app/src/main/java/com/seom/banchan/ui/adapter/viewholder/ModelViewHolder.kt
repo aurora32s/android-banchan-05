@@ -3,9 +3,15 @@ package com.seom.banchan.ui.adapter.viewholder
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.seom.banchan.ui.model.Model
+import com.seom.banchan.util.listener.ModelAdapterListener
 
 abstract class ModelViewHolder<M : Model>(
     binding: ViewBinding
 ) : RecyclerView.ViewHolder(binding.root) {
-    open fun bind(model: M) {}
+    open fun bindData(model: M) {}
+    open fun bindViews(
+        model: M,
+        menuAdapterListener: ModelAdapterListener?
+    ) {
+    }
 }

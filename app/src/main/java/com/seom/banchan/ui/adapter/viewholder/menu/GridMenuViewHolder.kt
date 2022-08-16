@@ -9,7 +9,7 @@ import com.seom.banchan.ui.model.home.HomeMenuModel
 class GridMenuViewHolder(
     private val binding: ItemMenuGridBinding
 ) : ModelViewHolder<HomeMenuGridModel>(binding) {
-    override fun bind(model: HomeMenuGridModel) {
+    override fun bindData(model: HomeMenuGridModel) {
         binding.menu = model
     }
 }

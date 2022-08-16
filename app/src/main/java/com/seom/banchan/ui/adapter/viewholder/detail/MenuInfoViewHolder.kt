@@ -16,7 +16,7 @@ class MenuInfoViewHolder(
     private val binding: ItemMenuInfoBinding
 ) : ModelViewHolder<DetailMenuUiModel>(binding) {
 
-    override fun bind(model: DetailMenuUiModel) {
+    override fun bindData(model: DetailMenuUiModel) {
         binding.detail = model
 
         initViewPager(model.detailMenu.images)

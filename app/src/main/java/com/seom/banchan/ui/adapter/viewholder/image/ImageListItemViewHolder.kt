@@ -8,7 +8,7 @@ import com.seom.banchan.ui.model.imageSlider.ImageSliderModel
 class ImageListItemViewHolder(
     private val binding: ItemImageListBinding
 ): ModelViewHolder<ImageSliderModel>(binding) {
-    override fun bind(model: ImageSliderModel) {
+    override fun bindData(model: ImageSliderModel) {
         binding.image = model
     }
 }
