@@ -41,12 +41,14 @@ class BestFragment : BaseFragment() {
                 override fun onClick(model: Model) {
                     when (model.type) {
                         CellType.MENU_CELL -> {
-                            val menuId = model.id
-                            println(menuId)
-                            fragmentNavigation.addFragment(
-                                DetailFragment.newInstance(),
-                                DetailFragment.TAG
-                            )
+                            (model as? HomeMenuModel)?.menu?.let {
+                                fragmentNavigation.addFragment(
+                                    DetailFragment.newInstance(
+                                        menuModel = it
+                                    ),
+                                    DetailFragment.TAG
+                                )
+                            }
                         } // 메뉴 아이템 클릭
                         else -> {}
                     }
