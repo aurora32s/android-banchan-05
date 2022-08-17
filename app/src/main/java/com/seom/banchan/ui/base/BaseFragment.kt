@@ -16,5 +16,6 @@ open class BaseFragment : Fragment() {
     interface FragmentNavigation {
         fun addFragment(fragment: Fragment, fragmentTag: String? = null)
         fun replaceFragment(fragment: Fragment, fragmentTag: String? = null)
+        fun popStack()
     }
 }

@@ -13,10 +13,10 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), BaseFragment.FragmentNavigation {
-    private var _binding : ActivityMainBinding? = null
+    private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding
 
-    lateinit var fragmentNavigationController : FragmentNavigationController
+    lateinit var fragmentNavigationController: FragmentNavigationController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,14 +39,20 @@ class MainActivity : AppCompatActivity(), BaseFragment.FragmentNavigation {
     }
 
     private fun initContainer() = binding?.let {
-        fragmentNavigationController = FragmentNavigationController(supportFragmentManager,it.flMain.id)
-        fragmentNavigationController.addFragment(HomeFragment.newInstance(),HomeFragment.TAG)
+        fragmentNavigationController =
+            FragmentNavigationController(supportFragmentManager, it.flMain.id)
+        fragmentNavigationController.addFragment(HomeFragment.newInstance(), HomeFragment.TAG)
     }
 
     override fun addFragment(fragment: Fragment, fragmentTag: String?) {
-        fragmentNavigationController.addFragment(fragment,fragmentTag)
+        fragmentNavigationController.addFragment(fragment, fragmentTag)
     }
+
     override fun replaceFragment(fragment: Fragment, fragmentTag: String?) {
         fragmentNavigationController.replaceFragment(fragment, fragmentTag)
+    }
+
+    override fun popStack() {
+        fragmentNavigationController.popStack()
     }
 }

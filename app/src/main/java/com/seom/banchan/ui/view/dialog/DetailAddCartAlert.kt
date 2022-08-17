@@ -17,18 +17,12 @@ class DetailAddCartAlert : DialogFragment() {
     private var _binding: DialogDetailAddCartBinding? = null
     private val binding get() = _binding
 
+    private lateinit var onClickMoveToCartBtn: () -> Unit
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // dialog 밖을 클릭해도 종룔되지 않도록 설정
         isCancelable = false
-
-//        dialog?.window?.run {
-//            setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-//        }
-//        dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE);
-//        dialog?.window?.setBackgroundDrawable()
-//        setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-//        dialog?.window.setLayout(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
     }
 
     override fun onCreateView(
@@ -47,10 +41,22 @@ class DetailAddCartAlert : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        if (::onClickMoveToCartBtn.isInitialized) {
+            binding?.tvMoveCart?.setOnClickListener {
+                onClickMoveToCartBtn()
+            }
+        }
+        binding?.tvCancel?.setOnClickListener { dismiss() }
     }
 
     fun show(fragmentManager: FragmentManager) {
         show(fragmentManager, TAG)
+    }
+
+    fun setOnClickMoveToCart(action: () -> Unit): DetailAddCartAlert {
+        onClickMoveToCartBtn = action
+        return this
     }
 
     companion object {

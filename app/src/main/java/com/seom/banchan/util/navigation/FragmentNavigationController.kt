@@ -21,4 +21,8 @@ class FragmentNavigationController(
             replace(containerId, fragment, fragmentTag)
         }
     }
+
+    fun popStack() {
+        fragmentManager.popBackStack()
+    }
 }

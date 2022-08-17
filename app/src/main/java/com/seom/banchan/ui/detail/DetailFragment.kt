@@ -13,6 +13,8 @@ import com.seom.banchan.R
 import com.seom.banchan.databinding.FragmentDetailBinding
 import com.seom.banchan.domain.model.home.MenuModel
 import com.seom.banchan.ui.adapter.ModelRecyclerAdapter
+import com.seom.banchan.ui.base.BaseFragment
+import com.seom.banchan.ui.home.HomeFragment
 import com.seom.banchan.ui.model.CellType
 import com.seom.banchan.ui.model.Model
 import com.seom.banchan.ui.model.detail.DetailBottomButtonModel
@@ -26,7 +28,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class DetailFragment : Fragment() {
+class DetailFragment : BaseFragment() {
     private var _binding: FragmentDetailBinding? = null
     private val binding get() = _binding
 
@@ -80,7 +82,15 @@ class DetailFragment : Fragment() {
                     }
                     is DetailUiState.Success.SuccessAddToCart -> {
                         // 장바구니 추가 성공 시
-                        DetailAddCartAlert.build().show(childFragmentManager)
+                        DetailAddCartAlert.build()
+                            .setOnClickMoveToCart {
+                                // TODO 일단 이전화면으로 이동하도록 해두었습니다. 장바구니 화면 완성후 이 부분을 수정하면 될 듯합니다.
+                                fragmentNavigation.replaceFragment(
+                                    HomeFragment.newInstance(),
+                                    HomeFragment.TAG
+                                )
+                            }
+                            .show(childFragmentManager)
                     }
                 }
             }
