@@ -10,5 +10,5 @@ interface CartDataSource {
     /**
      * 장바구니에 새로운 아이템 추가
      */
-    suspend fun addCartItem(cartMenuItem: CartMenuModel): Result<Int>
+    suspend fun addCartItem(cartMenuItem: CartMenuModel): Result<Long>
 }

@@ -9,6 +9,7 @@ import com.seom.banchan.domain.model.cart.CartMenuModel
 import com.seom.banchan.domain.model.detail.DetailMenuModel
 import com.seom.banchan.domain.model.detail.toUiModel
 import com.seom.banchan.domain.model.home.MenuModel
+import com.seom.banchan.domain.usecase.AddMenuToCartUseCase
 import com.seom.banchan.domain.usecase.GetMenuDetailUseCase
 import com.seom.banchan.ui.model.detail.DetailMenuUiModel
 import com.seom.banchan.ui.model.detail.MenuDetailModel
@@ -19,7 +20,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DetailViewModel @Inject constructor(
-    private val getMenuDetailUseCase: GetMenuDetailUseCase
+    private val getMenuDetailUseCase: GetMenuDetailUseCase,
+    private val addMenuToCartUseCase: AddMenuToCartUseCase
 ) : ViewModel() {
     private val _detailMenuUiModel = MutableStateFlow<DetailUiState>(DetailUiState.UnInitialized)
     val detailMenuModel: StateFlow<DetailUiState>
@@ -67,6 +69,7 @@ class DetailViewModel @Inject constructor(
             salePrice = currentMenu.salePrice,
             count = count.value
         )
+        addMenuToCartUseCase(cartMenu)
     }
 
 }

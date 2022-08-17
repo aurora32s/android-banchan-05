@@ -6,5 +6,5 @@ interface CartRepository {
     /**
      * 장바구니에 메뉴 추가
      */
-    suspend fun addMenuToCart(menu: CartMenuModel): Result<Int>
+    suspend fun addMenuToCart(menu: CartMenuModel): Result<Long>
 }

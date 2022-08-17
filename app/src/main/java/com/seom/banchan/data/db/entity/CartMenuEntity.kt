@@ -6,10 +6,10 @@ import androidx.room.PrimaryKey
 @Entity
 data class CartMenuEntity(
     @PrimaryKey
-    val id: Int,
+    val id: Long? = null,
     val menuId: String,
     val name: String,
-    val image: String,
+    val image: String?,
     val salePrice: Int,
     val count: Int
 )
