@@ -14,7 +14,7 @@ class ModelRecyclerAdapter<M : Model>(
 ) : RecyclerView.Adapter<ModelViewHolder<M>>() {
 
     // recyclerview 에 보여줄 list
-    private var modelList: List<Model> = emptyList()
+    private var modelList: MutableList<Model> = mutableListOf()
     override fun getItemCount() = modelList.size
 
     override fun getItemViewType(position: Int) = modelList[position].type.ordinal
@@ -32,7 +32,17 @@ class ModelRecyclerAdapter<M : Model>(
 
     @SuppressLint("NotifyDataSetChanged")
     fun submitList(newList: List<Model>?) {
-        newList?.let { modelList = newList }
+        newList?.let { modelList = newList.toMutableList() }
         notifyDataSetChanged()
+    }
+
+    fun updateList(list:List<Model>){
+        modelList = (modelList.subList(0,3) + list).toMutableList()
+        notifyItemRangeChanged(modelList.size - list.size , modelList.size - 1)
+    }
+
+    fun updateModelAtPosition(model: Model,position: Int){
+        modelList[position] = model
+        notifyItemChanged(position)
     }
 }

@@ -37,9 +37,9 @@ class FilterViewHolder (
                     model.also {
                         if(it.position != position) {
                             it.onSort(position)
-                            it.sortByItems.forEachIndexed { idx, item ->
-                                item.isChecked = position == idx
-                            }
+//                            it.sortByItems.forEachIndexed { idx, item ->
+//                                item.isChecked = position == idx
+//                            }
                         }
                     }
                 }

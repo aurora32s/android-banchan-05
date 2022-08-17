@@ -8,6 +8,7 @@ import com.seom.banchan.databinding.ItemHomeHeaderBinding
 import com.seom.banchan.databinding.ItemImageSliderBinding
 import com.seom.banchan.databinding.ItemMenuSmallBinding
 import com.seom.banchan.ui.adapter.viewholder.ModelViewHolder
+import com.seom.banchan.ui.adapter.viewholder.home.*
 import com.seom.banchan.ui.adapter.viewholder.detail.DetailBottomButtonViewHolder
 import com.seom.banchan.ui.adapter.viewholder.detail.MenuCountViewHolder
 import com.seom.banchan.ui.adapter.viewholder.detail.MenuInfoViewHolder
@@ -67,6 +68,9 @@ object ModelViewHolderMapper {
             )
             CellType.DETAIL_BOTTOM_BUTTON_CELL -> DetailBottomButtonViewHolder(
                 ItemDetailBottomButtonBinding.inflate(inflater, parent, false)
+            )
+            CellType.SORT_CELL -> SortViewHolder(
+                ItemHomeSortBinding.inflate(inflater, parent, false)
             )
         }
         return viewHolder as ModelViewHolder<M>

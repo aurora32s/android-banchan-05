@@ -20,7 +20,7 @@ class GridItemDecoration(
         ) {
             super.getItemOffsets(outRect, view, parent, state)
 
-            val idx = parent.getChildAdapterPosition(view) - 2
+            val idx = parent.getChildAdapterPosition(view) - 3
             if (idx < 0) return
 
             val spanCount = if(isGrid) 2 else 1

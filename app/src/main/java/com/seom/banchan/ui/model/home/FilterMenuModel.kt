@@ -2,8 +2,7 @@ package com.seom.banchan.ui.model.home
 
 import com.seom.banchan.ui.model.CellType
 import com.seom.banchan.ui.model.Model
-import com.seom.banchan.ui.model.Sort
-import kotlinx.coroutines.flow.MutableStateFlow
+import com.seom.banchan.ui.model.SortItem
 
 data class FilterMenuModel(
     override val id: String,
@@ -11,6 +10,6 @@ data class FilterMenuModel(
     val onToggle : (Boolean) -> Unit,
     val togglePosition : Int,
     var position : Int,
-    val sortByItems : List<Sort>,
+    val sortByItems : List<SortItem>,
     val onSort : (Int) -> Unit
 ) : Model(id, type)
