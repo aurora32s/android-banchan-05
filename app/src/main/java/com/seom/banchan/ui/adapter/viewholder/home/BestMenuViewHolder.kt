@@ -27,7 +27,7 @@ class BestMenuViewHolder(
         binding.rvBest.layoutManager =
             LinearLayoutManager(binding.root.context, LinearLayoutManager.HORIZONTAL, false)
         binding.rvBest.adapter = bestMenuAdapter
-        binding.rvBest.addItemDecoration(BestItemDecoration(binding.root.context).decoration)
+        binding.rvBest.addItemDecoration(BestItemDecoration(binding.root.context))
         bestMenuAdapter.submitList(model.menus)
     }
 }

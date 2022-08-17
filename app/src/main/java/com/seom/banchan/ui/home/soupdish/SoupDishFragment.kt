@@ -65,7 +65,7 @@ class SoupDishFragment : Fragment() {
     private fun initRecyclerView() = binding?.let {
         it.rvSoupDish.adapter = homeAdapter
         it.rvSoupDish.setGridLayoutManager(requireContext())
-        it.rvSoupDish.addItemDecoration(GridItemDecoration(requireContext(),true).decoration)
+        it.rvSoupDish.addItemDecoration(GridItemDecoration(requireContext(),true))
         homeAdapter.submitList(
             getDefaultHeaders()
         )
