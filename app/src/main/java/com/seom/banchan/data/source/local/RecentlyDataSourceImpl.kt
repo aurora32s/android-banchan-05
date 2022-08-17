@@ -6,7 +6,7 @@ import com.seom.banchan.data.db.entity.RecentlyEntity
 import com.seom.banchan.data.db.entity.toMenuModelList
 import com.seom.banchan.data.db.entity.toRecentlyEntity
 import com.seom.banchan.data.source.RecentlyDataSource
-import com.seom.banchan.domain.model.MenuModel
+import com.seom.banchan.domain.model.home.MenuModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject

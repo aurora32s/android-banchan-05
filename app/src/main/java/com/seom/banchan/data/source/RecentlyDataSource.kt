@@ -1,7 +1,6 @@
 package com.seom.banchan.data.source
 
-import com.seom.banchan.data.db.entity.RecentlyEntity
-import com.seom.banchan.domain.model.MenuModel
+import com.seom.banchan.domain.model.home.MenuModel
 import kotlinx.coroutines.flow.Flow
 
 interface RecentlyDataSource {

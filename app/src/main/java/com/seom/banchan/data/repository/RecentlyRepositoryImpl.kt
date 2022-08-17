@@ -1,7 +1,7 @@
 package com.seom.banchan.data.repository
 
 import com.seom.banchan.data.source.RecentlyDataSource
-import com.seom.banchan.domain.model.MenuModel
+import com.seom.banchan.domain.model.home.MenuModel
 import com.seom.banchan.domain.repository.RecentlyRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject

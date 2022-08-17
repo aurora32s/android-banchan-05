@@ -1,6 +1,6 @@
 package com.seom.banchan.domain.repository
 
-import com.seom.banchan.domain.model.MenuModel
+import com.seom.banchan.domain.model.home.MenuModel
 import kotlinx.coroutines.flow.Flow
 
 interface RecentlyRepository {
