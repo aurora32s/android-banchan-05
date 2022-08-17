@@ -1,9 +1,12 @@
 package com.seom.banchan.ui.adapter
 
 import android.annotation.SuppressLint
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.seom.banchan.databinding.ItemHomeSortBinding
 import com.seom.banchan.ui.adapter.viewholder.ModelViewHolder
+import com.seom.banchan.ui.adapter.viewholder.home.SortViewHolder
 import com.seom.banchan.ui.model.CellType
 import com.seom.banchan.ui.model.Model
 import com.seom.banchan.util.listener.ModelAdapterListener
@@ -20,6 +23,13 @@ class ModelRecyclerAdapter<M : Model>(
     override fun getItemViewType(position: Int) = modelList[position].type.ordinal
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ModelViewHolder<M> {
+        if(CellType.values()[viewType] == CellType.SORT_CELL){
+            val sortViewHolder = SortViewHolder(
+                ItemHomeSortBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            )
+            sortViewHolder.initViewHolder()
+            return sortViewHolder as ModelViewHolder<M>
+        }
         return ModelViewHolderMapper.map(parent, CellType.values()[viewType])
     }
 
@@ -36,8 +46,8 @@ class ModelRecyclerAdapter<M : Model>(
         notifyDataSetChanged()
     }
 
-    fun updateList(list:List<Model>){
-        modelList = (modelList.subList(0,3) + list).toMutableList()
+    fun updateList(list:List<Model>,startIndex : Int){
+        modelList = (modelList.subList(0,startIndex) + list).toMutableList()
         notifyItemRangeChanged(modelList.size - list.size , modelList.size - 1)
     }
 

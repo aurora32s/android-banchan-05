@@ -9,16 +9,19 @@ import com.seom.banchan.ui.adapter.viewholder.ModelViewHolder
 import com.seom.banchan.ui.model.home.SortMenuModel
 import com.seom.banchan.ui.model.home.TotalMenuModel
 
-class SortViewHolder (
-    private val binding: ItemHomeSortBinding
+class SortViewHolder(
+    private val binding: ItemHomeSortBinding,
 ) : ModelViewHolder<SortMenuModel>(binding) {
 
-    override fun bind(model: SortMenuModel) {
-        val adapter = SortSpinnerAdapter(
-            context= binding.root.context,
-            items = model.sortItems,
-        )
+    val adapter = SortSpinnerAdapter(
+        context = binding.root.context
+    )
+
+    fun initViewHolder() {
         binding.spSort.adapter = adapter
+    }
+
+    override fun bind(model: SortMenuModel) {
         binding.spSort.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(

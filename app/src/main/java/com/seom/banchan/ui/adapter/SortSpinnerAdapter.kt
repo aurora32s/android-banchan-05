@@ -10,12 +10,13 @@ import com.seom.banchan.R
 import com.seom.banchan.databinding.HeaderSpinnerBinding
 import com.seom.banchan.databinding.ItemSpinnerBinding
 import com.seom.banchan.ui.model.SortItem
+import com.seom.banchan.ui.model.defaultSortItems
 
 class SortSpinnerAdapter(
-    context : Context,
-    private val items : List<SortItem>
-) : ArrayAdapter<SortItem>(context, R.layout.item_spinner,items) {
+    context : Context
+) : ArrayAdapter<SortItem>(context, R.layout.item_spinner) {
     var selectedSortItem = SortItem.BASE
+    private val items = defaultSortItems()
 
     override fun getCount() = items.size
 

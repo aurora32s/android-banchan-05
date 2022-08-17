@@ -46,13 +46,12 @@ class SideDishFragment : Fragment() {
         initRecyclerView()
 
         initObserver()
-        viewModel.fetchSortedSideMenus(SortItem.BASE)
     }
 
     private fun initObserver() {
         lifecycleScope.launch {
             viewModel.sideDishUiState.collect {
-                homeAdapter.updateList(it.sideMenus)
+                homeAdapter.updateList(it.sideMenus,getDefaultHeaders().size)
                 homeAdapter.updateModelAtPosition(
                     TotalMenuModel(
                     id = ModelId.TOTAL.name,
@@ -69,25 +68,27 @@ class SideDishFragment : Fragment() {
         it.rvSideDish.setGridLayoutManager(requireContext())
         it.rvSideDish.addItemDecoration(GridItemDecoration(requireContext(),true).decoration)
         homeAdapter.submitList(
-            listOf(
-                HeaderMenuModel(
-                    id = ModelId.HEADER.name,
-                    title = R.string.header_side
-                ),
-                TotalMenuModel(
-                    id = ModelId.TOTAL.name,
-                    count = viewModel.sideDishUiState.value.sideMenus.size, // 따로 구현
-                ),
-                SortMenuModel(
-                    id = ModelId.SORT.name,
-                    sortItems = defaultSortItems(),
-                    onSort = { sortItem ->
-                        viewModel.fetchSortedSideMenus(sortItem)
-                    }
-                )
-            )
+            getDefaultHeaders()
         )
     }
+
+    private fun getDefaultHeaders() = listOf(
+        HeaderMenuModel(
+            id = ModelId.HEADER.name,
+            title = R.string.header_side
+        ),
+        TotalMenuModel(
+            id = ModelId.TOTAL.name,
+            count = viewModel.sideDishUiState.value.sideMenus.size
+        ),
+        SortMenuModel(
+            id = ModelId.SORT.name,
+            sortItems = defaultSortItems(),
+            onSort = { sortItem ->
+                viewModel.fetchSortedSideMenus(sortItem)
+            }
+        )
+    )
 
     companion object {
         const val TAG = ".SideDishFragment"

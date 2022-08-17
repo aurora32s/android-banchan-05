@@ -50,7 +50,7 @@ class SoupDishFragment : Fragment() {
     private fun initObserver() {
         lifecycleScope.launch {
             viewModel.soupDishUiState.collect {
-                homeAdapter.updateList(it.soupMenus)
+                homeAdapter.updateList(it.soupMenus,getDefaultHeaders().size)
                 homeAdapter.updateModelAtPosition(
                     TotalMenuModel(
                         id = ModelId.TOTAL.name,
@@ -67,25 +67,27 @@ class SoupDishFragment : Fragment() {
         it.rvSoupDish.setGridLayoutManager(requireContext())
         it.rvSoupDish.addItemDecoration(GridItemDecoration(requireContext(),true).decoration)
         homeAdapter.submitList(
-            listOf(
-                HeaderMenuModel(
-                    id = ModelId.HEADER.name,
-                    title = R.string.header_soup
-                ),
-                TotalMenuModel(
-                    id = ModelId.TOTAL.name,
-                    count = viewModel.soupDishUiState.value.soupMenus.size
-                ),
-                SortMenuModel(
-                    id = ModelId.SORT.name,
-                    sortItems = defaultSortItems(),
-                    onSort = { sortItem ->
-                        viewModel.fetchSortedSoupMenus(sortItem)
-                    }
-                )
-            )
+            getDefaultHeaders()
         )
     }
+
+    private fun getDefaultHeaders() = listOf(
+        HeaderMenuModel(
+            id = ModelId.HEADER.name,
+            title = R.string.header_soup
+        ),
+        TotalMenuModel(
+            id = ModelId.TOTAL.name,
+            count = viewModel.soupDishUiState.value.soupMenus.size
+        ),
+        SortMenuModel(
+            id = ModelId.SORT.name,
+            sortItems = defaultSortItems(),
+            onSort = { sortItem ->
+                viewModel.fetchSortedSoupMenus(sortItem)
+            }
+        )
+    )
 
     companion object {
         const val TAG = ".SoupDishFragment"
