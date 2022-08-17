@@ -9,18 +9,23 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.seom.banchan.R
 import com.seom.banchan.databinding.FragmentDetailBinding
+import com.seom.banchan.domain.model.home.MenuModel
 import com.seom.banchan.ui.adapter.ModelRecyclerAdapter
 import com.seom.banchan.ui.model.CellType
 import com.seom.banchan.ui.model.Model
+import com.seom.banchan.ui.model.detail.DetailBottomButtonModel
 import com.seom.banchan.ui.model.detail.DetailMenuUiModel
+import com.seom.banchan.ui.model.detail.MenuCountModel
 import com.seom.banchan.ui.model.imageSlider.ImageSliderModel
 import com.seom.banchan.util.ext.fromDpToPx
+import com.seom.banchan.util.listener.ModelAdapterListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class DetailFragment: Fragment() {
+class DetailFragment : Fragment() {
     private var _binding: FragmentDetailBinding? = null
     private val binding get() = _binding
 
@@ -37,17 +42,18 @@ class DetailFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val menu: MenuModel? = arguments?.getSerializable(KEY_MODEL_BUNDLE) as? MenuModel
         lifecycleScope.launch {
             viewModel.detailMenuModel.collect {
                 when (it) {
                     is DetailUiState.Success -> {
-                        println(it.detailMenu)
                         binding?.detail = it.detailMenu
                         initRecyclerView(it.detailMenu)
                         initAppbar()
                     }
                     DetailUiState.UnInitialized -> {
-                        viewModel.fetchData("HBDEF")
+                        viewModel.fetchData(menu)
                     }
                 }
             }
@@ -55,7 +61,11 @@ class DetailFragment: Fragment() {
     }
 
     private fun initRecyclerView(detailMenuUiModel: DetailMenuUiModel) = binding?.let {
-        var detailItem = listOf<Model>(detailMenuUiModel)
+        var detailItem = listOf(
+            detailMenuUiModel,
+            MenuCountModel(id = "menuCount", count = viewModel.count),
+            DetailBottomButtonModel(id = "bottomButton", totalCount = viewModel.totalPrice)
+        )
         detailMenuUiModel.detailMenu.detailImages?.let { image ->
             detailItem += image.map {
                 ImageSliderModel(imageUrl = it, type = CellType.IMAGE_LIST_CELL)
@@ -65,7 +75,22 @@ class DetailFragment: Fragment() {
         it.rvMenuInfo.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
-        val menuDetailAdapter = ModelRecyclerAdapter<Model>()
+        val menuDetailAdapter = ModelRecyclerAdapter<Model>(
+            modelAdapterListener = object : ModelAdapterListener {
+                override fun onClick(view: View, model: Model, position: Int) {
+                    when (model.type) {
+                        CellType.DETAIL_COUNT_CELL -> {
+                            if (view.id == R.id.iv_up_count) {
+                                viewModel.increaseCount()
+                            } else if (view.id == R.id.iv_down_count) {
+                                viewModel.decreaseCount()
+                            }
+                        }
+                        else -> {}
+                    }
+                }
+            }
+        )
         it.rvMenuInfo.adapter = menuDetailAdapter
         menuDetailAdapter.submitList(detailItem)
     }
@@ -89,6 +114,16 @@ class DetailFragment: Fragment() {
 
     companion object {
         const val TAG = ".DetailFragment"
-        fun newInstance() = DetailFragment()
+        const val KEY_MODEL_BUNDLE = "SelectedModel"
+
+        fun newInstance(menuModel: MenuModel): DetailFragment {
+            val instance = DetailFragment()
+
+            val bundle = Bundle()
+            bundle.putSerializable(KEY_MODEL_BUNDLE, menuModel)
+            instance.arguments = bundle
+
+            return instance
+        }
     }
 }

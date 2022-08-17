@@ -3,6 +3,7 @@ package com.seom.banchan.domain.model.home
 import com.seom.banchan.ui.model.home.HomeMenuGridModel
 import com.seom.banchan.ui.model.home.HomeMenuLinearModel
 import com.seom.banchan.ui.model.home.HomeMenuModel
+import java.io.Serializable
 import java.lang.Math.ceil
 
 data class MenuModel(
@@ -13,7 +14,7 @@ data class MenuModel(
     val description: String,
     val salePrice: Int,
     val normalPrice: Int
-)
+): Serializable
 
 fun MenuModel.toHomeMenuModel() = HomeMenuModel(
     id = id,

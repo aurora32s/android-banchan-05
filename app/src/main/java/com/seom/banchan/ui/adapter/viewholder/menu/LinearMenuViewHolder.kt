@@ -7,7 +7,7 @@ import com.seom.banchan.ui.model.home.HomeMenuLinearModel
 class LinearMenuViewHolder(
     private val binding: ItemMenuLinearBinding
 ) : ModelViewHolder<HomeMenuLinearModel>(binding) {
-    override fun bind(model: HomeMenuLinearModel) {
+    override fun bindData(model: HomeMenuLinearModel) {
         binding.menu = model
     }
 }

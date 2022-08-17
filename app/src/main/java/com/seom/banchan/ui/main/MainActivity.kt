@@ -46,4 +46,7 @@ class MainActivity : AppCompatActivity(), BaseFragment.FragmentNavigation {
     override fun addFragment(fragment: Fragment, fragmentTag: String?) {
         fragmentNavigationController.addFragment(fragment,fragmentTag)
     }
+    override fun replaceFragment(fragment: Fragment, fragmentTag: String?) {
+        fragmentNavigationController.replaceFragment(fragment, fragmentTag)
+    }
 }

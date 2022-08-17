@@ -8,7 +8,7 @@ class FilterViewHolder (
     private val binding: ItemHomeFilterBinding
 ) : ModelViewHolder<FilterMenuModel>(binding) {
 
-    override fun bind(model: FilterMenuModel) {
+    override fun bindData(model: FilterMenuModel) {
         binding.filter = model
         binding.rgFilter.setOnCheckedChangeListener { _, _ ->
             model.onToggle(

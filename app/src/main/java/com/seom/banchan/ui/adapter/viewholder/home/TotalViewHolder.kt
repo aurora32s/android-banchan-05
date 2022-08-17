@@ -12,7 +12,7 @@ class TotalViewHolder (
     private val binding: ItemHomeTotalBinding
 ) : ModelViewHolder<TotalMenuModel>(binding) {
 
-    override fun bind(model: TotalMenuModel) {
+    override fun bindData(model: TotalMenuModel) {
         binding.total = model
         val adapter = SortSpinnerAdapter(
             context= binding.root.context,

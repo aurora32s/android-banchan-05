@@ -6,9 +6,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.seom.banchan.ui.adapter.viewholder.ModelViewHolder
 import com.seom.banchan.ui.model.CellType
 import com.seom.banchan.ui.model.Model
+import com.seom.banchan.util.listener.ModelAdapterListener
 import com.seom.banchan.util.mapper.ModelViewHolderMapper
 
-class ModelRecyclerAdapter<M : Model> : RecyclerView.Adapter<ModelViewHolder<M>>() {
+class ModelRecyclerAdapter<M : Model>(
+    private val modelAdapterListener: ModelAdapterListener? = null
+) : RecyclerView.Adapter<ModelViewHolder<M>>() {
 
     // recyclerview 에 보여줄 list
     private var modelList: List<Model> = emptyList()
@@ -22,7 +25,9 @@ class ModelRecyclerAdapter<M : Model> : RecyclerView.Adapter<ModelViewHolder<M>>
 
     @Suppress("UNCHECKED_CAST")
     override fun onBindViewHolder(holder: ModelViewHolder<M>, position: Int) {
-        holder.bind(modelList[position] as M)
+        val model = modelList[position] as M
+        holder.bindData(model = model)
+        holder.bindViews(model = model, menuAdapterListener = modelAdapterListener)
     }
 
     @SuppressLint("NotifyDataSetChanged")
