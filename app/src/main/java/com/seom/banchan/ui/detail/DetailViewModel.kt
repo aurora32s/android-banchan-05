@@ -36,6 +36,10 @@ class DetailViewModel @Inject constructor(
         _count.emit(_count.value - 1)
     }
 
+    private val _totalPrice = MutableStateFlow(0)
+    val totalPrice =
+        _totalPrice.asStateFlow().combine(count) { newCount, salePrice -> newCount * salePrice }
+
     fun fetchData(menu: MenuModel?) = viewModelScope.launch {
         if (menu == null) {
             _detailMenuUiModel.value = DetailUiState.Error
@@ -43,6 +47,7 @@ class DetailViewModel @Inject constructor(
         }
         getMenuDetailUseCase(menu.id)
             .onSuccess {
+                _totalPrice.value = it.salePrice
                 _detailMenuUiModel.value = DetailUiState.Success(it.toUiModel())
             }
     }

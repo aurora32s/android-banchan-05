@@ -64,7 +64,7 @@ class DetailFragment : Fragment() {
         var detailItem = listOf(
             detailMenuUiModel,
             MenuCountModel(id = "menuCount", count = viewModel.count),
-            DetailBottomButtonModel(id = "bottomButton", totalCount = viewModel.count)
+            DetailBottomButtonModel(id = "bottomButton", totalCount = viewModel.totalPrice)
         )
         detailMenuUiModel.detailMenu.detailImages?.let { image ->
             detailItem += image.map {
