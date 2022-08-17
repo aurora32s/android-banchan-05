@@ -13,6 +13,6 @@ class AddMenuToCartUseCase @Inject constructor(
     private val ioDispatcher: CoroutineDispatcher
 ) {
     suspend operator fun invoke(menu: CartMenuModel): Result<Long> = withContext(ioDispatcher) {
-        cartRepository.addMenuToCart(menu)
+        cartRepository.addOrReplaceMenuToCart(menu)
     }
 }

@@ -8,7 +8,7 @@ import com.seom.banchan.domain.model.cart.CartMenuModel
  */
 interface CartDataSource {
     /**
-     * 장바구니에 새로운 아이템 추가
+     * 만약 동일한 아이템이 있는 경우, 개수가 더해진 새로운 메뉴 아이템으로 변경
      */
-    suspend fun addCartItem(cartMenuItem: CartMenuModel): Result<Long>
+    suspend fun addOrReplaceMenuToCart(cartMenuItem: CartMenuModel): Result<Long>
 }

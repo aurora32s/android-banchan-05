@@ -10,7 +10,7 @@ class CartRepositoryImpl @Inject constructor(
 ) : CartRepository {
 
     // 장바구니에 메뉴 추가
-    override suspend fun addMenuToCart(menu: CartMenuModel): Result<Long> {
-        return cartDataSource.addCartItem(menu)
+    override suspend fun addOrReplaceMenuToCart(menu: CartMenuModel): Result<Long> {
+        return cartDataSource.addOrReplaceMenuToCart(menu)
     }
 }
