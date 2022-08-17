@@ -2,11 +2,12 @@ package com.seom.banchan.ui.home.maindish
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.seom.banchan.domain.model.MenuModel
-import com.seom.banchan.domain.model.toHomeMenuLinearModel
-import com.seom.banchan.domain.model.toHomeMenuModel
+import com.seom.banchan.domain.model.home.MenuModel
+import com.seom.banchan.domain.model.home.toHomeMenuLinearModel
+import com.seom.banchan.domain.model.home.toHomeMenuModel
 import com.seom.banchan.domain.usecase.GetMainMenusUseCase
-import com.seom.banchan.ui.model.*
+import com.seom.banchan.ui.model.Model
+import com.seom.banchan.ui.model.SortItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

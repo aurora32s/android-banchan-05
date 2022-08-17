@@ -21,24 +21,24 @@ class SortViewHolder(
         binding.spSort.adapter = adapter
     }
 
-    override fun bind(model: SortMenuModel) {
+    override fun bindData(model: SortMenuModel) {
         binding.spSort.onItemSelectedListener =
-            object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    adapterView: AdapterView<*>?,
-                    view: View?,
-                    position: Int,
-                    id: Long
-                ) {
-                    model.run {
-                        onSort(adapter.getItem(position))
-                        adapter.selectedSortItem = adapter.getItem(position)
-                    }
-                }
-
-                override fun onNothingSelected(p0: AdapterView<*>?) {
-
+        object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                adapterView: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                model.run {
+                    onSort(adapter.getItem(position))
+                    adapter.selectedSortItem = adapter.getItem(position)
                 }
             }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+
+            }
+        }
     }
 }

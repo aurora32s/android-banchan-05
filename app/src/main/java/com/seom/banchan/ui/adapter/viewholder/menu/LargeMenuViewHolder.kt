@@ -7,7 +7,7 @@ import com.seom.banchan.ui.model.home.HomeMenuLargeModel
 class LargeMenuViewHolder(
     private val binding: ItemMenuLargeBinding
 ) : ModelViewHolder<HomeMenuLargeModel>(binding) {
-    override fun bind(model: HomeMenuLargeModel) {
+    override fun bindData(model: HomeMenuLargeModel) {
         binding.menu = model
     }
 }

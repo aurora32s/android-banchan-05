@@ -1,8 +1,6 @@
 package com.seom.banchan.domain.repository
 
 import com.seom.banchan.data.api.SortCriteria
-import com.seom.banchan.domain.model.CategoryModel
-import com.seom.banchan.domain.model.MenuModel
 import com.seom.banchan.domain.model.detail.DetailMenuModel
 import com.seom.banchan.domain.model.home.CategoryModel
 import com.seom.banchan.domain.model.home.MenuModel

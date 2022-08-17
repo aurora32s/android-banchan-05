@@ -7,8 +7,7 @@ enum class CellType {
     MENU_LARGE_CELL,
     FILTER_CELL,
     TOTAL_CELL,
-    SORT_CELL
-    TOTAL_CELL,
+    SORT_CELL,
 
     // 상세 화면
     IMAGE_SLIDER_CELL, // viewpager 이미지

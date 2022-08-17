@@ -2,11 +2,8 @@ package com.seom.banchan.data.source.remote
 
 import com.seom.banchan.data.api.MenuApiService
 import com.seom.banchan.data.api.SortCriteria
-import com.seom.banchan.data.api.response.BestMenuResponse
-import com.seom.banchan.data.api.response.toModel
 import com.seom.banchan.data.api.requestApi
 import com.seom.banchan.data.api.response.best.toModel
-import com.seom.banchan.data.api.response.detail.DetailMenuResponse
 import com.seom.banchan.data.api.response.detail.toModel
 import com.seom.banchan.data.source.MenuDataSource
 import com.seom.banchan.domain.model.detail.DetailMenuModel

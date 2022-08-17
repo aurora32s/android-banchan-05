@@ -25,7 +25,6 @@ fun List<RecentlyEntity>.toMenuModelList() : List<MenuModel> {
             salePrice = it.salePrice,
             normalPrice = it.normalPrice,
             name = it.title,
-            recentlyTime = it.recentlyTime
         )
     }
 }
