@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.seom.banchan.R
 import com.seom.banchan.databinding.FragmentDetailBinding
 import com.seom.banchan.domain.model.home.MenuModel
 import com.seom.banchan.ui.adapter.ModelRecyclerAdapter
@@ -18,6 +19,7 @@ import com.seom.banchan.ui.model.detail.DetailMenuUiModel
 import com.seom.banchan.ui.model.detail.MenuCountModel
 import com.seom.banchan.ui.model.imageSlider.ImageSliderModel
 import com.seom.banchan.util.ext.fromDpToPx
+import com.seom.banchan.util.listener.ModelAdapterListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -60,7 +62,7 @@ class DetailFragment : Fragment() {
     private fun initRecyclerView(detailMenuUiModel: DetailMenuUiModel) = binding?.let {
         var detailItem = listOf(
             detailMenuUiModel,
-            MenuCountModel(id = "menuCount", count = 1)
+            MenuCountModel(id = "menuCount", count = viewModel.count)
         )
         detailMenuUiModel.detailMenu.detailImages?.let { image ->
             detailItem += image.map {
@@ -71,7 +73,22 @@ class DetailFragment : Fragment() {
         it.rvMenuInfo.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
-        val menuDetailAdapter = ModelRecyclerAdapter<Model>()
+        val menuDetailAdapter = ModelRecyclerAdapter<Model>(
+            modelAdapterListener = object : ModelAdapterListener {
+                override fun onClick(view: View, model: Model, position: Int) {
+                    when (model.type) {
+                        CellType.DETAIL_COUNT_CELL -> {
+                            if (view.id == R.id.iv_up_count) {
+                                viewModel.increaseCount()
+                            } else if (view.id == R.id.iv_down_count) {
+                                viewModel.decreaseCount()
+                            }
+                        }
+                        else -> {}
+                    }
+                }
+            }
+        )
         it.rvMenuInfo.adapter = menuDetailAdapter
         menuDetailAdapter.submitList(detailItem)
     }

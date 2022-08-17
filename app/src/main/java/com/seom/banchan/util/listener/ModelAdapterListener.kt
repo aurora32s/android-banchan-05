@@ -1,5 +1,6 @@
 package com.seom.banchan.util.listener
 
+import android.view.View
 import com.seom.banchan.ui.model.Model
 
 /**
@@ -7,5 +8,5 @@ import com.seom.banchan.ui.model.Model
  * 클릭 리스너
  */
 interface ModelAdapterListener {
-    fun onClick(model: Model)
+    fun onClick(view: View, model: Model, position: Int)
 }

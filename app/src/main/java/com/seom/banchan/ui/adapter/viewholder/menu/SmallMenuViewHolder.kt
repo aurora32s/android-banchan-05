@@ -17,7 +17,7 @@ class SmallMenuViewHolder(
         menuAdapterListener: ModelAdapterListener?
     ) {
         binding.root.setOnClickListener {
-            menuAdapterListener?.onClick(model)
+            menuAdapterListener?.onClick(it, model, adapterPosition)
         }
     }
 }

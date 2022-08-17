@@ -2,7 +2,6 @@
 <layout>
 
     <data>
-
         <variable
             name="count"
             type="Integer" />
@@ -69,7 +68,7 @@
                 app:layout_constraintEnd_toStartOf="@id/iv_up_count"
                 app:layout_constraintStart_toEndOf="@id/iv_down_count"
                 app:layout_constraintTop_toTopOf="parent"
-                app:text="@{count.toString()}" />
+                android:text="@{count.toString()}" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

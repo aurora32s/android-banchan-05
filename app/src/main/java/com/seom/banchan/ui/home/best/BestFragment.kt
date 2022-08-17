@@ -38,7 +38,7 @@ class BestFragment : BaseFragment() {
         ModelRecyclerAdapter(
             modelAdapterListener =
             object : ModelAdapterListener {
-                override fun onClick(model: Model) {
+                override fun onClick(view: View, model: Model, position: Int) {
                     when (model.type) {
                         CellType.MENU_CELL -> {
                             (model as? HomeMenuModel)?.menu?.let {
