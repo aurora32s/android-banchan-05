@@ -13,7 +13,8 @@ data class MenuModel(
     val image: String,
     val description: String,
     val salePrice: Int,
-    val normalPrice: Int
+    val normalPrice: Int,
+    val recentlyTime : Long = 0
 ): Serializable
 
 fun MenuModel.toHomeMenuModel() = HomeMenuModel(

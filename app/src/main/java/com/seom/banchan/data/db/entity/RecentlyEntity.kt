@@ -3,7 +3,7 @@ package com.seom.banchan.data.db.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.seom.banchan.domain.model.MenuModel
+import com.seom.banchan.domain.model.home.MenuModel
 
 @Entity(tableName = "recently_table")
 data class RecentlyEntity (
