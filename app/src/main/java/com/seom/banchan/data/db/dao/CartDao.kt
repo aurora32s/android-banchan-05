@@ -9,5 +9,5 @@ import com.seom.banchan.data.db.entity.CartMenuEntity
 interface CartDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertCartMenu(cartMenuEntity: CartMenuEntity): Int
+    suspend fun insertCartMenu(cartMenuEntity: CartMenuEntity)
 }

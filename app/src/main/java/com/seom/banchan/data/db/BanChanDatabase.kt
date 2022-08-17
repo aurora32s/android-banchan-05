@@ -1,6 +1,7 @@
 package com.seom.banchan.data.db
 
 import androidx.room.Database
+import androidx.room.RoomDatabase
 import com.seom.banchan.data.db.dao.CartDao
 import com.seom.banchan.data.db.entity.CartMenuEntity
 
@@ -9,7 +10,7 @@ import com.seom.banchan.data.db.entity.CartMenuEntity
     version = BanChanDatabase.DATABASE_VERSION,
     exportSchema = false
 )
-abstract class BanChanDatabase {
+abstract class BanChanDatabase : RoomDatabase() {
 
     abstract fun cartDao(): CartDao
 
