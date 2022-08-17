@@ -14,7 +14,7 @@ data class MenuModel(
     val description: String,
     val salePrice: Int,
     val normalPrice: Int,
-    val recentlyTime : Long = 0
+    val recentlyTime : String = ""
 ): Serializable
 
 fun MenuModel.toHomeMenuModel(isBest : Boolean = false,cellType: CellType = CellType.MENU_CELL) = HomeMenuModel(
