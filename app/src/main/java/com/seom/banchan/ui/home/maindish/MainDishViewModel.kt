@@ -6,10 +6,7 @@ import com.seom.banchan.domain.model.MenuModel
 import com.seom.banchan.domain.model.toHomeMenuLinearModel
 import com.seom.banchan.domain.model.toHomeMenuModel
 import com.seom.banchan.domain.usecase.GetMainMenusUseCase
-import com.seom.banchan.ui.model.Model
-import com.seom.banchan.ui.model.Sort
-import com.seom.banchan.ui.model.defaultSortItems
-import com.seom.banchan.ui.model.selectedSortItem
+import com.seom.banchan.ui.model.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -25,22 +22,18 @@ class MainDishViewModel @Inject constructor(
     val mainDishUiState: StateFlow<MainDishUiState>
         get() = _mainDishUiState
 
-    private val _toggleState = MutableStateFlow<ToggleState>(ToggleState())
+    private val _toggleState = MutableStateFlow<ToggleState>(ToggleState.GRID)
     val toggleState: StateFlow<ToggleState>
         get() = _toggleState
 
-    fun fetchSortedMainMenus(position : Int) = viewModelScope.launch {
-        _mainDishUiState.value = mainDishUiState.value.copy(
-            defaultSortItems = defaultSortItems().apply {
-                this.selectedSortItem(position)
-            },
-            selectedSortPosition = position
-        )
-        getMainMenusUseCase(defaultSortItems().get(position).sortCriteria)
+    private var menuModels = emptyList<MenuModel>()
+
+    fun fetchSortedMainMenus(sortItem: SortItem) = viewModelScope.launch {
+        getMainMenusUseCase(sortItem.sortCriteria)
             .onSuccess { result ->
+                menuModels = result
                 _mainDishUiState.value = mainDishUiState.value.copy(
-                    models = result,
-                    mainMenus = if (toggleState.value.viewModeToggle) result.map {
+                    mainMenus = if (toggleState.value == ToggleState.LINEAR) result.map {
                         it.toHomeMenuLinearModel()
                     } else result.map {
                         it.toHomeMenuModel()
@@ -52,19 +45,12 @@ class MainDishViewModel @Inject constructor(
             }
     }
 
-    fun updateToggle(toggle : Boolean) {
-        _toggleState.value = toggleState.value.copy(
-            selectedTogglePosition = if(toggle) 1 else 0,
-            viewModeToggle = toggle,
-        )
-    }
-
-    fun updateViewMode(toggle : Boolean) {
-        val models = mainDishUiState.value.models
+    fun updateToggle(toggle: ToggleState) {
+        _toggleState.value = toggle
         _mainDishUiState.value = mainDishUiState.value.copy(
-            mainMenus = if (toggle) models.map {
+            mainMenus = if (toggle == ToggleState.LINEAR) menuModels.map {
                 it.toHomeMenuLinearModel()
-            } else models.map {
+            } else menuModels.map {
                 it.toHomeMenuModel()
             }
         )
@@ -72,15 +58,13 @@ class MainDishViewModel @Inject constructor(
 }
 
 data class MainDishUiState(
-    val models : List<MenuModel> = emptyList(),
-    val mainMenus : List<Model> = emptyList(),
-    val defaultSortItems : List<Sort> = defaultSortItems(),
-    val selectedSortPosition : Int = 0,
-    val isLoading : Boolean = false, // TODO
-    val error : String = "" // TODO
+    val mainMenus: List<Model> = emptyList(),
+    val isLoading: Boolean = false, // TODO
+    val error: String = "" // TODO
 )
 
-data class ToggleState(
-    val selectedTogglePosition : Int = 0,
-    val viewModeToggle : Boolean = false,
-)
+enum class ToggleState(val spanCount: Int) {
+    LINEAR(1),
+    GRID(2)
+}
+

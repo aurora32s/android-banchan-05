@@ -31,6 +31,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:background="@drawable/selector_toggle_grid"
+                android:checked="true"
                 android:button="@null" />
 
             <androidx.appcompat.widget.AppCompatRadioButton
@@ -40,20 +41,6 @@
                 android:background="@drawable/selector_toggle_linear"
                 android:button="@null" />
         </RadioGroup>
-
-        <androidx.appcompat.widget.AppCompatSpinner
-            android:id="@+id/sp_sort"
-            android:layout_width="124dp"
-            android:layout_height="wrap_content"
-            android:background="@null"
-            android:dropDownWidth="110dp"
-            android:dropDownVerticalOffset="8dp"
-            android:gravity="end"
-            android:overlapAnchor="false"
-            android:popupBackground="@drawable/background_dropdown"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

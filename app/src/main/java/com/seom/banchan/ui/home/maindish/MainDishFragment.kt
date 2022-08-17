@@ -13,9 +13,12 @@ import com.seom.banchan.databinding.FragmentMainDishBinding
 import com.seom.banchan.ui.adapter.ItemDecoration.GridItemDecoration
 import com.seom.banchan.ui.adapter.ModelRecyclerAdapter
 import com.seom.banchan.ui.model.Model
+import com.seom.banchan.ui.model.ModelId
+import com.seom.banchan.ui.model.SortItem
 import com.seom.banchan.ui.model.defaultSortItems
 import com.seom.banchan.ui.model.home.FilterMenuModel
 import com.seom.banchan.ui.model.home.HeaderMenuModel
+import com.seom.banchan.ui.model.home.SortMenuModel
 import com.seom.banchan.util.ext.setGridLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -43,36 +46,21 @@ class MainDishFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
         initObserver()
-        viewModel.fetchSortedMainMenus(0)
+        viewModel.fetchSortedMainMenus(SortItem.BASE)
     }
 
     private fun initObserver() {
         lifecycleScope.launch {
             viewModel.mainDishUiState.collect {
-                homeAdapter.submitList(
-                    listOf(
-                        HeaderMenuModel(id = getString(R.string.header_view_holder), title = R.string.header_main),
-                        FilterMenuModel(
-                            id = getString(R.string.filter_view_holder),
-                            togglePosition = viewModel.toggleState.value.selectedTogglePosition,
-                            onToggle = { it ->
-                                viewModel.updateToggle(it)
-                            },
-                            position = viewModel.mainDishUiState.value.selectedSortPosition,
-                            sortByItems = viewModel.mainDishUiState.value.defaultSortItems,
-                            onSort = {
-                                viewModel.fetchSortedMainMenus(position = it)
-                            }
-                        )
-                    ) + it.mainMenus
+                homeAdapter.updateList(
+                    it.mainMenus,getDefaultHeaders().size
                 )
             }
         }
 
         lifecycleScope.launch {
             viewModel.toggleState.collect {
-                setItemDecoration(it.viewModeToggle)
-                viewModel.updateViewMode(it.viewModeToggle)
+                setItemDecoration(it == ToggleState.LINEAR)
             }
         }
     }
@@ -82,6 +70,9 @@ class MainDishFragment : Fragment() {
             adapter = homeAdapter
             setGridLayoutManager(requireContext())
         }
+        homeAdapter.submitList(
+            getDefaultHeaders()
+        )
     }
 
     private fun setItemDecoration(toggle : Boolean) = binding?.rvMainDish?.let {
@@ -89,6 +80,23 @@ class MainDishFragment : Fragment() {
             it.removeItemDecorationAt(0)
         it.addItemDecoration(GridItemDecoration(requireContext(),!toggle).decoration)
     }
+
+    private fun getDefaultHeaders() = listOf(
+        HeaderMenuModel(id = ModelId.HEADER.name, title = R.string.header_main),
+        FilterMenuModel(
+            id = ModelId.FILTER.name,
+            onToggle = { it ->
+                viewModel.updateToggle(it)
+            },
+        ),
+        SortMenuModel(
+            id = ModelId.SORT.name,
+            sortItems = defaultSortItems(),
+            onSort = { sortItem ->
+                viewModel.fetchSortedMainMenus(sortItem)
+            }
+        )
+    )
 
     companion object {
         const val TAG = ".MainDishFragment"
