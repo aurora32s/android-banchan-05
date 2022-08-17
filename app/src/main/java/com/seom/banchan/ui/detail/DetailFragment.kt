@@ -62,6 +62,9 @@ class DetailFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentDetailBinding.inflate(inflater)
+        // backstack 으로 돌아왔을 때 UiState 상태 값이 마지막 상태에 머물러 있어
+        // onCreateView 에서 UiState 를 초기 값으로 변경
+        viewModel.init()
         return binding?.root
     }
 
@@ -81,16 +84,7 @@ class DetailFragment : BaseFragment() {
                         viewModel.fetchData(menu)
                     }
                     is DetailUiState.Success.SuccessAddToCart -> {
-                        // 장바구니 추가 성공 시
-                        DetailAddCartAlert.build()
-                            .setOnClickMoveToCart {
-                                // TODO 일단 이전화면으로 이동하도록 해두었습니다. 장바구니 화면 완성후 이 부분을 수정하면 될 듯합니다.
-                                fragmentNavigation.replaceFragment(
-                                    HomeFragment.newInstance(),
-                                    HomeFragment.TAG
-                                )
-                            }
-                            .show(childFragmentManager)
+                        showDialog()
                     }
                 }
             }
@@ -131,6 +125,19 @@ class DetailFragment : BaseFragment() {
                 }
             }
         })
+    }
+
+    private fun showDialog() {
+        // 장바구니 추가 성공 시
+        DetailAddCartAlert.build()
+            .setOnClickMoveToCart {
+                // TODO 일단 이전화면으로 이동하도록 해두었습니다. 장바구니 화면 완성후 이 부분을 수정하면 될 듯합니다.
+                fragmentNavigation.replaceFragment(
+                    HomeFragment.newInstance(),
+                    HomeFragment.TAG
+                )
+            }
+            .show(childFragmentManager)
     }
 
     companion object {

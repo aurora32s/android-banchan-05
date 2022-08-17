@@ -48,6 +48,10 @@ class DetailViewModel @Inject constructor(
     // 현재 음식 data
     lateinit var currentMenu: DetailMenuModel
 
+    fun init() {
+        _detailMenuUiModel.value = DetailUiState.UnInitialized
+    }
+
     fun fetchData(menu: MenuModel?) = viewModelScope.launch {
         if (menu == null) {
             _detailMenuUiModel.value = DetailUiState.Error
@@ -57,7 +61,8 @@ class DetailViewModel @Inject constructor(
             .onSuccess {
                 currentMenu = it
                 _totalPrice.value = it.salePrice
-                _detailMenuUiModel.value = DetailUiState.Success.SuccessFetch(currentMenu.toUiModel())
+                _detailMenuUiModel.value =
+                    DetailUiState.Success.SuccessFetch(currentMenu.toUiModel())
             }
     }
 
@@ -79,11 +84,12 @@ class DetailViewModel @Inject constructor(
 
 sealed interface DetailUiState {
     object UnInitialized : DetailUiState
-    sealed interface Success: DetailUiState {
+    sealed interface Success : DetailUiState {
         data class SuccessFetch(
             val detailMenu: DetailMenuUiModel
         ) : Success
-        object SuccessAddToCart: Success
+
+        object SuccessAddToCart : Success
     }
 
     object Error : DetailUiState
