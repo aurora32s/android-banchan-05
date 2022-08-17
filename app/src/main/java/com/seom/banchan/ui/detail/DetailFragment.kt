@@ -15,6 +15,7 @@ import com.seom.banchan.ui.adapter.ModelRecyclerAdapter
 import com.seom.banchan.ui.model.CellType
 import com.seom.banchan.ui.model.Model
 import com.seom.banchan.ui.model.detail.DetailMenuUiModel
+import com.seom.banchan.ui.model.detail.MenuCountModel
 import com.seom.banchan.ui.model.imageSlider.ImageSliderModel
 import com.seom.banchan.util.ext.fromDpToPx
 import dagger.hilt.android.AndroidEntryPoint
@@ -57,7 +58,10 @@ class DetailFragment : Fragment() {
     }
 
     private fun initRecyclerView(detailMenuUiModel: DetailMenuUiModel) = binding?.let {
-        var detailItem = listOf<Model>(detailMenuUiModel)
+        var detailItem = listOf(
+            detailMenuUiModel,
+            MenuCountModel(id = "menuCount", count = 1)
+        )
         detailMenuUiModel.detailMenu.detailImages?.let { image ->
             detailItem += image.map {
                 ImageSliderModel(imageUrl = it, type = CellType.IMAGE_LIST_CELL)
