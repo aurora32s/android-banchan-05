@@ -57,7 +57,7 @@ class DetailViewModel @Inject constructor(
             .onSuccess {
                 currentMenu = it
                 _totalPrice.value = it.salePrice
-                _detailMenuUiModel.value = DetailUiState.Success(currentMenu.toUiModel())
+                _detailMenuUiModel.value = DetailUiState.Success.SuccessFetch(currentMenu.toUiModel())
             }
     }
 
@@ -70,15 +70,21 @@ class DetailViewModel @Inject constructor(
             count = count.value
         )
         addMenuToCartUseCase(cartMenu)
+            .onSuccess {
+                _detailMenuUiModel.value = DetailUiState.Success.SuccessAddToCart
+            }
     }
 
 }
 
 sealed interface DetailUiState {
     object UnInitialized : DetailUiState
-    data class Success(
-        val detailMenu: DetailMenuUiModel
-    ) : DetailUiState
+    sealed interface Success: DetailUiState {
+        data class SuccessFetch(
+            val detailMenu: DetailMenuUiModel
+        ) : Success
+        object SuccessAddToCart: Success
+    }
 
     object Error : DetailUiState
 }

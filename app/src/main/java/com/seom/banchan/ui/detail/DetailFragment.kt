@@ -19,6 +19,7 @@ import com.seom.banchan.ui.model.detail.DetailBottomButtonModel
 import com.seom.banchan.ui.model.detail.DetailMenuUiModel
 import com.seom.banchan.ui.model.detail.MenuCountModel
 import com.seom.banchan.ui.model.imageSlider.ImageSliderModel
+import com.seom.banchan.ui.view.dialog.DetailAddCartAlert
 import com.seom.banchan.util.ext.fromDpToPx
 import com.seom.banchan.util.listener.ModelAdapterListener
 import dagger.hilt.android.AndroidEntryPoint
@@ -69,13 +70,17 @@ class DetailFragment : Fragment() {
         lifecycleScope.launch {
             viewModel.detailMenuModel.collect {
                 when (it) {
-                    is DetailUiState.Success -> {
+                    is DetailUiState.Success.SuccessFetch -> {
                         binding?.detail = it.detailMenu
                         initRecyclerView(it.detailMenu)
                         initAppbar()
                     }
                     DetailUiState.UnInitialized -> {
                         viewModel.fetchData(menu)
+                    }
+                    is DetailUiState.Success.SuccessAddToCart -> {
+                        // 장바구니 추가 성공 시
+                        DetailAddCartAlert.build().show(childFragmentManager)
                     }
                 }
             }
