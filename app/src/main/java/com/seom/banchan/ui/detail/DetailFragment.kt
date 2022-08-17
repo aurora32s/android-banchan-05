@@ -45,7 +45,7 @@ class DetailFragment : Fragment() {
                         }
                         CellType.DETAIL_BOTTOM_BUTTON_CELL -> {
                             // 장바구니 추가 버튼 클릭
-                            println(model)
+                            viewModel.addMenuToCart()
                         }
                         else -> {}
                     }
