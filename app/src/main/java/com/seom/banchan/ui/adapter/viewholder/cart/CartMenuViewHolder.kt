@@ -7,6 +7,6 @@ import com.seom.banchan.ui.model.Model
 class CartMenuViewHolder(
     private val binding: ItemCartMenuBinding
 ) : ModelViewHolder<Model>(binding) {
-    override fun bind(model: Model) {
+    override fun bindData(model: Model) {
     }
 }

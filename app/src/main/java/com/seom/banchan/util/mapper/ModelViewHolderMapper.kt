@@ -4,6 +4,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.seom.banchan.databinding.*
 import com.seom.banchan.ui.adapter.viewholder.ModelViewHolder
+import com.seom.banchan.ui.adapter.viewholder.cart.CartCheckViewHolder
+import com.seom.banchan.ui.adapter.viewholder.cart.CartMenuViewHolder
+import com.seom.banchan.ui.adapter.viewholder.cart.CartOrderViewHolder
+import com.seom.banchan.ui.adapter.viewholder.cart.CartRecentViewHolder
 import com.seom.banchan.ui.adapter.viewholder.detail.DetailBottomButtonViewHolder
 import com.seom.banchan.ui.adapter.viewholder.detail.MenuCountViewHolder
 import com.seom.banchan.ui.adapter.viewholder.detail.MenuInfoViewHolder
@@ -12,6 +16,7 @@ import com.seom.banchan.ui.adapter.viewholder.image.ImageListItemViewHolder
 import com.seom.banchan.ui.adapter.viewholder.image.ImageSliderViewHolder
 import com.seom.banchan.ui.adapter.viewholder.menu.LargeMenuViewHolder
 import com.seom.banchan.ui.adapter.viewholder.menu.SmallMenuViewHolder
+import com.seom.banchan.ui.adapter.viewholder.order.OrderInfoViewHolder
 import com.seom.banchan.ui.model.CellType
 import com.seom.banchan.ui.model.Model
 
@@ -59,6 +64,21 @@ object ModelViewHolderMapper {
             )
             CellType.SORT_CELL -> SortViewHolder(
                 ItemHomeSortBinding.inflate(inflater, parent, false)
+            )
+            CellType.CART_CHECK_CELL -> CartCheckViewHolder(
+                ItemCartCheckBinding.inflate(inflater, parent, false)
+            )
+            CellType.CART_MENU_CELL -> CartMenuViewHolder(
+                ItemCartMenuBinding.inflate(inflater, parent, false)
+            )
+            CellType.CART_ORDER_CELL -> CartOrderViewHolder(
+                ItemCartOrderBinding.inflate(inflater, parent, false)
+            )
+            CellType.CART_RECENT_CELL -> CartRecentViewHolder(
+                ItemCartRecentBinding.inflate(inflater, parent, false)
+            )
+            CellType.ORDER_INFO_CELL -> OrderInfoViewHolder(
+                ItemOrderInfoBinding.inflate(inflater, parent, false)
             )
         }
         return viewHolder as ModelViewHolder<M>

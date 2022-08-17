@@ -10,7 +10,11 @@ import com.seom.banchan.databinding.FragmentCartBinding
 import com.seom.banchan.ui.adapter.ModelRecyclerAdapter
 import com.seom.banchan.ui.base.BaseFragment
 import com.seom.banchan.ui.model.Model
-import com.seom.banchan.util.ext.setGridLayoutManager
+import com.seom.banchan.ui.model.cart.CartCheckModel
+import com.seom.banchan.ui.model.cart.CartMenuModel
+import com.seom.banchan.ui.model.cart.CartOrderModel
+import com.seom.banchan.ui.model.cart.CartRecentModel
+import com.seom.banchan.ui.model.order.OrderInfoModel
 
 class CartFragment : BaseFragment() {
     private var _binding: FragmentCartBinding? = null
@@ -39,10 +43,34 @@ class CartFragment : BaseFragment() {
     private fun initRecyclerView() = binding?.let {
         it.rvCart.adapter = cartAdapter
         it.rvCart.layoutManager =
-            LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        cartAdapter.submitList(
+            listOf(
+                CartCheckModel(
+                    id = "cart_check"
+                ),
+                CartMenuModel(
+                    id = "cart_menu"
+                ),
+                OrderInfoModel(
+                    id = "order_info"
+                ),
+                CartOrderModel(
+                    id = "cart_order"
+                ),
+                CartRecentModel(
+                    id = "cart_recent"
+                )
+            )
+        )
     }
 
-    private fun initObserver(){
+    private fun initObserver() {
 
+    }
+
+    companion object {
+        const val TAG = ".CartFragment"
+        fun newInstance() = CartFragment()
     }
 }

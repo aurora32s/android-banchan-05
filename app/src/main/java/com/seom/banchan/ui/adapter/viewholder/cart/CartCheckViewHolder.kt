@@ -7,6 +7,6 @@ import com.seom.banchan.ui.model.Model
 class CartCheckViewHolder(
     private val binding: ItemCartCheckBinding
 ) : ModelViewHolder<Model>(binding) {
-    override fun bind(model: Model) {
+    override fun bindData(model: Model) {
     }
 }
