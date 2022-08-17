@@ -10,10 +10,7 @@ import com.seom.banchan.domain.model.home.MenuModel
 import com.seom.banchan.domain.usecase.GetMenuDetailUseCase
 import com.seom.banchan.ui.model.detail.DetailMenuUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -33,6 +30,7 @@ class DetailViewModel @Inject constructor(
     fun increaseCount() = viewModelScope.launch {
         _count.emit(_count.value + 1)
     }
+
     fun decreaseCount() = viewModelScope.launch {
         if (_count.value == 1) return@launch
         _count.emit(_count.value - 1)
@@ -44,7 +42,9 @@ class DetailViewModel @Inject constructor(
             return@launch
         }
         getMenuDetailUseCase(menu.id)
-            .onSuccess { _detailMenuUiModel.value = DetailUiState.Success(it.toUiModel()) }
+            .onSuccess {
+                _detailMenuUiModel.value = DetailUiState.Success(it.toUiModel())
+            }
     }
 
 }
