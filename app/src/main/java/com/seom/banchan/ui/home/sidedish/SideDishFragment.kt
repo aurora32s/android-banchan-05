@@ -12,8 +12,11 @@ import com.seom.banchan.databinding.FragmentSideDishBinding
 import com.seom.banchan.ui.adapter.ItemDecoration.GridItemDecoration
 import com.seom.banchan.ui.adapter.ModelRecyclerAdapter
 import com.seom.banchan.ui.model.Model
+import com.seom.banchan.ui.model.ModelId
+import com.seom.banchan.ui.model.SortItem
 import com.seom.banchan.ui.model.defaultSortItems
 import com.seom.banchan.ui.model.home.HeaderMenuModel
+import com.seom.banchan.ui.model.home.SortMenuModel
 import com.seom.banchan.ui.model.home.TotalMenuModel
 import com.seom.banchan.util.ext.setGridLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
@@ -43,26 +46,20 @@ class SideDishFragment : Fragment() {
         initRecyclerView()
 
         initObserver()
+        viewModel.fetchSortedSideMenus(SortItem.BASE)
     }
 
     private fun initObserver() {
         lifecycleScope.launch {
             viewModel.sideDishUiState.collect {
-                homeAdapter.submitList(listOf(
-                    HeaderMenuModel(
-                        id = getString(R.string.header_view_holder),
-                        title = R.string.header_side
-                    ),
+                homeAdapter.updateList(it.sideMenus)
+                homeAdapter.updateModelAtPosition(
                     TotalMenuModel(
-                        id = getString(R.string.total_view_holder),
-                        count = it.sideMenus.size,
-                        position = viewModel.sideDishUiState.value.selectedSortPosition,
-                        sortByItems = viewModel.sideDishUiState.value.defaultSortItems,
-                        onSort = { position ->
-                            viewModel.fetchSortedSideMenus(position)
-                        }
-                    )
-                ) + it.sideMenus)
+                    id = ModelId.TOTAL.name,
+                    count = viewModel.sideDishUiState.value.sideMenus.size, // 따로 구현
+                ),
+                    1
+                )
             }
         }
     }
@@ -71,6 +68,25 @@ class SideDishFragment : Fragment() {
         it.rvSideDish.adapter = homeAdapter
         it.rvSideDish.setGridLayoutManager(requireContext())
         it.rvSideDish.addItemDecoration(GridItemDecoration(requireContext(),true).decoration)
+        homeAdapter.submitList(
+            listOf(
+                HeaderMenuModel(
+                    id = ModelId.HEADER.name,
+                    title = R.string.header_side
+                ),
+                TotalMenuModel(
+                    id = ModelId.TOTAL.name,
+                    count = viewModel.sideDishUiState.value.sideMenus.size, // 따로 구현
+                ),
+                SortMenuModel(
+                    id = ModelId.SORT.name,
+                    sortItems = defaultSortItems(),
+                    onSort = { sortItem ->
+                        viewModel.fetchSortedSideMenus(sortItem)
+                    }
+                )
+            )
+        )
     }
 
     companion object {

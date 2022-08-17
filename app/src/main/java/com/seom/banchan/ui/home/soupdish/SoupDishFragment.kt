@@ -12,7 +12,10 @@ import com.seom.banchan.databinding.FragmentSoupDishBinding
 import com.seom.banchan.ui.adapter.ItemDecoration.GridItemDecoration
 import com.seom.banchan.ui.adapter.ModelRecyclerAdapter
 import com.seom.banchan.ui.model.Model
+import com.seom.banchan.ui.model.ModelId
+import com.seom.banchan.ui.model.defaultSortItems
 import com.seom.banchan.ui.model.home.HeaderMenuModel
+import com.seom.banchan.ui.model.home.SortMenuModel
 import com.seom.banchan.ui.model.home.TotalMenuModel
 import com.seom.banchan.util.ext.setGridLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
@@ -47,22 +50,14 @@ class SoupDishFragment : Fragment() {
     private fun initObserver() {
         lifecycleScope.launch {
             viewModel.soupDishUiState.collect {
-                homeAdapter.submitList(listOf(
-                    HeaderMenuModel(
-                        id = getString(R.string.header_view_holder),
-                        title = R.string.header_side
-                    ),
+                homeAdapter.updateList(it.soupMenus)
+                homeAdapter.updateModelAtPosition(
                     TotalMenuModel(
-                        id = getString(R.string.total_view_holder),
-                        count = it.soupMenus.size,
-                        position = viewModel.soupDishUiState.value.selectedSortPosition,
-                        sortByItems = viewModel.soupDishUiState.value.defaultSortItems,
-                        onSort = { position ->
-                            viewModel.fetchSortedSoupMenus(position)
-
-                        }
-                    )
-                ) + it.soupMenus)
+                        id = ModelId.TOTAL.name,
+                        count = viewModel.soupDishUiState.value.soupMenus.size
+                    ),
+                    1
+                )
             }
         }
     }
@@ -71,6 +66,25 @@ class SoupDishFragment : Fragment() {
         it.rvSoupDish.adapter = homeAdapter
         it.rvSoupDish.setGridLayoutManager(requireContext())
         it.rvSoupDish.addItemDecoration(GridItemDecoration(requireContext(),true).decoration)
+        homeAdapter.submitList(
+            listOf(
+                HeaderMenuModel(
+                    id = ModelId.HEADER.name,
+                    title = R.string.header_soup
+                ),
+                TotalMenuModel(
+                    id = ModelId.TOTAL.name,
+                    count = viewModel.soupDishUiState.value.soupMenus.size
+                ),
+                SortMenuModel(
+                    id = ModelId.SORT.name,
+                    sortItems = defaultSortItems(),
+                    onSort = { sortItem ->
+                        viewModel.fetchSortedSoupMenus(sortItem)
+                    }
+                )
+            )
+        )
     }
 
     companion object {
