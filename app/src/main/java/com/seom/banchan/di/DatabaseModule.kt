@@ -35,4 +35,9 @@ object DaoModule {
     fun provideCartDao(
         database: BanChanDatabase
     ) = database.cartDao()
+    
+    @Provides
+    fun provideRecentlyDao(database: BanChanDatabase) : RecentlyDao{
+        return database.recentlyDao()
+    }
 }
