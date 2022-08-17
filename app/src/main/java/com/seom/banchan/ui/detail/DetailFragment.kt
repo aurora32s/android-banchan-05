@@ -31,6 +31,28 @@ class DetailFragment : Fragment() {
 
     private val viewModel: DetailViewModel by viewModels()
 
+    private val menuDetailAdapter: ModelRecyclerAdapter<Model> by lazy {
+        ModelRecyclerAdapter(
+            modelAdapterListener = object : ModelAdapterListener {
+                override fun onClick(view: View, model: Model, position: Int) {
+                    when (model.type) {
+                        CellType.DETAIL_COUNT_CELL -> {
+                            if (view.id == R.id.iv_up_count) {
+                                viewModel.increaseCount()
+                            } else if (view.id == R.id.iv_down_count) {
+                                viewModel.decreaseCount()
+                            }
+                        }
+                        CellType.DETAIL_BOTTOM_BUTTON_CELL -> {
+                            // 장바구니 추가 버튼 클릭
+                            println(model)
+                        }
+                        else -> {}
+                    }
+                }
+            })
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -75,22 +97,6 @@ class DetailFragment : Fragment() {
         it.rvMenuInfo.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
-        val menuDetailAdapter = ModelRecyclerAdapter<Model>(
-            modelAdapterListener = object : ModelAdapterListener {
-                override fun onClick(view: View, model: Model, position: Int) {
-                    when (model.type) {
-                        CellType.DETAIL_COUNT_CELL -> {
-                            if (view.id == R.id.iv_up_count) {
-                                viewModel.increaseCount()
-                            } else if (view.id == R.id.iv_down_count) {
-                                viewModel.decreaseCount()
-                            }
-                        }
-                        else -> {}
-                    }
-                }
-            }
-        )
         it.rvMenuInfo.adapter = menuDetailAdapter
         menuDetailAdapter.submitList(detailItem)
     }
