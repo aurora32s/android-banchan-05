@@ -1,10 +1,12 @@
 package com.seom.banchan.ui.cart
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.seom.banchan.databinding.FragmentCartBinding
 import com.seom.banchan.ui.adapter.ModelRecyclerAdapter
@@ -15,6 +17,9 @@ import com.seom.banchan.ui.model.cart.CartMenuModel
 import com.seom.banchan.ui.model.cart.CartOrderModel
 import com.seom.banchan.ui.model.cart.CartRecentModel
 import com.seom.banchan.ui.model.order.OrderInfoModel
+import kotlinx.coroutines.flow.flatMapMerge
+import kotlinx.coroutines.flow.flattenMerge
+import kotlinx.coroutines.launch
 
 class CartFragment : BaseFragment() {
     private var _binding: FragmentCartBinding? = null
@@ -66,7 +71,27 @@ class CartFragment : BaseFragment() {
     }
 
     private fun initObserver() {
+        lifecycleScope.launch {
+            viewModel.cartUi.flattenMerge().collect {
+                when(it){
+                    is CartCheckModel -> {
 
+                    }
+                    is CartMenuModel -> {
+
+                    }
+                    is OrderInfoModel -> {
+
+                    }
+                    is CartOrderModel -> {
+
+                    }
+                    is CartRecentModel -> {
+
+                    }
+                }
+            }
+        }
     }
 
     companion object {
