@@ -9,10 +9,10 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.seom.banchan.R
 import com.seom.banchan.databinding.FragmentOrderBottomSheetBinding
 import com.seom.banchan.ui.model.detail.DetailMenuUiModel
+import com.seom.banchan.ui.model.home.HomeMenuModel
 
 class OrderBottomSheetDialog(
-    private val supportFragmentManager: FragmentManager,
-    private val detailMenuModel: DetailMenuUiModel
+    private val supportFragmentManager: FragmentManager
 ) : BottomSheetDialogFragment() {
 
     private var _binding: FragmentOrderBottomSheetBinding? = null
@@ -27,15 +27,12 @@ class OrderBottomSheetDialog(
         return binding?.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initBind()
+    private fun initBind(menuModel: HomeMenuModel) = binding?.let {
+        it.menu = menuModel
     }
 
-    private fun initBind() = binding?.let {
-    }
-
-    fun show() {
+    fun show(menuModel: HomeMenuModel) {
+        initBind(menuModel)
         show(supportFragmentManager, TAG)
     }
 
@@ -45,7 +42,7 @@ class OrderBottomSheetDialog(
 
     companion object {
         const val TAG = "OrderBottomSheetDialog"
-        fun getInstance(fragmentManager: FragmentManager, detailMenuModel: DetailMenuUiModel) =
-            OrderBottomSheetDialog(fragmentManager, detailMenuModel)
+        fun getInstance(fragmentManager: FragmentManager) =
+            OrderBottomSheetDialog(fragmentManager)
     }
 }

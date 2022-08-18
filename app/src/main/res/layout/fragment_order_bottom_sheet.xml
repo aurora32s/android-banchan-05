@@ -4,7 +4,7 @@
     <data>
 
         <variable
-            name="detail"
+            name="menu"
             type="com.seom.banchan.ui.model.home.HomeMenuModel" />
     </data>
 
@@ -65,8 +65,8 @@
             app:layout_constraintBottom_toBottomOf="@id/iv_menu_thumbnail"
             app:layout_constraintStart_toStartOf="@id/tv_menu_name"
             app:layout_constraintTop_toBottomOf="@id/tv_menu_name"
-            app:text="@{@string/menu_discount_value(detail.discountRate)}"
-            app:visibilityByData="@{detail.discountRate}" />
+            app:text="@{@string/menu_discount_value(menu.discountRate)}"
+            app:visibilityByData="@{menu.discountRate}" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_menu_salePrice"
