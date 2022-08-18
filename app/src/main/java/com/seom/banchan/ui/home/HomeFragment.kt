@@ -58,10 +58,9 @@ class HomeFragment : Fragment(), CartBottomSheetManager {
     }
 
     override fun showBottomSheet(menu: HomeMenuModel) {
-        if (::orderBottomSheet.isInitialized.not()) {
-            orderBottomSheet = OrderBottomSheetDialog.getInstance(childFragmentManager)
-        }
-        orderBottomSheet.show(menu)
+        OrderBottomSheetDialog.build(childFragmentManager)
+            .setMenu(menu)
+            .show()
     }
 
     companion object {

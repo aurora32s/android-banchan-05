@@ -7,6 +7,13 @@
             name="menu"
             type="com.seom.banchan.ui.model.home.HomeMenuModel" />
 
+        <variable
+            name="count"
+            type="Integer" />
+
+        <variable
+            name="totalPrice"
+            type="Integer" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -75,6 +82,7 @@
             android:id="@+id/tv_menu_salePrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
             android:text="@{@string/menu_price_value(menu.menu.salePrice == 0 ? menu.menu.normalPrice : menu.menu.salePrice)}"
             android:textColor="@color/black"
             android:textSize="14sp"
@@ -86,6 +94,7 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
             android:text="@{@string/menu_price_value(menu.menu.normalPrice)}"
             android:textColor="@color/greyScaleDefault"
             android:textSize="14sp"
@@ -99,7 +108,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="2,000원"
+            android:text="@{@string/menu_price_value(totalPrice)}"
             android:textColor="@color/black"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -143,7 +152,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="24dp"
-                android:text="1"
+                android:text="@{count.toString()}"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -159,7 +168,7 @@
             android:layout_height="45dp"
             android:layout_marginTop="30dp"
             android:background="@drawable/background_button"
-            android:text="@string/detail_add"
+            android:text="@{@string/bottom_sheet_add_value(count)}"
             android:textColor="@color/white"
             android:textSize="16sp"
             android:textStyle="bold"
