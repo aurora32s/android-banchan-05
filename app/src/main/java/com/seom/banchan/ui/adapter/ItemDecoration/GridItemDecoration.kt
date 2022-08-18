@@ -9,7 +9,7 @@ import com.seom.banchan.util.ext.dpToPx
 class GridItemDecoration(
     val context: Context,
     val isGrid: Boolean,
-    val index : Int
+    val noneApplyIndex : Int
 ) : RecyclerView.ItemDecoration()   {
     override fun getItemOffsets(
         outRect: Rect,
@@ -19,7 +19,7 @@ class GridItemDecoration(
     ) {
         super.getItemOffsets(outRect, view, parent, state)
 
-        val idx = parent.getChildAdapterPosition(view) - index
+        val idx = parent.getChildAdapterPosition(view) - noneApplyIndex
         if (idx < 0) return
 
         val spanCount = if(isGrid) 2 else 1

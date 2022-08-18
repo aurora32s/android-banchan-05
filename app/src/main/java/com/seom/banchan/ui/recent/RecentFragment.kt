@@ -47,7 +47,7 @@ class RecentFragment : BaseFragment() {
     private fun initRecyclerView() = binding?.let {
         it.rvRecent.adapter = recentldapter
         it.rvRecent.setGridLayoutManager(requireContext())
-        it.rvRecent.addItemDecoration(GridItemDecoration(requireContext(),true,0))
+        it.rvRecent.addItemDecoration(GridItemDecoration(requireContext(),true,noneApplyIndex =0))
     }
 
     private fun initObserver(){

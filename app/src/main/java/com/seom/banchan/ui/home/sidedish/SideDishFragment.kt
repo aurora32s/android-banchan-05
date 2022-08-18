@@ -66,7 +66,7 @@ class SideDishFragment : Fragment() {
     private fun initRecyclerView() = binding?.let {
         it.rvSideDish.adapter = homeAdapter
         it.rvSideDish.setGridLayoutManager(requireContext())
-        it.rvSideDish.addItemDecoration(GridItemDecoration(requireContext(),true,3))
+        it.rvSideDish.addItemDecoration(GridItemDecoration(requireContext(),true,noneApplyIndex =3))
         homeAdapter.submitList(
             getDefaultHeaders()
         )

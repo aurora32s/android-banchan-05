@@ -78,7 +78,7 @@ class MainDishFragment : Fragment() {
     private fun setItemDecoration(toggle : Boolean) = binding?.rvMainDish?.let {
         if(it.itemDecorationCount != 0)
             it.removeItemDecorationAt(0)
-        it.addItemDecoration(GridItemDecoration(requireContext(),!toggle,3))
+        it.addItemDecoration(GridItemDecoration(requireContext(),!toggle,noneApplyIndex = 3))
     }
 
     private fun getDefaultHeaders() = listOf(
