@@ -21,8 +21,8 @@ class DetailAddCartAlert : DialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // dialog 밖을 클릭해도 종룔되지 않도록 설정
-        isCancelable = false
+        // 다이얼로그에 바깥을 눌러도 제거되도록 수정
+        isCancelable = true
     }
 
     override fun onCreateView(
