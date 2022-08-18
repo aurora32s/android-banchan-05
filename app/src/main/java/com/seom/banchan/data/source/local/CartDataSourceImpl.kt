@@ -5,6 +5,7 @@ import com.seom.banchan.data.db.entity.CartMenuEntity
 import com.seom.banchan.data.source.CartDataSource
 import com.seom.banchan.domain.model.cart.CartMenuModel
 import com.seom.banchan.domain.model.cart.toEntity
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class CartDataSourceImpl @Inject constructor(
@@ -27,5 +28,10 @@ class CartDataSourceImpl @Inject constructor(
         Result.success(result)
     } catch (exception: Exception) {
         Result.failure(exception)
+    }
+
+    // 장바구니에 속한 메뉴들의 id 리스트 요청
+    override suspend fun getCartMenusId(): Flow<List<Long>> {
+        return cartDao.getCartMenusId()
     }
 }

@@ -3,6 +3,7 @@ package com.seom.banchan.data.repository
 import com.seom.banchan.data.source.CartDataSource
 import com.seom.banchan.domain.model.cart.CartMenuModel
 import com.seom.banchan.domain.repository.CartRepository
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class CartRepositoryImpl @Inject constructor(
@@ -16,5 +17,10 @@ class CartRepositoryImpl @Inject constructor(
 
     override suspend fun addOrReplaceMenuToCart(menu: CartMenuModel): Result<Long> {
         return cartDataSource.addOrReplaceMenuToCart(menu)
+    }
+
+    // 장바구니에 있는 메뉴들의 id 리스트 요청
+    override suspend fun getCartMenusId(): Flow<List<Long>> {
+        return cartDataSource.getCartMenusId()
     }
 }

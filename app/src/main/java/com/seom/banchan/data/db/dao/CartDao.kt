@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.seom.banchan.data.db.entity.CartMenuEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CartDao {
@@ -17,4 +18,10 @@ interface CartDao {
 
     @Query("SELECT * FROM cart_table WHERE menu_id = :menuId")
     suspend fun getCartMenuById(menuId: String): CartMenuEntity?
+
+    /**
+     * 장바구네이 있는 메뉴들의 id 값만 요청
+     */
+    @Query("SELECT menu_id FROM cart_table")
+    suspend fun getCartMenusId(): Flow<List<Long>>
 }
