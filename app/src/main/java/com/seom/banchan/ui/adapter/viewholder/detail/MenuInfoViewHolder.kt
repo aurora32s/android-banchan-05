@@ -48,6 +48,7 @@ class MenuInfoViewHolder(
     })
 
     private fun initIndicator(count: Int) = with(binding) {
+        llIndicator.removeAllViews()
         (0 until count).forEach { index ->
             llIndicator.addIconImageView(R.drawable.ic_normal_indicator, 10)
         }
