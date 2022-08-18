@@ -1,8 +1,6 @@
 package com.seom.banchan.data.source.local
 
-import com.seom.banchan.data.db.BanchanDatabase
 import com.seom.banchan.data.db.dao.RecentlyDao
-import com.seom.banchan.data.db.entity.RecentlyEntity
 import com.seom.banchan.data.db.entity.toMenuModelList
 import com.seom.banchan.data.db.entity.toRecentlyEntity
 import com.seom.banchan.data.source.RecentlyDataSource

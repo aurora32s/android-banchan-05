@@ -23,7 +23,9 @@ abstract class RepositoryModule {
     abstract fun bindCartRepository(
         cartRepositoryImpl: CartRepositoryImpl
     ): CartRepository
+
+    @Binds
     abstract fun bindRecentlyRepository(
         recentlyRepositoryImpl: RecentlyRepositoryImpl
-    ) : RecentlyRepository
+    ): RecentlyRepository
 }
