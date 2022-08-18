@@ -3,10 +3,11 @@ package com.seom.banchan.ui.adapter.viewholder.cart
 import com.seom.banchan.databinding.ItemCartRecentBinding
 import com.seom.banchan.ui.adapter.viewholder.ModelViewHolder
 import com.seom.banchan.ui.model.Model
+import com.seom.banchan.ui.model.cart.CartRecentModel
 
 class CartRecentViewHolder(
     private val binding: ItemCartRecentBinding
-) : ModelViewHolder<Model>(binding) {
-    override fun bindData(model: Model) {
+) : ModelViewHolder<CartRecentModel>(binding) {
+    override fun bindData(model: CartRecentModel) {
     }
 }

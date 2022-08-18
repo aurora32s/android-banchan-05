@@ -17,8 +17,10 @@ import com.seom.banchan.ui.model.cart.CartMenuModel
 import com.seom.banchan.ui.model.cart.CartOrderModel
 import com.seom.banchan.ui.model.cart.CartRecentModel
 import com.seom.banchan.ui.model.order.OrderInfoModel
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.flatMapMerge
 import kotlinx.coroutines.flow.flattenMerge
+import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.launch
 
 class CartFragment : BaseFragment() {
@@ -50,18 +52,18 @@ class CartFragment : BaseFragment() {
         it.rvCart.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         cartAdapter.submitList(
+            //임시 데이터
             listOf(
                 CartCheckModel(
                     id = "cart_check"
                 ),
-                CartMenuModel(
-                    id = "cart_menu"
-                ),
                 OrderInfoModel(
-                    id = "order_info"
+                    id = "order_info",
+                    orderPrice = 0
                 ),
                 CartOrderModel(
-                    id = "cart_order"
+                    id = "cart_order",
+                    totalPrice = 0,
                 ),
                 CartRecentModel(
                     id = "cart_recent"
@@ -72,24 +74,18 @@ class CartFragment : BaseFragment() {
 
     private fun initObserver() {
         lifecycleScope.launch {
-            viewModel.cartUi.flattenMerge().collect {
-                when(it){
-                    is CartCheckModel -> {
-
-                    }
-                    is CartMenuModel -> {
-
-                    }
-                    is OrderInfoModel -> {
-
-                    }
-                    is CartOrderModel -> {
-
-                    }
-                    is CartRecentModel -> {
-
-                    }
-                }
+            viewModel.cartMenus.collectLatest {
+                cartAdapter.updateModelsAtPosition(it,1,it.size)
+            }
+        }
+        lifecycleScope.launch{
+            viewModel.orderInfo.collectLatest {
+                cartAdapter.updateModelAtPosition(it,viewModel.cartMenus.value.size + 1)
+            }
+        }
+        lifecycleScope.launch{
+            viewModel.cartOrder.collectLatest {
+                cartAdapter.updateModelAtPosition(it,viewModel.cartMenus.value.size+2)
             }
         }
     }

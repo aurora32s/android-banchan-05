@@ -9,8 +9,5 @@
         <item name="android:textSize">32sp</item>
         <item name="android:textColor">@color/greyScaleBlack</item>
     </style>
-    
-    <style name="OrderButton" parent="ThemeOverlay.AppCompat">
-        <item name="colorAccent">@color/primaryMain</item>
-    </style>
+
 </resources>
