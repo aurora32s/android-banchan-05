@@ -37,9 +37,6 @@ class MainActivity : AppCompatActivity(), BaseFragment.FragmentNavigation {
         setSupportActionBar(it.tbMain)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         it.tbMain.title = getString(R.string.main_title)
-        it.tbMain.setOnClickListener {
-            replaceFragment(CartFragment.newInstance(),CartFragment.TAG)
-        }
     }
 
     private fun initContainer() = binding?.let {
