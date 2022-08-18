@@ -1,5 +1,6 @@
 package com.seom.banchan.domain.model.home
 
+import com.seom.banchan.ui.model.CellType
 import com.seom.banchan.ui.model.home.HomeMenuLargeModel
 import com.seom.banchan.ui.model.home.HomeMenuModel
 import java.io.Serializable
@@ -18,13 +19,15 @@ data class MenuModel(
 
 fun MenuModel.toHomeMenuModel(isBest : Boolean = false) = HomeMenuModel(
     id = id,
+    type = CellType.MENU_CELL,
     isBest = isBest,
     menu = this,
     discountRate = if (normalPrice == 0) 0 else ceil((1 - (salePrice / normalPrice.toDouble())) * 100).toInt()
 )
 
-fun MenuModel.toHomeMenuLinearModel() = HomeMenuLargeModel(
+fun MenuModel.toHomeMenuLinearModel() = HomeMenuModel(
     id = id,
+    type = CellType.MENU_LARGE_CELL,
     menu = this,
     discountRate = if (normalPrice == 0) 0 else ceil((1 - (salePrice / normalPrice.toDouble())) * 100).toInt()
 )

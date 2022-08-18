@@ -9,7 +9,7 @@
 
         <variable
             name="menu"
-            type="com.seom.banchan.ui.model.home.HomeMenuLargeModel" />
+            type="com.seom.banchan.ui.model.home.HomeMenuModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -40,33 +40,34 @@
             android:id="@+id/tv_menu_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginVertical="4dp"
             android:layout_marginStart="16dp"
             android:ellipsize="end"
             android:maxLines="1"
             android:textColor="@color/greyScaleBlack"
             android:textSize="14sp"
             android:textStyle="bold"
-            android:layout_marginVertical="4dp"
-            app:layout_constraintVertical_chainStyle="packed"
             app:layout_constraintBottom_toTopOf="@id/tv_menu_description"
             app:layout_constraintStart_toEndOf="@id/iv_menu_thumbnail"
             app:layout_constraintTop_toTopOf="@id/iv_menu_thumbnail"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:text="@{menu.menu.name}"
             tools:text="hello world" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_menu_description"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginVertical="4dp"
             android:ellipsize="end"
             android:maxLines="1"
             android:textColor="@color/greyScaleDefault"
             android:textSize="12sp"
             android:textStyle="bold"
-            android:layout_marginVertical="4dp"
             app:layout_constraintBottom_toTopOf="@id/tv_menu_salePrice"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/tv_menu_name"
             app:layout_constraintTop_toBottomOf="@id/tv_menu_name"
-            app:layout_constraintEnd_toEndOf="parent"
             app:text="@{menu.menu.description}"
             tools:text="hello world" />
 
@@ -74,11 +75,11 @@
             android:id="@+id/tv_menu_discountRate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginVertical="4dp"
             android:paddingEnd="8dp"
             android:text="@{@string/menu_discount_value(menu.discountRate)}"
             android:textColor="@color/primaryAccent"
             android:textSize="14sp"
-            android:layout_marginVertical="4dp"
             app:layout_constraintBottom_toTopOf="@id/tv_menu_normalPrice"
             app:layout_constraintStart_toStartOf="@id/tv_menu_name"
             app:layout_constraintTop_toBottomOf="@id/tv_menu_description"
@@ -89,12 +90,12 @@
             android:id="@+id/tv_menu_salePrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginVertical="4dp"
             android:text="@{@string/menu_price_value(menu.menu.salePrice == 0 ? menu.menu.normalPrice :menu.menu.salePrice)}"
             android:textColor="@color/greyScaleBlack"
             android:textSize="14sp"
-            android:layout_marginVertical="4dp"
-            app:layout_constraintStart_toEndOf="@id/tv_menu_discountRate"
             app:layout_constraintBottom_toTopOf="@id/tv_menu_normalPrice"
+            app:layout_constraintStart_toEndOf="@id/tv_menu_discountRate"
             app:layout_constraintTop_toBottomOf="@id/tv_menu_description"
             tools:text="hello world" />
 
@@ -102,10 +103,10 @@
             android:id="@+id/tv_menu_normalPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginVertical="4dp"
             android:text="@{@string/menu_price_value(menu.menu.normalPrice)}"
             android:textColor="@color/greyScaleDefault"
             android:textSize="12sp"
-            android:layout_marginVertical="4dp"
             app:layout_constraintBottom_toBottomOf="@id/iv_menu_thumbnail"
             app:layout_constraintStart_toStartOf="@id/tv_menu_name"
             app:layout_constraintTop_toBottomOf="@id/tv_menu_salePrice"
