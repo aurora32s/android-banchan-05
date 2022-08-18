@@ -18,6 +18,8 @@ class OrderBottomSheetDialog(
     private var _binding: FragmentOrderBottomSheetBinding? = null
     private val binding get() = _binding
 
+    private var menuModel: HomeMenuModel? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -27,12 +29,18 @@ class OrderBottomSheetDialog(
         return binding?.root
     }
 
-    private fun initBind(menuModel: HomeMenuModel) = binding?.let {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initBind()
+    }
+
+    private fun initBind() = binding?.let {
         it.menu = menuModel
+        it.btnCancel.setOnClickListener { dismiss() }
     }
 
     fun show(menuModel: HomeMenuModel) {
-        initBind(menuModel)
+        this.menuModel = menuModel
         show(supportFragmentManager, TAG)
     }
 

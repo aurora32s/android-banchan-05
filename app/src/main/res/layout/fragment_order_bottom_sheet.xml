@@ -6,6 +6,7 @@
         <variable
             name="menu"
             type="com.seom.banchan.ui.model.home.HomeMenuModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -26,6 +27,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/btn_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/bottom_sheet_cancel"
@@ -39,6 +41,7 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginTop="16dp"
+            app:imageUrl="@{menu.menu.image}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_bottom_sheet_title" />
 
@@ -52,9 +55,10 @@
             android:textColor="@color/black"
             android:textSize="14sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@id/tv_menu_discountRate"
+            app:layout_constraintBottom_toTopOf="@id/tv_menu_salePrice"
             app:layout_constraintStart_toEndOf="@id/iv_menu_thumbnail"
-            app:layout_constraintTop_toTopOf="@id/iv_menu_thumbnail" />
+            app:layout_constraintTop_toTopOf="@id/iv_menu_thumbnail"
+            app:text="@{menu.menu.name}" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_menu_discountRate"
@@ -62,9 +66,8 @@
             android:layout_height="wrap_content"
             android:textColor="@color/primaryAccent"
             android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="@id/iv_menu_thumbnail"
             app:layout_constraintStart_toStartOf="@id/tv_menu_name"
-            app:layout_constraintTop_toBottomOf="@id/tv_menu_name"
+            app:layout_constraintTop_toTopOf="@id/tv_menu_salePrice"
             app:text="@{@string/menu_discount_value(menu.discountRate)}"
             app:visibilityByData="@{menu.discountRate}" />
 
@@ -72,27 +75,31 @@
             android:id="@+id/tv_menu_salePrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@{@string/menu_price_value(menu.menu.salePrice == 0 ? menu.menu.normalPrice : menu.menu.salePrice)}"
             android:textColor="@color/black"
             android:textSize="14sp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/iv_menu_thumbnail"
             app:layout_constraintStart_toEndOf="@id/tv_menu_discountRate"
-            app:layout_constraintTop_toTopOf="@id/tv_menu_discountRate" />
+            app:layout_constraintTop_toBottomOf="@id/tv_menu_name" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@{@string/menu_price_value(menu.menu.normalPrice)}"
             android:textColor="@color/greyScaleDefault"
             android:textSize="14sp"
             app:layout_constraintStart_toEndOf="@id/tv_menu_salePrice"
             app:layout_constraintTop_toTopOf="@id/tv_menu_salePrice"
-            app:strikeThrough="@{true}" />
+            app:strikeThrough="@{true}"
+            app:visibilityByData="@{menu.menu.normalPrice}" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_total_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="@string/bottom_sheet_cancel"
+            android:text="2,000원"
             android:textColor="@color/black"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -101,7 +108,6 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/background_rounded_rect"
             app:layout_constraintBottom_toBottomOf="@id/tv_total_price"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/tv_total_price">
@@ -110,6 +116,10 @@
                 android:id="@+id/iv_down_count"
                 android:layout_width="44dp"
                 android:layout_height="44dp"
+                android:layout_margin="5dp"
+                android:background="@drawable/background_rounded_button"
+                android:elevation="2dp"
+                android:padding="10dp"
                 android:src="@drawable/ic_minus"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -119,6 +129,10 @@
                 android:id="@+id/iv_up_count"
                 android:layout_width="44dp"
                 android:layout_height="44dp"
+                android:layout_margin="5dp"
+                android:background="@drawable/background_rounded_button"
+                android:elevation="2dp"
+                android:padding="10dp"
                 android:src="@drawable/ic_plus"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -129,9 +143,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="24dp"
-                android:text="@string/bottom_sheet_cancel"
+                android:text="1"
                 android:textColor="@color/black"
-                android:textSize="14sp"
+                android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/iv_up_count"
                 app:layout_constraintStart_toEndOf="@id/iv_down_count"
