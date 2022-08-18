@@ -13,7 +13,8 @@ fun RecyclerView.setGridLayoutManager(context : Context){
                 CellType.MENU_CELL.ordinal,
                 CellType.SORT_CELL.ordinal,
                 CellType.FILTER_CELL.ordinal,
-                CellType.TOTAL_CELL.ordinal-> 1
+                CellType.TOTAL_CELL.ordinal,
+                CellType.MENU_RECENT_CELL.ordinal-> 1
                 else -> 2
             }
         }

@@ -1,4 +1,4 @@
-package com.seom.banchan.ui.recently
+package com.seom.banchan.ui.recent
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,34 +6,31 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.seom.banchan.databinding.FragmentRecentlyBinding
-import com.seom.banchan.domain.model.MenuModel
+import com.seom.banchan.databinding.FragmentRecentBinding
+import com.seom.banchan.ui.adapter.ItemDecoration.GridItemDecoration
 import com.seom.banchan.ui.adapter.ModelRecyclerAdapter
 import com.seom.banchan.ui.base.BaseFragment
-import com.seom.banchan.ui.model.CellType
 import com.seom.banchan.ui.model.Model
-import com.seom.banchan.ui.model.home.HomeMenuModel
 import com.seom.banchan.util.ext.setGridLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class RecentlyFragment : BaseFragment() {
-    private var _binding: FragmentRecentlyBinding? = null
+class RecentFragment : BaseFragment() {
+    private var _binding: FragmentRecentBinding? = null
     private val binding get() = _binding
 
-    private val recentlyAdapter: ModelRecyclerAdapter<Model> by lazy { ModelRecyclerAdapter() }
+    private val recentldapter: ModelRecyclerAdapter<Model> by lazy { ModelRecyclerAdapter() }
 
-    private val viewModel: RecentlyViewModel by viewModels()
+    private val viewModel: RecentViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentRecentlyBinding.inflate(inflater)
+        _binding = FragmentRecentBinding.inflate(inflater)
 
         return binding?.root
     }
@@ -43,18 +40,20 @@ class RecentlyFragment : BaseFragment() {
         initRecyclerView()
         initObserver()
 
-        viewModel.getRecentlyMenus()
+        viewModel.getRecentMenus()
+
     }
 
     private fun initRecyclerView() = binding?.let {
-        it.rvRecently.adapter = recentlyAdapter
-        it.rvRecently.setGridLayoutManager(requireContext())
+        it.rvRecent.adapter = recentldapter
+        it.rvRecent.setGridLayoutManager(requireContext())
+        it.rvRecent.addItemDecoration(GridItemDecoration(requireContext(),true,0))
     }
 
     private fun initObserver(){
         lifecycleScope.launch{
-            viewModel.recentlyMenus.collectLatest {
-                recentlyAdapter.submitList(it)
+            viewModel.recentMenus.collectLatest {
+                recentldapter.submitList(it)
             }
         }
     }

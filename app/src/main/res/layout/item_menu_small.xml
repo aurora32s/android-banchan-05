@@ -12,7 +12,7 @@
             type="com.seom.banchan.ui.model.home.HomeMenuModel" />
 
         <variable
-            name="is_recently"
+            name="recent"
             type="Boolean" />
     </data>
 
@@ -66,7 +66,7 @@
             android:textColor="@color/greyScaleDefault"
             android:textSize="12sp"
             android:textStyle="bold"
-            android:visibility="@{is_recently ? View.GONE : View.VISIBLE}"
+            android:visibility="@{recent ? View.GONE : View.VISIBLE}"
             app:layout_constraintEnd_toEndOf="@id/iv_menu_thumbnail"
             app:layout_constraintStart_toStartOf="@id/iv_menu_thumbnail"
             app:layout_constraintTop_toBottomOf="@id/tv_menu_name"
@@ -80,7 +80,7 @@
             android:paddingEnd="8dp"
             android:text="@{@string/menu_discount_value(menu.discountRate)}"
             android:textColor="@color/primaryAccent"
-            android:visibility="@{is_recently ? View.GONE : View.VISIBLE}"
+            android:visibility="@{recent ? View.GONE : View.VISIBLE}"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="@id/iv_menu_thumbnail"
             app:layout_constraintTop_toBottomOf="@id/tv_menu_description"
@@ -105,7 +105,7 @@
             android:text="@{@string/menu_price_value(menu.menu.normalPrice)}"
             android:textColor="@color/greyScaleDefault"
             android:textSize="12sp"
-            android:visibility="@{is_recently ? View.VISIBLE : View.GONE}"
+            android:visibility="@{recent ? View.VISIBLE : View.GONE}"
             android:layout_marginStart="4dp"
             app:layout_constraintStart_toEndOf="@id/tv_menu_salePrice"
             app:layout_constraintTop_toTopOf="@id/tv_menu_salePrice"
@@ -121,7 +121,7 @@
             android:text="@{@string/menu_price_value(menu.menu.normalPrice)}"
             android:textColor="@color/greyScaleDefault"
             android:textSize="12sp"
-            android:visibility="@{is_recently ? View.GONE : View.VISIBLE}"
+            android:visibility="@{recent ? View.GONE : View.VISIBLE}"
             app:layout_constraintStart_toStartOf="@id/iv_menu_thumbnail"
             app:layout_constraintTop_toBottomOf="@id/tv_menu_salePrice"
             app:visibilityByData="@{menu.menu.normalPrice}"
@@ -135,9 +135,10 @@
             android:text="@{menu.menu.recentlyTime}"
             android:textColor="@color/greyScaleDefault"
             android:textSize="12sp"
+            android:layout_marginTop="2dp"
             app:layout_constraintStart_toStartOf="@id/iv_menu_thumbnail"
             app:layout_constraintTop_toBottomOf="@id/tv_menu_normalPrice"
-            android:visibility="@{is_recently ? View.VISIBLE : View.GONE}"
+            android:visibility="@{recent ? View.VISIBLE : View.GONE}"
             tools:text="hello world" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

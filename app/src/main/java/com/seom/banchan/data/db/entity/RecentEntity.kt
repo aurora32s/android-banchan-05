@@ -6,17 +6,17 @@ import androidx.room.PrimaryKey
 import com.seom.banchan.domain.model.home.MenuModel
 import com.seom.banchan.util.TimeUtil
 
-@Entity(tableName = "recently_table")
-data class RecentlyEntity(
-    @PrimaryKey @ColumnInfo(name = "recently_id") val id: String,
+@Entity(tableName = "recent_table")
+data class RecentEntity(
+    @PrimaryKey @ColumnInfo(name = "recent_id") val id: String,
     @ColumnInfo(name = "image") val image: String,
     @ColumnInfo(name = "title") val title: String,
     @ColumnInfo(name = "normal_price") val normalPrice: Int,
     @ColumnInfo(name = "sale_price") val salePrice: Int,
-    @ColumnInfo(name = "recently_time") val recentlyTime: Long = System.currentTimeMillis()
+    @ColumnInfo(name = "recent_time") val recentTime: Long = System.currentTimeMillis()
 )
 
-fun RecentlyEntity.toMenuModel(): MenuModel =
+fun RecentEntity.toMenuModel(): MenuModel =
     MenuModel(
         id = id,
         deliveryType = emptyList(),
@@ -25,12 +25,12 @@ fun RecentlyEntity.toMenuModel(): MenuModel =
         salePrice = salePrice,
         normalPrice = normalPrice,
         name = title,
-        recentlyTime = TimeUtil.getTimeData(recentlyTime)
+        recentTime = TimeUtil.getTimeData(recentTime)
     )
 
 
-fun MenuModel.toRecentlyEntity(recentlyTime: Long): RecentlyEntity =
-    RecentlyEntity(
+fun MenuModel.toRecentEntity(): RecentEntity =
+    RecentEntity(
         id = id,
         image = image,
         salePrice = salePrice,

@@ -3,9 +3,9 @@ package com.seom.banchan.di
 import com.seom.banchan.data.repository.CartRepositoryImpl
 import com.seom.banchan.data.repository.MenuRepositoryImpl
 import com.seom.banchan.domain.repository.CartRepository
-import com.seom.banchan.data.repository.RecentlyRepositoryImpl
+import com.seom.banchan.data.repository.RecentRepositoryImpl
 import com.seom.banchan.domain.repository.MenuRepository
-import com.seom.banchan.domain.repository.RecentlyRepository
+import com.seom.banchan.domain.repository.RecentRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -25,7 +25,7 @@ abstract class RepositoryModule {
     ): CartRepository
 
     @Binds
-    abstract fun bindRecentlyRepository(
-        recentlyRepositoryImpl: RecentlyRepositoryImpl
-    ): RecentlyRepository
+    abstract fun bindRecentRepository(
+        recentRepositoryImpl: RecentRepositoryImpl
+    ): RecentRepository
 }

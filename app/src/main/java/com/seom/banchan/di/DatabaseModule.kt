@@ -3,7 +3,7 @@ package com.seom.banchan.di
 import android.content.Context
 import androidx.room.Room
 import com.seom.banchan.data.db.BanChanDatabase
-import com.seom.banchan.data.db.dao.RecentlyDao
+import com.seom.banchan.data.db.dao.RecentDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -37,9 +37,9 @@ object DaoModule {
     ) = database.cartDao()
 
     @Provides
-    fun provideRecentlyDao(
+    fun provideRecentDao(
         database: BanChanDatabase
-    ): RecentlyDao {
-        return database.recentlyDao()
+    ): RecentDao {
+        return database.recentDao()
     }
 }
