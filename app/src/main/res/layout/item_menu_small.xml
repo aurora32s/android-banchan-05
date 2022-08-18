@@ -132,7 +132,7 @@
             android:id="@+id/tv_menu_recently_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{menu.menu.recentlyTime}"
+            android:text="@{menu.menu.recentTime}"
             android:textColor="@color/greyScaleDefault"
             android:textSize="12sp"
             android:layout_marginTop="2dp"
