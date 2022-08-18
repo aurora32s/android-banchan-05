@@ -20,7 +20,7 @@ class CartRepositoryImpl @Inject constructor(
     }
 
     // 장바구니에 있는 메뉴들의 id 리스트 요청
-    override suspend fun getCartMenusId(): Flow<List<Long>> {
+    override fun getCartMenusId(): Flow<List<String>> {
         return cartDataSource.getCartMenusId()
     }
 }

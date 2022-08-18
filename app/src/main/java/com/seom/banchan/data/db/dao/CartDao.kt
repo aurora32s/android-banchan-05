@@ -20,8 +20,8 @@ interface CartDao {
     suspend fun getCartMenuById(menuId: String): CartMenuEntity?
 
     /**
-     * 장바구네이 있는 메뉴들의 id 값만 요청
+     * 장바구니에 속한 모든 메뉴 리스트 요청
      */
-    @Query("SELECT menu_id FROM cart_table")
-    suspend fun getCartMenusId(): Flow<List<Long>>
+    @Query("SELECT * FROM cart_table")
+    fun getCartMenusId(): Flow<List<CartMenuEntity>>
 }
