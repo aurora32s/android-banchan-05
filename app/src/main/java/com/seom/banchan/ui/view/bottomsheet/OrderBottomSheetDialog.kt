@@ -12,8 +12,10 @@ import com.seom.banchan.R
 import com.seom.banchan.databinding.FragmentOrderBottomSheetBinding
 import com.seom.banchan.ui.base.BaseFragment
 import com.seom.banchan.ui.model.home.HomeMenuModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class OrderBottomSheetDialog(
     private val supportFragmentManager: FragmentManager
 ) : BottomSheetDialogFragment() {
@@ -40,19 +42,13 @@ class OrderBottomSheetDialog(
         super.onViewCreated(view, savedInstanceState)
         binding?.menu = menuModel
 
-        viewModel.init(menuModel)
         initBind()
-
-        lifecycleScope.launch {
-            viewModel.count.collect { binding?.count = it }
-        }
-        lifecycleScope.launch {
-            viewModel.totalPrice.collect { binding?.totalPrice = it }
-        }
+        initObserver()
     }
 
     private fun initBind() = binding?.let {
         it.btnCancel.setOnClickListener { dismiss() }
+        it.btnOrder.setOnClickListener { viewModel.addMenuToCart() }
         it.ivDownCount.setOnClickListener {
             viewModel.decreaseCount()
         }
@@ -61,6 +57,29 @@ class OrderBottomSheetDialog(
         }
     }
 
+    private fun initObserver() {
+        lifecycleScope.launch {
+            viewModel.count.collect { binding?.count = it }
+        }
+        lifecycleScope.launch {
+            viewModel.totalPrice.collect { binding?.totalPrice = it }
+        }
+        lifecycleScope.launch {
+            viewModel.orderBottomSheetUiState.collect {
+                when (it) {
+                    OrderBottomSheetUiState.SuccessAddToCart -> {
+                        if (::onSuccessAddToCart.isInitialized) {
+                            onSuccessAddToCart()
+                            dismiss()
+                        }
+                    }
+                    OrderBottomSheetUiState.UnInitialized -> {
+                        viewModel.init(menuModel)
+                    }
+                }
+            }
+        }
+    }
 
     fun setMenu(menuModel: HomeMenuModel): OrderBottomSheetDialog {
         this.menuModel = menuModel

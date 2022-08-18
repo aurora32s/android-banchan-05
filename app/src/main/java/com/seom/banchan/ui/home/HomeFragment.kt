@@ -14,6 +14,7 @@ import com.seom.banchan.ui.home.maindish.MainDishFragment
 import com.seom.banchan.ui.home.sidedish.SideDishFragment
 import com.seom.banchan.ui.home.soupdish.SoupDishFragment
 import com.seom.banchan.ui.model.home.HomeMenuModel
+import com.seom.banchan.ui.view.OrderCartBottomSheetManager
 import com.seom.banchan.ui.view.bottomsheet.OrderBottomSheetDialog
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -56,9 +57,9 @@ class HomeFragment : Fragment(), CartBottomSheetManager {
     }
 
     override fun showBottomSheet(menu: HomeMenuModel) {
-        OrderBottomSheetDialog.build(childFragmentManager)
-            .setMenu(menu)
-            .show()
+        OrderCartBottomSheetManager.build(childFragmentManager)
+            .setOnClickMoveToCartListener { }
+            .show(currentMenuModel = menu)
     }
 
     companion object {

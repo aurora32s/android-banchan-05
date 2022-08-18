@@ -61,6 +61,7 @@ class OrderBottomSheetViewModel @Inject constructor(
             )
             addOrReplaceMenuToCartUseCase(cartMenu)
                 .onSuccess {
+                    _orderBottomSheetUiState.value = OrderBottomSheetUiState.SuccessAddToCart
                 }
         }
     }
