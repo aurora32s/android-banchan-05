@@ -22,8 +22,6 @@ class HomeFragment : Fragment(), CartBottomSheetManager {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding
 
-    private lateinit var orderBottomSheet: OrderBottomSheetDialog
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

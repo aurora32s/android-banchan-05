@@ -10,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.seom.banchan.R
 import com.seom.banchan.databinding.FragmentOrderBottomSheetBinding
+import com.seom.banchan.ui.base.BaseFragment
 import com.seom.banchan.ui.model.home.HomeMenuModel
 import kotlinx.coroutines.launch
 
@@ -23,6 +24,7 @@ class OrderBottomSheetDialog(
     private val binding get() = _binding
 
     private var menuModel: HomeMenuModel? = null
+    private lateinit var onSuccessAddToCart: () -> Unit
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -59,8 +61,14 @@ class OrderBottomSheetDialog(
         }
     }
 
+
     fun setMenu(menuModel: HomeMenuModel): OrderBottomSheetDialog {
         this.menuModel = menuModel
+        return this
+    }
+
+    fun setOnSuccessAddToCart(onSuccessAddToCart: () -> Unit): OrderBottomSheetDialog {
+        this.onSuccessAddToCart = onSuccessAddToCart
         return this
     }
 
