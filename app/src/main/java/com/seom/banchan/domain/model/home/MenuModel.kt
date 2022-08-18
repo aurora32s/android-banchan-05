@@ -19,7 +19,6 @@ data class MenuModel(
 
 fun MenuModel.toHomeMenuModel(isBest : Boolean = false,cellType: CellType = CellType.MENU_CELL) = HomeMenuModel(
     id = id,
-    type = CellType.MENU_CELL,
     isBest = isBest,
     menu = this,
     type = cellType,
