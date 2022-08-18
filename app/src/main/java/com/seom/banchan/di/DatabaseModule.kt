@@ -2,7 +2,6 @@ package com.seom.banchan.di
 
 import android.content.Context
 import androidx.room.Room
-import androidx.room.RoomDatabase
 import com.seom.banchan.data.db.BanChanDatabase
 import com.seom.banchan.data.db.dao.RecentlyDao
 import dagger.Module
