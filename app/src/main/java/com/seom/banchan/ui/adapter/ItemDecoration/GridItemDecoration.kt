@@ -5,11 +5,11 @@ import android.graphics.Rect
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.seom.banchan.util.ext.dpToPx
-import kotlin.math.roundToInt
 
 class GridItemDecoration(
     val context: Context,
-    val isGrid: Boolean
+    val isGrid: Boolean,
+    val index : Int
 ) : RecyclerView.ItemDecoration()   {
     override fun getItemOffsets(
         outRect: Rect,
@@ -19,7 +19,7 @@ class GridItemDecoration(
     ) {
         super.getItemOffsets(outRect, view, parent, state)
 
-        val idx = parent.getChildAdapterPosition(view) - 3
+        val idx = parent.getChildAdapterPosition(view) - index
         if (idx < 0) return
 
         val spanCount = if(isGrid) 2 else 1
