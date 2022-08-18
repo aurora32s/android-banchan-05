@@ -1,6 +1,8 @@
 package com.seom.banchan.di
 
+import com.seom.banchan.data.repository.CartRepositoryImpl
 import com.seom.banchan.data.repository.MenuRepositoryImpl
+import com.seom.banchan.domain.repository.CartRepository
 import com.seom.banchan.data.repository.RecentlyRepositoryImpl
 import com.seom.banchan.domain.repository.MenuRepository
 import com.seom.banchan.domain.repository.RecentlyRepository
@@ -18,7 +20,12 @@ abstract class RepositoryModule {
     ): MenuRepository
 
     @Binds
+    abstract fun bindCartRepository(
+        cartRepositoryImpl: CartRepositoryImpl
+    ): CartRepository
+
+    @Binds
     abstract fun bindRecentlyRepository(
         recentlyRepositoryImpl: RecentlyRepositoryImpl
-    ) : RecentlyRepository
+    ): RecentlyRepository
 }

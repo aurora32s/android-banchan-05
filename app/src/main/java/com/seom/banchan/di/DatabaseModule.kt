@@ -2,9 +2,9 @@ package com.seom.banchan.di
 
 import android.content.Context
 import androidx.room.Room
-import com.seom.banchan.data.db.BanchanDatabase
+import androidx.room.RoomDatabase
+import com.seom.banchan.data.db.BanChanDatabase
 import com.seom.banchan.data.db.dao.RecentlyDao
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,22 +14,33 @@ import dagger.hilt.components.SingletonComponent
 /**
  * Data layer 단과 관련된 DI 모듈
  */
-
 @Module
 @InstallIn(SingletonComponent::class)
 object DatabaseModule {
-
     @Provides
-    fun provideDatabase(@ApplicationContext context : Context) : BanchanDatabase{
+    fun provideDatabase(
+        @ApplicationContext context: Context
+    ): BanChanDatabase {
         return Room.databaseBuilder(
-            context.applicationContext,
-            BanchanDatabase::class.java,
-            "BanchanDatabase"
+            context,
+            BanChanDatabase::class.java,
+            BanChanDatabase.DATABASE_NAME
         ).build()
     }
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+object DaoModule {
+    @Provides
+    fun provideCartDao(
+        database: BanChanDatabase
+    ) = database.cartDao()
 
     @Provides
-    fun provideRecentlyDao(database: BanchanDatabase) : RecentlyDao{
+    fun provideRecentlyDao(
+        database: BanChanDatabase
+    ): RecentlyDao {
         return database.recentlyDao()
     }
 }
