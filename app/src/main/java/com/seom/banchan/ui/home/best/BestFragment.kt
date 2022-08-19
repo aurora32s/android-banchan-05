@@ -30,6 +30,7 @@ import com.seom.banchan.util.listener.ModelAdapterListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -83,8 +84,9 @@ class BestFragment : BaseFragment() {
     }
 
     private fun initObserver() {
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             viewModel.bestMenus.collect {
+                Log.d(TAG, it.toString())
                 homeAdapter.submitList(it)
             }
         }

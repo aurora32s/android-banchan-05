@@ -31,9 +31,9 @@ class CartDataSourceImpl @Inject constructor(
     }
 
     // 장바구니에 속한 메뉴들의 id 리스트 요청
-    override fun getCartMenusId(): Flow<List<CartMenuModel>> {
-        return cartDao.getCartMenus().map {
-            it.map { it.toModel() }
+    override fun getCartMenusId(): Flow<List<CartMenuModel>> = flow {
+        cartDao.getCartMenus().collect {
+            emit(it.map { it.toModel() })
         }
     }
 }
