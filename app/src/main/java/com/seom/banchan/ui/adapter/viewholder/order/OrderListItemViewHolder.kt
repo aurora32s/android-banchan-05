@@ -10,7 +10,7 @@ class OrderListItemViewHolder(
 ) : ModelViewHolder<OrderListItemModel>(binding) {
 
     override fun bindData(model: OrderListItemModel) {
-        super.bindData(model)
+        binding.order = model
     }
 
     override fun bindViews(model: OrderListItemModel, menuAdapterListener: ModelAdapterListener?) {

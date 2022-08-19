@@ -10,6 +10,7 @@ data class OrderListItemModel(
     override val id: String = "Order",
     override val type: CellType = CellType.ORDER_LIST_ITEM,
     val orderId: Long, // 주문 내역 DB id
+    val menuName: String, // 주문의 대표 메뉴 이름
     val image: String?, // 주문 내역 대표 이미지
     val totalPrice: Int, // 총 주문 금액
     val menuCount: Int, // 해당 주문에 포함된 메뉴의 개수

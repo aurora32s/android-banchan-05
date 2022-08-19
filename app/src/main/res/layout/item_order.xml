@@ -5,7 +5,7 @@
 
         <variable
             name="order"
-            type="Integer" />
+            type="com.seom.banchan.ui.model.order.OrderListItemModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -18,46 +18,72 @@
             android:id="@+id/iv_order_thumbnail"
             android:layout_width="80dp"
             android:layout_height="80dp"
+            app:imageUrl="@{order.image}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="0dp"
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_menu_name"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingStart="8dp"
-            app:layout_constraintBottom_toBottomOf="@id/iv_order_thumbnail"
-            app:layout_constraintEnd_toStartOf="@id/btn_select_item"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toTopOf="@id/tv_order_price"
+            app:layout_constraintEnd_toStartOf="@id/tv_menu_count"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toEndOf="@id/iv_order_thumbnail"
             app:layout_constraintTop_toTopOf="@id/iv_order_thumbnail"
-            tools:ignore="RtlSymmetry">
+            app:layout_constraintVertical_chainStyle="packed"
+            app:text="@{order.menuName}"
+            tools:text="새어무콤달무콤달콤달콤어콤달무콤달콤달콤어콤달무콤달콤달콤어콤달무콤달콤달콤어콤달무콤달콤달콤어콤달무콤달콤달콤어무" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:textColor="@color/black"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                tools:text="새콤달콤 오징어무침 외 1개새콤달콤 오징어무침 외 1개새콤달콤 오징어무침 외 1개" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_menu_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:paddingHorizontal="4dp"
+            android:text="@{@string/order_list_item_count_value(order.menuCount)}"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/btn_select_item"
+            app:layout_constraintStart_toEndOf="@id/tv_menu_name"
+            app:layout_constraintTop_toTopOf="@id/tv_menu_name"
+            app:visibilityByData="@{order.menuCount}"
+            tools:text="외 1개" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textSize="14sp"
-                tools:text="21,140원" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_order_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{@string/menu_price_value(order.totalPrice)}"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@id/tv_order_state"
+            app:layout_constraintStart_toStartOf="@id/tv_menu_name"
+            app:layout_constraintTop_toBottomOf="@id/tv_menu_name"
+            app:visibilityByData="@{order.totalPrice}"
+            tools:text="21,140원" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                tools:text="베송완료" />
-        </androidx.appcompat.widget.LinearLayoutCompat>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_order_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/iv_order_thumbnail"
+            app:layout_constraintStart_toStartOf="@id/tv_menu_name"
+            app:layout_constraintTop_toBottomOf="@id/tv_order_price"
+            app:text="@{context.getString(order.deliveryCompleted.stateTitle)}"
+            tools:text="베송완료" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/btn_select_item"
