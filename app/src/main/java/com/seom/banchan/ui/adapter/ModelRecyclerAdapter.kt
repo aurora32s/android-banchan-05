@@ -59,6 +59,7 @@ class ModelRecyclerAdapter<M : Model>(
 
     fun updateModelsAtPosition(list: List<Model>,startIndex: Int,endIndex : Int){
         modelList = (modelList.subList(0,startIndex) + list + modelList.subList(modelList.size-3,modelList.size)).toMutableList()
-        notifyItemRangeChanged(startIndex,endIndex)
+        notifyDataSetChanged()
+        //            notifyItemRangeChanged(startIndex,endIndex)
     }
 }

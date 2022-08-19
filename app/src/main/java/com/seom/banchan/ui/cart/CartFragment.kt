@@ -45,6 +45,7 @@ class CartFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
         initObserver()
+        viewModel.fetchCartMenus()
     }
 
     private fun initRecyclerView() = binding?.let {
@@ -55,7 +56,14 @@ class CartFragment : BaseFragment() {
             //임시 데이터
             listOf(
                 CartCheckModel(
-                    id = "cart_check"
+                    id = "cart_check",
+                    atLeastChecked = false,
+                    onAllCheck = {
+                        viewModel.updateAllCheck()
+                    },
+                    onRemove = {
+                        viewModel.removeItems()
+                    }
                 ),
                 OrderInfoModel(
                     id = "order_info",
@@ -75,7 +83,7 @@ class CartFragment : BaseFragment() {
     private fun initObserver() {
         lifecycleScope.launch {
             viewModel.cartMenus.collectLatest {
-                cartAdapter.updateModelsAtPosition(it,1,it.size)
+                cartAdapter.updateModelsAtPosition(it,1,it.size+1)
             }
         }
         lifecycleScope.launch{
@@ -86,6 +94,11 @@ class CartFragment : BaseFragment() {
         lifecycleScope.launch{
             viewModel.cartOrder.collectLatest {
                 cartAdapter.updateModelAtPosition(it,viewModel.cartMenus.value.size+2)
+            }
+        }
+        lifecycleScope.launch {
+            viewModel.cartCheck.collectLatest {
+                cartAdapter.updateModelAtPosition(it,0)
             }
         }
     }
