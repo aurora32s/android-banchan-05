@@ -34,6 +34,8 @@ class CartOrderViewHolder(
                 } else {
                     this.visibility = View.GONE
                 }
+            } else {
+                this.visibility = View.GONE
             }
         }
     }
