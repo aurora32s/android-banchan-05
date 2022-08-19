@@ -36,8 +36,10 @@
             android:layout_height="32dp"
             android:layout_margin="8dp"
             android:background="@drawable/background_rounded_button"
+            android:backgroundTint="@{menu.isLoadedCart ? @color/primaryAccent : @color/white}"
             android:padding="7dp"
-            android:src="@drawable/ic_cart"
+            android:src="@{menu.isLoadedCart ? @drawable/ic_check : @drawable/ic_cart}"
+            android:tint="@{menu.isLoadedCart ? @color/white : @color/black}"
             app:layout_constraintBottom_toBottomOf="@id/iv_menu_thumbnail"
             app:layout_constraintEnd_toEndOf="@id/iv_menu_thumbnail" />
 

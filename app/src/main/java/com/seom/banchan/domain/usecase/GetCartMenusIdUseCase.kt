@@ -7,5 +7,7 @@ import javax.inject.Inject
 class GetCartMenusIdUseCase @Inject constructor(
     private val cartRepository: CartRepository
 ) {
-    operator fun invoke(): Flow<List<String>> = cartRepository.getCartMenusId()
+    operator fun invoke(): Flow<List<String>> {
+        return cartRepository.getCartMenusId()
+    }
 }

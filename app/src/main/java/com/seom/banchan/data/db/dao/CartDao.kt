@@ -1,9 +1,6 @@
 package com.seom.banchan.data.db.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.seom.banchan.data.db.entity.CartMenuEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -18,6 +15,9 @@ interface CartDao {
 
     @Query("SELECT * FROM cart_table WHERE menu_id = :menuId")
     suspend fun getCartMenuById(menuId: String): CartMenuEntity?
+
+    @Query("SELECT * FROM cart_table WHERE menu_id = :menuId")
+    fun getCartMenuByIdTest(menuId: String): Flow<CartMenuEntity>
 
     /**
      * 장바구니에 속한 모든 메뉴 리스트 요청
