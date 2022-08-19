@@ -9,6 +9,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
 /**
  * Data layer 단과 관련된 DI 모듈
@@ -31,11 +32,13 @@ object DatabaseModule {
 @Module
 @InstallIn(SingletonComponent::class)
 object DaoModule {
+    @Singleton
     @Provides
     fun provideCartDao(
         database: BanChanDatabase
     ) = database.cartDao()
 
+    @Singleton
     @Provides
     fun provideRecentDao(
         database: BanChanDatabase
