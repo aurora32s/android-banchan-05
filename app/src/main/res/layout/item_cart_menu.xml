@@ -32,6 +32,7 @@
             android:layout_marginStart="20dp"
             app:layout_constraintStart_toEndOf="@id/cb_menu"
             app:layout_constraintTop_toTopOf="@id/cb_menu"
+            app:imageUrl="@{model.menu.image}"
             tools:src="@drawable/ic_cart" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -44,6 +45,7 @@
             android:textColor="@color/greyScaleBlack"
             android:textSize="14sp"
             android:textStyle="bold"
+            android:text="@{model.menu.name}"
             app:layout_constraintEnd_toStartOf="@id/iv_delete"
             app:layout_constraintStart_toEndOf="@id/iv_cart"
             app:layout_constraintTop_toTopOf="@id/cb_menu" />
@@ -58,6 +60,7 @@
             android:textColor="@color/greyScaleBlack"
             android:textSize="14sp"
             android:textStyle="bold"
+            android:text="@{@string/menu_price_value(model.menu.salePrice)}"
             app:layout_constraintEnd_toStartOf="@id/iv_delete"
             app:layout_constraintStart_toEndOf="@id/iv_cart"
             app:layout_constraintTop_toBottomOf="@id/tv_name" />
@@ -124,6 +127,7 @@
             android:textColor="@color/greyScaleBlack"
             android:textSize="14sp"
             android:textStyle="bold"
+            android:text="@{@string/menu_price_value(model.count * model.menu.salePrice)}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             tools:text="14,200원" />
