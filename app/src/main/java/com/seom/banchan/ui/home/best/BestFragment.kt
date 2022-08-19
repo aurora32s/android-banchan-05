@@ -28,6 +28,7 @@ import com.seom.banchan.ui.model.home.HeaderMenuModel
 import com.seom.banchan.ui.model.home.HomeMenuModel
 import com.seom.banchan.util.listener.ModelAdapterListener
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -85,16 +86,6 @@ class BestFragment : BaseFragment() {
         lifecycleScope.launch {
             viewModel.bestMenus.collect {
                 homeAdapter.submitList(it)
-            }
-        }
-        lifecycleScope.launch {
-            viewModel.cartMenusId.observe(viewLifecycleOwner) {
-                Log.d(TAG, it.toString())
-            }
-        }
-        lifecycleScope.launch {
-            viewModel.carts().collect {
-                println(it)
             }
         }
     }

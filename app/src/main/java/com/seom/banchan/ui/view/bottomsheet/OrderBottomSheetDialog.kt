@@ -13,6 +13,8 @@ import com.seom.banchan.databinding.FragmentOrderBottomSheetBinding
 import com.seom.banchan.ui.base.BaseFragment
 import com.seom.banchan.ui.model.home.HomeMenuModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -44,6 +46,7 @@ class OrderBottomSheetDialog(
 
         initBind()
         initObserver()
+        viewModel.init(menuModel)
     }
 
     private fun initBind() = binding?.let {

@@ -1,5 +1,6 @@
 package com.seom.banchan.domain.model.home
 
+import com.seom.banchan.domain.model.cart.CartMenuModel
 import com.seom.banchan.ui.model.CellType
 import com.seom.banchan.ui.model.home.HomeMenuLargeModel
 import com.seom.banchan.ui.model.home.HomeMenuModel
@@ -17,15 +18,22 @@ data class MenuModel(
     val recentTime : String = ""
 ): Serializable
 
-
-fun MenuModel.toHomeMenuModel(isBest : Boolean = false, cartMenuIds: List<String> = emptyList(),cellType: CellType = CellType.MENU_CELL) = HomeMenuModel(
-    id = id,
-    isBest = isBest,
-    menu = this,
-    type = cellType,
-    discountRate = if (normalPrice == 0) 0 else ceil((1 - (salePrice / normalPrice.toDouble())) * 100).toInt(),
-    isLoadedCart = id in cartMenuIds
-)
+fun MenuModel.toHomeMenuModel(
+    isBest: Boolean = false,
+    cartMenus: List<CartMenuModel> = emptyList(),
+    cellType: CellType = CellType.MENU_CELL
+): HomeMenuModel {
+    val cartMenu = cartMenus.find { it.menuId == id }
+    return HomeMenuModel(
+        id = id,
+        type = cellType,
+        isBest = isBest,
+        menu = this,
+        count = cartMenu?.count ?: 1,
+        discountRate = if (normalPrice == 0) 0 else ceil((1 - (salePrice / normalPrice.toDouble())) * 100).toInt(),
+        isLoadedCart = cartMenu != null
+    )
+}
 
 fun MenuModel.toHomeMenuLinearModel() = HomeMenuModel(
     id = id,

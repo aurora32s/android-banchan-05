@@ -17,5 +17,5 @@ interface CartRepository {
     /**
      * 장바구니에 있는 메뉴들의 id 리스트 요청
      */
-    fun getCartMenusId(): Flow<List<String>>
+    fun getCartMenusId(): Flow<List<CartMenuModel>>
 }

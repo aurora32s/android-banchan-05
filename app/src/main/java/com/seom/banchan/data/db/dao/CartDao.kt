@@ -3,6 +3,7 @@ package com.seom.banchan.data.db.dao
 import androidx.room.*
 import com.seom.banchan.data.db.entity.CartMenuEntity
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 
 @Dao
 interface CartDao {
@@ -16,12 +17,9 @@ interface CartDao {
     @Query("SELECT * FROM cart_table WHERE menu_id = :menuId")
     suspend fun getCartMenuById(menuId: String): CartMenuEntity?
 
-    @Query("SELECT * FROM cart_table WHERE menu_id = :menuId")
-    fun getCartMenuByIdTest(menuId: String): Flow<CartMenuEntity>
-
     /**
      * 장바구니에 속한 모든 메뉴 리스트 요청
      */
     @Query("SELECT * FROM cart_table")
-    fun getCartMenusId(): Flow<List<CartMenuEntity>>
+    fun getCartMenus(): Flow<List<CartMenuEntity>>
 }

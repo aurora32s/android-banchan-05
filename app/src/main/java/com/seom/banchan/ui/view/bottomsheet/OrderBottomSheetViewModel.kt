@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seom.banchan.domain.model.cart.CartMenuModel
 import com.seom.banchan.domain.usecase.AddOrReplaceMenuToCartUseCase
-import com.seom.banchan.ui.detail.DetailUiState
 import com.seom.banchan.ui.model.home.HomeMenuModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

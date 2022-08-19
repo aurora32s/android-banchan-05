@@ -1,5 +1,6 @@
 package com.seom.banchan.domain.model.home
 
+import com.seom.banchan.domain.model.cart.CartMenuModel
 import com.seom.banchan.ui.model.home.CategoryMenuModel
 
 data class CategoryModel(
@@ -8,8 +9,8 @@ data class CategoryModel(
     val menus: List<MenuModel>
 )
 
-fun CategoryModel.toUiModel(isBest: Boolean = false, cartMenuIds: List<String>) = CategoryMenuModel(
+fun CategoryModel.toUiModel(isBest: Boolean = false, cartMenus: List<CartMenuModel>) = CategoryMenuModel(
     id = id,
     categoryName = name,
-    menus = menus.map { it.toHomeMenuModel(isBest, cartMenuIds) }
+    menus = menus.map { it.toHomeMenuModel(isBest, cartMenus) }
 )
