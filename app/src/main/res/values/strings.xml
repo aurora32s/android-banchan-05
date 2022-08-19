@@ -69,7 +69,8 @@
 
     <!-- order list -->
     <string name="order_list_title">Order List</string>
-    <string name="order_list_delivering">배송 준비중</string>
+    <string name="order_list_prepare">배송 준비중</string>
+    <string name="order_list_delivering">배송중</string>
     <string name="order_list_delivered">배송 완료</string>
     <string name="order_list_item_count_value">%s 외 %d개</string>
 

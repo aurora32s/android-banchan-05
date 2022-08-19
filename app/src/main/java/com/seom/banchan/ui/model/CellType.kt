@@ -24,5 +24,7 @@ enum class CellType {
     CART_RECENT_CELL,
 
     //장바구니, 주문 내역, 주문 확인 화면 공통
-    ORDER_INFO_CELL
+    ORDER_INFO_CELL,
+    // 주문 내역 리스트
+    ORDER_LIST_ITEM // 주문 내역 리스트 아이템
 }

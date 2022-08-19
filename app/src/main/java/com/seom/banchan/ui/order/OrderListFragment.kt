@@ -26,3 +26,7 @@ class OrderListFragment : BaseFragment() {
         fun newInstance() = OrderListFragment()
     }
 }
+
+val mockData = (0..10).map {
+
+}
