@@ -31,12 +31,20 @@ class MainActivity : AppCompatActivity(), BaseFragment.FragmentNavigation {
 
         initToolbar()
         initContainer()
+        initViews()
     }
 
     private fun initToolbar() = binding?.let {
         setSupportActionBar(it.tbMain)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         it.tbMain.title = getString(R.string.main_title)
+    }
+
+    private fun initViews() = binding?.let {
+        // 상단 프로필 사진 클릭 이벤트
+        it.ivUser.setOnClickListener {
+            fragmentNavigationController.moveToOrderListFragment()
+        }
     }
 
     private fun initContainer() = binding?.let {

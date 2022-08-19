@@ -4,6 +4,7 @@ import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.commit
+import com.seom.banchan.ui.order.OrderListFragment
 
 class FragmentNavigationController(
     private val fragmentManager: FragmentManager,
@@ -24,5 +25,12 @@ class FragmentNavigationController(
 
     fun popStack() {
         fragmentManager.popBackStack()
+    }
+
+    /**
+     * 한번 compose 의 navigation 처럼 화면 별로 function 을 만들어 보았어요.
+     */
+    fun moveToOrderListFragment() {
+        this.replaceFragment(OrderListFragment.newInstance(), OrderListFragment.TAG)
     }
 }
