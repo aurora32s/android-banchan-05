@@ -76,8 +76,8 @@ class OrderListFragment : BaseFragment() {
 val mockData = (0..10).map {
     OrderListItemModel(
         orderId = it.toLong(),
-        menuName = "test",
-        image = null,
+        menuName = "test".repeat(it + 1),
+        image = "http://public.codesquad.kr/jk/storeapp/data/main/675_ZIP_P_0057_T.jpg",
         totalPrice = it * 1000,
         menuCount = it,
         deliveryCompleted = OrderDeliveryState.DELIVERING
