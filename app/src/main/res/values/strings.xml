@@ -91,4 +91,8 @@
     <string name="total_view_holder">total</string>
     <string name="filter_view_holder">filter</string>
 
+
+    <!-- 기타 -->
+    <string name="number">%d</string>
+
 </resources>
