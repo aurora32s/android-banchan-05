@@ -89,7 +89,6 @@ class BestFragment : BaseFragment() {
     private fun initObserver() {
         lifecycleScope.launch {
             viewModel.bestMenus.collect {
-                Log.d(TAG, it.toString())
                 homeAdapter.submitList(it)
             }
         }
