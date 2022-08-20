@@ -1,9 +1,11 @@
 package com.seom.banchan.ui.order
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.seom.banchan.databinding.FragmentOrderListBinding
@@ -14,9 +16,13 @@ import com.seom.banchan.ui.model.Model
 import com.seom.banchan.ui.model.order.OrderDeliveryState
 import com.seom.banchan.ui.model.order.OrderListItemModel
 import com.seom.banchan.util.listener.ModelAdapterListener
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class OrderListFragment : BaseFragment() {
+
+    private val viewModel: OrderListViewModel by viewModels()
 
     private var _binding: FragmentOrderListBinding? = null
     private val binding
@@ -47,6 +53,8 @@ class OrderListFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         initViews()
         initObserver()
+
+        viewModel.init()
     }
 
     /**
@@ -54,6 +62,9 @@ class OrderListFragment : BaseFragment() {
      */
     private fun initObserver() {
         lifecycleScope.launch {
+            viewModel.orderList().collect {
+                Log.d(TAG, it.toString())
+            }
         }
     }
 
