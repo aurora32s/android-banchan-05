@@ -10,5 +10,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "order_table")
 data class OrderEntity(
     @PrimaryKey
-    @ColumnInfo(name = "order_id") val orderId: Long
+    @ColumnInfo(name = "order_id") val orderId: Long, // order id
+    @ColumnInfo(name = "createdAt") val createdAt: Long, // 생성 날짜
+    @ColumnInfo(name = "completed") val completed: Boolean // 배달완료 여부
 )
