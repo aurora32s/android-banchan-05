@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="model"
+            type="com.seom.banchan.ui.model.order.OrderInfoModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/greyScaleSurface">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_order_price_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="@string/cart_price"
+            android:textColor="@color/greyScaleDefault"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@id/tv_order_price"
+            app:layout_constraintEnd_toStartOf="@id/tv_order_price"
+            app:layout_constraintTop_toTopOf="@id/tv_order_price" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_order_price"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:gravity="end"
+            android:text="@{@string/menu_price_value(model.orderPrice)}"
+            android:textColor="@color/greyScaleDefault"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="13,400원" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_delivery_fee_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="@string/cart_delivery_fee"
+            android:textColor="@color/greyScaleDefault"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@id/tv_delivery_fee"
+            app:layout_constraintEnd_toEndOf="@id/tv_order_price_title"
+            app:layout_constraintStart_toStartOf="@id/tv_order_price_title"
+            app:layout_constraintTop_toTopOf="@id/tv_delivery_fee" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_delivery_fee"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:gravity="end"
+            android:textColor="@color/greyScaleDefault"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_order_price"
+            tools:text="13,400원" />
+
+        <View
+            android:id="@+id/v_divider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/greyScaleLine"
+            app:layout_constraintEnd_toEndOf="@id/tv_order_price"
+            app:layout_constraintStart_toStartOf="@id/tv_order_price_title"
+            app:layout_constraintTop_toBottomOf="@id/tv_delivery_fee" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_order_total_price_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/cart_total"
+            android:textColor="@color/greyScaleBlack"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@id/tv_order_total_price"
+            app:layout_constraintEnd_toEndOf="@id/tv_order_price_title"
+            app:layout_constraintStart_toStartOf="@id/tv_order_price_title"
+            app:layout_constraintTop_toTopOf="@id/tv_order_total_price" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_order_total_price"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="20dp"
+            android:gravity="end"
+            android:textColor="@color/greyScaleBlack"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/v_divider"
+            tools:text="13,400원" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

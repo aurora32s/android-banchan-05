@@ -10,7 +10,7 @@
         <item name="android:textColor">@color/greyScaleBlack</item>
     </style>
 
-    <!-- bottom sheet rounded background style -->
+<!-- bottom sheet rounded background style -->
     <style name="RoundedBottomSheetDialog" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/CustomBottomSheet</item>
     </style>
@@ -26,5 +26,4 @@
         <item name="cornerSizeBottomRight">0dp</item>
         <item name="cornerSizeBottomLeft">0dp</item>
     </style>
-
 </resources>
