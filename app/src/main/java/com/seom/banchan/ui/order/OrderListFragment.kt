@@ -61,7 +61,7 @@ class OrderListFragment : BaseFragment() {
     private fun initObserver() {
         lifecycleScope.launch {
             viewModel.orderList().collect {
-                Log.d(TAG, it.toString())
+                orderListAdapter.submitList(it)
             }
         }
     }
