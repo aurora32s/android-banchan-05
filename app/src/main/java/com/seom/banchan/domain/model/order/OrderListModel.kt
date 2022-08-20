@@ -1,7 +1,7 @@
 package com.seom.banchan.domain.model.order
 
 import com.seom.banchan.ui.model.order.OrderDeliveryState
-import com.seom.banchan.ui.model.order.OrderListItemModel
+import com.seom.banchan.ui.model.order.OrderListItemUiModel
 
 data class OrderListModel(
     val orderId: Long, // 주문 번호
@@ -12,7 +12,7 @@ data class OrderListModel(
     val deliveryType: OrderDeliveryState // 배달 상태
 )
 
-fun OrderListModel.toUiModel() = OrderListItemModel(
+fun OrderListModel.toUiModel() = OrderListItemUiModel(
     orderId = orderId,
     menuName = menuName,
     image = image,

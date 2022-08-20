@@ -6,7 +6,7 @@ import com.seom.banchan.ui.model.Model
 /**
  * 주문 내역 리스트의 주문 아이템 model
  */
-data class OrderListItemModel(
+data class OrderListItemUiModel(
     override val id: String = "Order",
     override val type: CellType = CellType.ORDER_LIST_ITEM,
     val orderId: Long, // 주문 내역 DB id
