@@ -43,7 +43,6 @@
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toEndOf="@id/iv_order_thumbnail"
             app:layout_constraintTop_toTopOf="@id/iv_order_thumbnail"
-            app:layout_constraintVertical_chainStyle="packed"
             app:text="@{order.menuName}"
             tools:text="새어무콤달무콤달콤달콤어콤달무콤달콤달콤어콤달무콤달콤달콤어콤달무콤달콤달콤어콤달무콤달콤달콤어콤달무콤달콤달콤어무" />
 
@@ -54,14 +53,14 @@
             android:maxLines="1"
             android:paddingStart="4dp"
             android:paddingEnd="16dp"
-            android:text="@{@string/order_list_item_count_value(order.menuCount)}"
+            android:text="@{@string/order_list_item_count_value(order.menuCount - 1)}"
             android:textColor="@color/black"
             android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@id/btn_select_item"
             app:layout_constraintStart_toEndOf="@id/tv_menu_name"
             app:layout_constraintTop_toTopOf="@id/tv_menu_name"
-            app:visibilityByData="@{order.menuCount}"
+            app:visibilityByData="@{order.menuCount - 1}"
             tools:text="외 1개" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -71,7 +70,6 @@
             android:text="@{@string/menu_price_value(order.totalPrice)}"
             android:textColor="@color/black"
             android:textSize="14sp"
-            app:layout_constraintBottom_toTopOf="@id/tv_order_state"
             app:layout_constraintStart_toStartOf="@id/tv_menu_name"
             app:layout_constraintTop_toBottomOf="@id/tv_menu_name"
             app:visibilityByData="@{order.totalPrice}"
