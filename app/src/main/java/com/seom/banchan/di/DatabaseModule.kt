@@ -3,6 +3,7 @@ package com.seom.banchan.di
 import android.content.Context
 import androidx.room.Room
 import com.seom.banchan.data.db.BanChanDatabase
+import com.seom.banchan.data.db.dao.OrderDao
 import com.seom.banchan.data.db.dao.RecentDao
 import dagger.Module
 import dagger.Provides
@@ -44,5 +45,13 @@ object DaoModule {
         database: BanChanDatabase
     ): RecentDao {
         return database.recentDao()
+    }
+
+    @Singleton
+    @Provides
+    fun providesOrderDao(
+        database: BanChanDatabase
+    ): OrderDao {
+        return database.orderDao()
     }
 }
