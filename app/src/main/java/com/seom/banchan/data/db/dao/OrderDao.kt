@@ -36,7 +36,7 @@ interface OrderDao {
                 "  i.image as image,\n" +
                 "  sum(i.sale_price * i.count) as total_price,\n" +
                 "  sum(count) as menu_count,\n" +
-                "  o.completed as completed\n" +
+                "  o.delivery_type as delivery_type\n" +
                 "from order_table o, order_item_table i\n" +
                 "where o.order_id = i.order_id\n" +
                 "group by o.order_id"

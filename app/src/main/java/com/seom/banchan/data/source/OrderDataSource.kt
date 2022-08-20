@@ -1,6 +1,7 @@
 package com.seom.banchan.data.source
 
 import com.seom.banchan.data.db.entity.OrderListEntity
+import com.seom.banchan.domain.model.order.OrderListModel
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -16,5 +17,5 @@ interface OrderDataSource {
      * 모든 주문 내역 요창
      * TODO 페이징 기능 추가
      */
-    fun getOrderList(): Flow<List<OrderListEntity>>
+    fun getOrderList(): Flow<List<OrderListModel>>
 }

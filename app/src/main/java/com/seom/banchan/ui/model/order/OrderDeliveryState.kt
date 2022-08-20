@@ -7,10 +7,15 @@ import com.seom.banchan.R
  * 주문의 배송 상태
  */
 enum class OrderDeliveryState(
+    val type: Int, // 0: 배송중, 1: 배송완료
     @StringRes
     val stateTitle: Int
 ) {
-    PREPARE(R.string.order_list_prepare), // 배송 준비중
-    DELIVERING(R.string.order_list_delivering), // 배송중
-    DELIVERED(R.string.order_list_delivered) // 배송 완료
+    DELIVERING(0, R.string.order_list_delivering), // 배송중
+    DELIVERED(1, R.string.order_list_delivered); // 배송 완료
+
+    companion object {
+        fun getDeliveryType(deliveryType: Int) =
+            values().find { it.type == deliveryType } ?: DELIVERING
+    }
 }

@@ -53,8 +53,6 @@ class OrderListFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         initViews()
         initObserver()
-
-        viewModel.init()
     }
 
     /**
