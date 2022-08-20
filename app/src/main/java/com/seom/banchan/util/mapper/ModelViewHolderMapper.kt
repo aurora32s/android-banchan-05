@@ -16,11 +16,8 @@ import com.seom.banchan.ui.adapter.viewholder.image.ImageListItemViewHolder
 import com.seom.banchan.ui.adapter.viewholder.image.ImageSliderViewHolder
 import com.seom.banchan.ui.adapter.viewholder.menu.LargeMenuViewHolder
 import com.seom.banchan.ui.adapter.viewholder.menu.SmallMenuViewHolder
-<<<<<<< HEAD
 import com.seom.banchan.ui.adapter.viewholder.order.OrderInfoViewHolder
-=======
 import com.seom.banchan.ui.adapter.viewholder.order.OrderListItemViewHolder
->>>>>>> 042b23e ([FEAT] #59 - 주문 내역 리스트 화면 viewHolder 생성 및 Mapper binding)
 import com.seom.banchan.ui.model.CellType
 import com.seom.banchan.ui.model.Model
 
@@ -69,7 +66,6 @@ object ModelViewHolderMapper {
             CellType.SORT_CELL -> SortViewHolder(
                 ItemHomeSortBinding.inflate(inflater, parent, false)
             )
-<<<<<<< HEAD
             CellType.CART_CHECK_CELL -> CartCheckViewHolder(
                 ItemCartCheckBinding.inflate(inflater, parent, false)
             )
@@ -84,10 +80,9 @@ object ModelViewHolderMapper {
             )
             CellType.ORDER_INFO_CELL -> OrderInfoViewHolder(
                 ItemOrderInfoBinding.inflate(inflater, parent, false)
-=======
+            )
             CellType.ORDER_LIST_ITEM -> OrderListItemViewHolder(
                 ItemOrderBinding.inflate(inflater, parent, false)
->>>>>>> 042b23e ([FEAT] #59 - 주문 내역 리스트 화면 viewHolder 생성 및 Mapper binding)
             )
         }
         return viewHolder as ModelViewHolder<M>
