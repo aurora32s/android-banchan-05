@@ -8,6 +8,7 @@ import com.seom.banchan.domain.model.detail.toUiModel
 import com.seom.banchan.domain.model.home.MenuModel
 import com.seom.banchan.domain.usecase.AddOrUpdateMenuToCartUseCase
 import com.seom.banchan.domain.usecase.GetMenuDetailUseCase
+import com.seom.banchan.domain.usecase.UpsertRecentMenuUseCase
 import com.seom.banchan.ui.model.detail.DetailMenuUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
@@ -17,7 +18,8 @@ import javax.inject.Inject
 @HiltViewModel
 class DetailViewModel @Inject constructor(
     private val getMenuDetailUseCase: GetMenuDetailUseCase,
-    private val addOrUpdateMenuToCartUseCase: AddOrUpdateMenuToCartUseCase
+    private val addOrUpdateMenuToCartUseCase: AddOrUpdateMenuToCartUseCase,
+    private val upsertRecentMenuUseCase: UpsertRecentMenuUseCase
 ) : ViewModel() {
     private val _detailMenuUiModel = MutableStateFlow<DetailUiState>(DetailUiState.UnInitialized)
     val detailMenuModel: StateFlow<DetailUiState>
@@ -59,6 +61,8 @@ class DetailViewModel @Inject constructor(
                 _totalPrice.value = it.salePrice
                 _detailMenuUiModel.value =
                     DetailUiState.Success.SuccessFetch(currentMenu.toUiModel())
+                // 최근 본 상품으로 등록
+                upsertRecentMenuUseCase(menu)
             }
     }
 
