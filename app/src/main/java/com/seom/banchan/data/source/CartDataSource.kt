@@ -10,5 +10,10 @@ interface CartDataSource {
     /**
      * 만약 동일한 아이템이 있는 경우, 개수가 더해진 새로운 메뉴 아이템으로 변경
      */
+    suspend fun addOrUpdateMenuToCart(cartMenuItem: CartMenuModel): Result<Long>
+
+    /**
+     * 만약 동일한 아이템이 있는 경우, 새로운 개수로 메뉴 아이템 변경
+     */
     suspend fun addOrReplaceMenuToCart(cartMenuItem: CartMenuModel): Result<Long>
 }

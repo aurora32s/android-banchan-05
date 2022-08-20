@@ -12,11 +12,18 @@ class CartDataSourceImpl @Inject constructor(
 ) : CartDataSource {
 
     // 장바구니에 메뉴를 추가하거나 이미 있다면 개수를 더해서 새로 추가
-    override suspend fun addOrReplaceMenuToCart(cartMenuItem: CartMenuModel): Result<Long> = try {
+    override suspend fun addOrUpdateMenuToCart(cartMenuItem: CartMenuModel): Result<Long> = try {
         val cartMenu = cartDao.getCartMenuById(cartMenuItem.menuId)
         val originCount = cartMenu?.count ?: 0
         val result = cartDao.insertOrReplaceCartMenu(cartMenuItem.toEntity(originCount))
 
+        Result.success(result)
+    } catch (exception: Exception) {
+        Result.failure(exception)
+    }
+
+    override suspend fun addOrReplaceMenuToCart(cartMenuItem: CartMenuModel): Result<Long> = try {
+        val result = cartDao.insertOrReplaceCartMenu(cartMenuItem.toEntity(originCount = 0))
         Result.success(result)
     } catch (exception: Exception) {
         Result.failure(exception)

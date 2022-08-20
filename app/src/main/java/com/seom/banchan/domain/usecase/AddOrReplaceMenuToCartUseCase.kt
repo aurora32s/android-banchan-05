@@ -7,7 +7,10 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class AddMenuToCartUseCase @Inject constructor(
+/**
+ * 장바구니에 메뉴를 추가하거나 이미 있는 메뉴라면 현재 개수인 메뉴로 변경한다.
+ */
+class AddOrReplaceMenuToCartUseCase @Inject constructor(
     private val cartRepository: CartRepository,
     @IODispatcher
     private val ioDispatcher: CoroutineDispatcher

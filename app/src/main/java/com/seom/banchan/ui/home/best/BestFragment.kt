@@ -13,10 +13,12 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.seom.banchan.R
 import com.seom.banchan.databinding.FragmentBestBinding
 import com.seom.banchan.ui.adapter.ModelRecyclerAdapter
 import com.seom.banchan.ui.base.BaseFragment
 import com.seom.banchan.ui.detail.DetailFragment
+import com.seom.banchan.ui.home.CartBottomSheetManager
 import com.seom.banchan.ui.home.HomeFragment
 import com.seom.banchan.ui.model.CellType
 import com.seom.banchan.ui.model.Model
@@ -41,13 +43,17 @@ class BestFragment : BaseFragment() {
                 override fun onClick(view: View, model: Model, position: Int) {
                     when (model.type) {
                         CellType.MENU_CELL -> {
-                            (model as? HomeMenuModel)?.menu?.let {
-                                fragmentNavigation.replaceFragment(
-                                    DetailFragment.newInstance(
-                                        menuModel = it
-                                    ),
-                                    DetailFragment.TAG
-                                )
+                            if (view.id == R.id.iv_menu_thumbnail) {
+                                (model as? HomeMenuModel)?.menu?.let {
+                                    fragmentNavigation.replaceFragment(
+                                        DetailFragment.newInstance(
+                                            menuModel = it
+                                        ),
+                                        DetailFragment.TAG
+                                    )
+                                }
+                            } else if (view.id == R.id.iv_cart) {
+                                showCartBottomSheetDialog((model as HomeMenuModel))
                             }
                         } // 메뉴 아이템 클릭
                         else -> {}
@@ -86,6 +92,10 @@ class BestFragment : BaseFragment() {
         it.rvBest.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         it.rvBest.adapter = homeAdapter
+    }
+
+    private fun showCartBottomSheetDialog(menuModel: HomeMenuModel) {
+        (parentFragment as? CartBottomSheetManager)?.showBottomSheet(menuModel)
     }
 
     companion object {

@@ -1,18 +1,14 @@
 package com.seom.banchan.ui.detail
 
-import androidx.databinding.ObservableInt
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seom.banchan.domain.model.cart.CartMenuModel
 import com.seom.banchan.domain.model.detail.DetailMenuModel
 import com.seom.banchan.domain.model.detail.toUiModel
 import com.seom.banchan.domain.model.home.MenuModel
-import com.seom.banchan.domain.usecase.AddMenuToCartUseCase
+import com.seom.banchan.domain.usecase.AddOrUpdateMenuToCartUseCase
 import com.seom.banchan.domain.usecase.GetMenuDetailUseCase
 import com.seom.banchan.ui.model.detail.DetailMenuUiModel
-import com.seom.banchan.ui.model.detail.MenuDetailModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -21,7 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class DetailViewModel @Inject constructor(
     private val getMenuDetailUseCase: GetMenuDetailUseCase,
-    private val addMenuToCartUseCase: AddMenuToCartUseCase
+    private val addOrUpdateMenuToCartUseCase: AddOrUpdateMenuToCartUseCase
 ) : ViewModel() {
     private val _detailMenuUiModel = MutableStateFlow<DetailUiState>(DetailUiState.UnInitialized)
     val detailMenuModel: StateFlow<DetailUiState>
@@ -74,7 +70,7 @@ class DetailViewModel @Inject constructor(
             salePrice = currentMenu.salePrice,
             count = count.value
         )
-        addMenuToCartUseCase(cartMenu)
+        addOrUpdateMenuToCartUseCase(cartMenu)
             .onSuccess {
                 _detailMenuUiModel.value = DetailUiState.Success.SuccessAddToCart
             }

@@ -10,6 +10,6 @@ data class HomeMenuModel(
     val menu: MenuModel,
     val isBest : Boolean = false,
     val discountRate: Int, // 소수점 버림
-    val count: Int = 0, // 선택 개수
+    val count: Int = 1, // 선택 개수
     val isLoadedCart: Boolean = false // 장바구니 포함 여부
 ) : Model(id, type)

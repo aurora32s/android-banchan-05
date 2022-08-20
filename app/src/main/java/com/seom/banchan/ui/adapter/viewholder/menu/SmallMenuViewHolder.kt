@@ -11,7 +11,7 @@ class SmallMenuViewHolder(
 ) : ModelViewHolder<HomeMenuModel>(binding) {
     override fun bindData(model: HomeMenuModel) {
         binding.menu = model
-        if(!model.isBest)
+        if (!model.isBest)
             binding.root.layoutParams = ConstraintLayout.LayoutParams(
                 ConstraintLayout.LayoutParams.MATCH_PARENT,
                 ConstraintLayout.LayoutParams.WRAP_CONTENT
@@ -22,7 +22,10 @@ class SmallMenuViewHolder(
         model: HomeMenuModel,
         menuAdapterListener: ModelAdapterListener?
     ) {
-        binding.root.setOnClickListener {
+        binding.ivMenuThumbnail.setOnClickListener {
+            menuAdapterListener?.onClick(it, model, adapterPosition)
+        }
+        binding.ivCart.setOnClickListener {
             menuAdapterListener?.onClick(it, model, adapterPosition)
         }
     }
