@@ -16,7 +16,7 @@
         android:textSize="16sp"
         android:textStyle="bold"
         android:textColor="@color/greyScaleBlack"
-        android:text="@string/cart_recently_title"/>
+        android:text="@string/cart_recent_title"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_all"
@@ -26,7 +26,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginEnd="16dp"
         android:textColor="@color/greyScaleBlack"
-        android:text="@string/cart_recently_all"/>
+        android:text="@string/cart_recent_all"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_cart_recent"
