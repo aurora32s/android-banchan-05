@@ -1,5 +1,6 @@
 package com.seom.banchan.util
 
+import android.annotation.SuppressLint
 import java.lang.Math.abs
 import java.text.SimpleDateFormat
 import java.util.*
@@ -12,19 +13,13 @@ object TimeUtil {
     private const val MONTH = DAY * 30
     private const val YEAR = MONTH * 12
 
+    @SuppressLint("SimpleDateFormat")
     fun getTimeData(updated: Long): String {
-        val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.KOREAN)
         try {
+            val currentDate = Date().time
+            val diff = currentDate - updated
 
-            val currentDate = Calendar.getInstance().apply {
-                timeInMillis = Date().time
-            }
-
-            val targetDate = Calendar.getInstance().apply {
-                timeInMillis = parser.parse(parser.format(updated))?.time ?: 0L
-            }
-
-            return when (val difference = abs(currentDate.timeInMillis - targetDate.timeInMillis)) {
+            return when (diff) {
                 in 0 until SECOND -> {
                     "방금 전"
                 }
@@ -32,23 +27,23 @@ object TimeUtil {
                     "1분 전"
                 }
                 in MINUTE until HOUR -> {
-                    "${(difference / MINUTE).toInt()}분 전"
+                    "${(diff / MINUTE).toInt()}분 전"
                 }
                 in HOUR until DAY -> {
-                    "${(difference / HOUR).toInt()}시간 전"
+                    "${(diff / HOUR).toInt()}시간 전"
                 }
                 in DAY until MONTH -> {
-                    "${(difference / DAY).toInt()}일 전"
+                    "${(diff / DAY).toInt()}일 전"
                 }
                 in MONTH until YEAR -> {
-                    "${(difference / MONTH).toInt()}달 전"
+                    "${(diff / MONTH).toInt()}달 전"
                 }
                 else -> {
-                    "${(difference / YEAR).toInt()}년 전"
+                    "${(diff / YEAR).toInt()}년 전"
                 }
             }
         } catch (e: Exception) {
-            return parser.format(updated)
+            return SimpleDateFormat("yyyy년 MM월 dd일 HH시 mm").format(updated) // 에러 발생하면 시간으로 출력
         }
     }
 
