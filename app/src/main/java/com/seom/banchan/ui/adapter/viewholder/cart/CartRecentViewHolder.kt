@@ -25,7 +25,7 @@ class CartRecentViewHolder(
         recentMenuAdapter.submitList(model.recentMenus)
 
         binding.tvAll.setOnClickListener {
-            model.onClick()
+
         }
     }
 }

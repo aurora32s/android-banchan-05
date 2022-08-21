@@ -55,15 +55,16 @@ class CartViewModel @Inject constructor(
 
 
     private val _orderInfo = MutableStateFlow<OrderInfoModel>(OrderInfoModel(orderPrice = 0))
-    val orderInfo = _orderInfo.asStateFlow().combine(selectedCartItemIds) { orderInfo, ids ->
-        OrderInfoModel(
-            orderPrice = cartMenus.value.filter {
-                ids.contains(it.id)
-            }.sumOf {
-                it.menu.salePrice * it.count
-            }
-        )
-    }
+    val orderInfo = _orderInfo.asStateFlow()
+        .combine(cartMenus) { orderInfo, menus ->
+            OrderInfoModel(
+                orderPrice = menus.filter {
+                    it.checked
+                }.sumOf {
+                    it.menu.salePrice * it.count
+                }
+            )
+        }
 
     private val _cartOrder = MutableStateFlow<CartOrderModel>(CartOrderModel(totalPrice = 0))
     val cartOrder = _cartOrder.asStateFlow().combine(orderInfo) { _, orderInfo ->
@@ -76,17 +77,12 @@ class CartViewModel @Inject constructor(
         CartRecentModel(
             id = "cart_recent",
             recentMenus = listOf(
-            ),
-            onClick = {
-                recentAllEvent.value = true
-            }
+            )
         )
     )
     val cartRecent: StateFlow<CartRecentModel>
         get() = _cartRecent
 
-    //데모용 임시 이벤트
-    val recentAllEvent = MutableStateFlow<Boolean>(false)
 
     fun fetchCartMenus() { // 테스트를 위한 코드. 원래는 로컬 DB에서 들고 온다
         val list = testMenus
@@ -105,11 +101,11 @@ class CartViewModel @Inject constructor(
         } else {
             _selectedCartItemIds.value = selectedCartItemIds.value + listOf(cartMenuModel.id)
         }
-        _cartMenus.value = cartMenus.value.apply {
-            this.find {
-                it.id == cartMenuModel.id
-            }?.checked = !cartMenuModel.checked
-        }
+        _cartMenus.value = cartMenus.value.map { cart ->
+            cart.copy(
+                checked = if(cart.id == cartMenuModel.id) !cart.checked else cart.checked
+            )
+        }.toMutableList()
     }
 
     fun updateAllCheck() {
@@ -149,14 +145,24 @@ class CartViewModel @Inject constructor(
     }
 
     fun increaseCount(cartMenuModel: CartMenuModel) {
-
+        _cartMenus.value = cartMenus.value.map { cart ->
+            cart.copy(
+                count = if (cartMenuModel.id == cart.id) cart.count + 1 else cart.count,
+            )
+        }.toMutableList()
     }
 
     fun decreaseCount(cartMenuModel: CartMenuModel) {
-
+        _cartMenus.value = cartMenus.value.map { cart ->
+            cart.copy(
+                count = if (cartMenuModel.id == cart.id) {
+                    if (cart.count > 1) cart.count - 1 else cart.count
+                } else cart.count,
+            )
+        }.toMutableList()
     }
 
-    fun getRecentMenus(){
+    fun getRecentMenus() {
 //        viewModelScope.launch {
 //            getRecentMenusUseCase().collectLatest {
 //                _cartRecent.emit(
@@ -169,6 +175,7 @@ class CartViewModel @Inject constructor(
 //            }
 //        }
     }
+
     private var testMenus = mutableListOf(
         CartMenuModel(
             id = "menu1${System.currentTimeMillis()}",

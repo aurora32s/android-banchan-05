@@ -18,12 +18,14 @@ import com.seom.banchan.ui.model.cart.CartOrderModel
 import com.seom.banchan.ui.model.cart.CartRecentModel
 import com.seom.banchan.ui.model.order.OrderInfoModel
 import com.seom.banchan.ui.recent.RecentFragment
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.flatMapMerge
 import kotlinx.coroutines.flow.flattenMerge
 import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class CartFragment : BaseFragment() {
     private var _binding: FragmentCartBinding? = null
     private val binding get() = _binding
@@ -76,10 +78,7 @@ class CartFragment : BaseFragment() {
                 ),
                 CartRecentModel(
                     id = "cart_recent",
-                    recentMenus =  emptyList(),
-                    onClick = {
-
-                    }
+                    recentMenus =  emptyList()
                 )
             )
         )

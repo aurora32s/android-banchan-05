@@ -6,8 +6,7 @@ import com.seom.banchan.ui.model.Model
 data class CartRecentModel (
     override val id: String,
     override val type: CellType = CellType.CART_RECENT_CELL,
-    val recentMenus : List<Model>,
-    val onClick : () -> Unit
+    val recentMenus : List<Model>
 ) : Model(id, type)
 
 
