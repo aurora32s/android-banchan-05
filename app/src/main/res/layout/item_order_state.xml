@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="deliveryType"
+            type="com.seom.banchan.ui.model.order.OrderDeliveryState" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_order_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:paddingTop="22dp"
+            android:text="@{deliveryType.stateLongTitle}"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/tv_extra_delivery_time_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="주문이 접수되었습니다." />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_extra_delivery_time_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:text="@string/order_time"
+            android:textColor="@color/greyScaleDefault"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@id/sb_extra_delivery_time"
+            app:layout_constraintStart_toStartOf="@id/tv_order_state"
+            app:layout_constraintTop_toBottomOf="@id/tv_order_state" />
+
+        <SeekBar
+            android:id="@+id/sb_extra_delivery_time"
+            android:layout_width="0dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="3dp"
+            android:paddingHorizontal="16dp"
+            android:progressDrawable="@drawable/seekbar_delivery_time"
+            android:thumb="@android:color/transparent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_extra_delivery_time_title"
+            tools:progress="50" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_menu_count_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="22dp"
+            android:text="@string/order_total_count"
+            android:textColor="@color/greyScaleDefault"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@id/tv_order_state"
+            app:layout_constraintTop_toBottomOf="@id/sb_extra_delivery_time" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/greyScaleLine"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -16,6 +16,7 @@ import com.seom.banchan.ui.adapter.viewholder.image.ImageListItemViewHolder
 import com.seom.banchan.ui.adapter.viewholder.image.ImageSliderViewHolder
 import com.seom.banchan.ui.adapter.viewholder.menu.LargeMenuViewHolder
 import com.seom.banchan.ui.adapter.viewholder.menu.SmallMenuViewHolder
+import com.seom.banchan.ui.adapter.viewholder.order.OrderDeliveryStateViewHolder
 import com.seom.banchan.ui.adapter.viewholder.order.OrderInfoViewHolder
 import com.seom.banchan.ui.adapter.viewholder.recent.RecentMenuViewHolder
 import com.seom.banchan.ui.adapter.viewholder.order.OrderListItemViewHolder
@@ -87,6 +88,9 @@ object ModelViewHolderMapper {
             )
             CellType.ORDER_LIST_ITEM -> OrderListItemViewHolder(
                 ItemOrderBinding.inflate(inflater, parent, false)
+            )
+            CellType.ORDER_STATE_CELL -> OrderDeliveryStateViewHolder(
+                ItemOrderStateBinding.inflate(inflater, parent, false)
             )
         }
         return viewHolder as ModelViewHolder<M>
