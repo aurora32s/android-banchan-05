@@ -6,6 +6,7 @@ import com.seom.banchan.databinding.ItemCartOrderBinding
 import com.seom.banchan.ui.adapter.viewholder.ModelViewHolder
 import com.seom.banchan.ui.model.Model
 import com.seom.banchan.ui.model.cart.CartOrderModel
+import com.seom.banchan.util.listener.ModelAdapterListener
 
 class CartOrderViewHolder(
     private val binding: ItemCartOrderBinding
@@ -37,6 +38,12 @@ class CartOrderViewHolder(
             } else {
                 this.visibility = View.GONE
             }
+        }
+    }
+
+    override fun bindViews(model: CartOrderModel, menuAdapterListener: ModelAdapterListener?) {
+        binding.btOrder.setOnClickListener {
+            menuAdapterListener?.onClick(it, model, adapterPosition)
         }
     }
 }

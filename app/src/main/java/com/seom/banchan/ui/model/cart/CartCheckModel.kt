@@ -7,7 +7,5 @@ import com.seom.banchan.ui.model.home.HomeMenuModel
 class CartCheckModel (
     override val id: String,
     override val type: CellType = CellType.CART_CHECK_CELL,
-    val atLeastChecked : Boolean,
-    val onAllCheck : () -> Unit,
-    val onRemove : () -> Unit
+    val atLeastChecked : Boolean
 ) : Model(id, type)

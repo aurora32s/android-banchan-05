@@ -30,20 +30,13 @@ class CartViewModel @Inject constructor(
     private val _cartCheck = MutableStateFlow<CartCheckModel>(
         CartCheckModel( // 임시 데이터
             id = "cart_check",
-            atLeastChecked = false,
-            onAllCheck = { updateAllCheck() },
-            onRemove = { removeItems() })
+            atLeastChecked = false
+        )
     )
     val cartCheck = _cartCheck.asStateFlow().combine(selectedCartItemIds) { cartCheck, ids ->
         CartCheckModel( // 임시 데이터
             id = "cart_check",
-            atLeastChecked = selectedCartItemIds.value.isNotEmpty(),
-            onAllCheck = {
-                updateAllCheck()
-            },
-            onRemove = {
-                removeItems()
-            }
+            atLeastChecked = selectedCartItemIds.value.isNotEmpty()
         )
     }
 
@@ -179,31 +172,16 @@ class CartViewModel @Inject constructor(
     private var testMenus = mutableListOf(
         CartMenuModel(
             id = "menu1${System.currentTimeMillis()}",
-            onCheck = {
-                updateCheck(it)
-            },
-            menu = homeMenuModel,
-            onRemove = { removeItem(it) },
-            onIncrease = { increaseCount(it) },
-            onDecrease = { decreaseCount(it) }),
+            menu = homeMenuModel
+        ),
         CartMenuModel(
             id = "menu2${System.currentTimeMillis()}",
-            onCheck = {
-                updateCheck(it)
-            },
             menu = homeMenuModel1,
-            onRemove = { removeItem(it) },
-            onIncrease = { increaseCount(it) },
-            onDecrease = { decreaseCount(it) }),
+        ),
         CartMenuModel(
             id = "menu3${System.currentTimeMillis()}",
-            onCheck = {
-                updateCheck(it)
-            },
-            menu = homeMenuModel2,
-            onRemove = { removeItem(it) },
-            onIncrease = { increaseCount(it) },
-            onDecrease = { decreaseCount(it) })
+            menu = homeMenuModel2
+        )
     )
 }
 

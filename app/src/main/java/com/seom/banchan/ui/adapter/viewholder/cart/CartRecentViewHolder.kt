@@ -7,8 +7,10 @@ import com.seom.banchan.ui.adapter.ItemDecoration.BestItemDecoration
 import com.seom.banchan.ui.adapter.ModelRecyclerAdapter
 import com.seom.banchan.ui.adapter.viewholder.ModelViewHolder
 import com.seom.banchan.ui.model.Model
+import com.seom.banchan.ui.model.cart.CartOrderModel
 import com.seom.banchan.ui.model.cart.CartRecentModel
 import com.seom.banchan.ui.model.home.HomeMenuModel
+import com.seom.banchan.util.listener.ModelAdapterListener
 
 class CartRecentViewHolder(
     private val binding: ItemCartRecentBinding
@@ -24,8 +26,10 @@ class CartRecentViewHolder(
         binding.rvCartRecent.addItemDecoration(BestItemDecoration(binding.root.context))
         recentMenuAdapter.submitList(model.recentMenus)
 
+    }
+    override fun bindViews(model: CartRecentModel, menuAdapterListener: ModelAdapterListener?) {
         binding.tvAll.setOnClickListener {
-
+            menuAdapterListener?.onClick(it, model, adapterPosition)
         }
     }
 }

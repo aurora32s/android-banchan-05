@@ -11,8 +11,4 @@ data class CartMenuModel (
     val menu : MenuModel,
     var count : Int = 1,
     var checked : Boolean = true,
-    val onCheck : (CartMenuModel) -> Unit,
-    val onRemove : (CartMenuModel) -> Unit,
-    val onIncrease : (CartMenuModel) -> Unit,
-    val onDecrease : (CartMenuModel) -> Unit
 ) : Model(id, type)

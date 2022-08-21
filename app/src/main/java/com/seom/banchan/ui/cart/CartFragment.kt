@@ -5,12 +5,15 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.seom.banchan.R
 import com.seom.banchan.databinding.FragmentCartBinding
 import com.seom.banchan.ui.adapter.ModelRecyclerAdapter
 import com.seom.banchan.ui.base.BaseFragment
+import com.seom.banchan.ui.model.CellType
 import com.seom.banchan.ui.model.Model
 import com.seom.banchan.ui.model.cart.CartCheckModel
 import com.seom.banchan.ui.model.cart.CartMenuModel
@@ -18,6 +21,7 @@ import com.seom.banchan.ui.model.cart.CartOrderModel
 import com.seom.banchan.ui.model.cart.CartRecentModel
 import com.seom.banchan.ui.model.order.OrderInfoModel
 import com.seom.banchan.ui.recent.RecentFragment
+import com.seom.banchan.util.listener.ModelAdapterListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.flatMapMerge
@@ -30,7 +34,48 @@ class CartFragment : BaseFragment() {
     private var _binding: FragmentCartBinding? = null
     private val binding get() = _binding
 
-    private val cartAdapter: ModelRecyclerAdapter<Model> by lazy { ModelRecyclerAdapter() }
+    private val cartAdapter: ModelRecyclerAdapter<Model> by lazy {
+        ModelRecyclerAdapter(
+            modelAdapterListener = object : ModelAdapterListener {
+                override fun onClick(view: View, model: Model, position: Int) {
+                    when (model.type) {
+                        CellType.CART_CHECK_CELL -> {
+                            if (view.id == R.id.cb_all || view.id == R.id.tv_all) {
+                                viewModel.updateAllCheck()
+                            } else if (view.id == R.id.tv_delete) {
+                                viewModel.removeItems()
+                            }
+                        }
+                        CellType.CART_MENU_CELL -> {
+                            if (view.id == R.id.cb_menu) {
+                                viewModel.updateCheck((model as CartMenuModel))
+                            } else if (view.id == R.id.iv_delete) {
+                                viewModel.removeItem((model as CartMenuModel))
+                            } else if (view.id == R.id.iv_up) {
+                                viewModel.increaseCount((model as CartMenuModel))
+                            } else if (view.id == R.id.iv_down) {
+                                viewModel.decreaseCount((model as CartMenuModel))
+                            }
+                        }
+                        CellType.CART_ORDER_CELL -> {
+                            if (view.id == R.id.bt_order) {
+                                //주문 화면으로 이동
+                                Toast.makeText(requireContext(),"주문이 완료되었습니다.",Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                        CellType.CART_RECENT_CELL -> {
+                            if (view.id == R.id.tv_all) {
+                                fragmentNavigation.replaceFragment(
+                                    RecentFragment()
+                                )
+                            }
+                        }
+                        else -> {}
+                    }
+                }
+            }
+        )
+    }
 
     private val viewModel: CartViewModel by viewModels()
 
@@ -60,13 +105,7 @@ class CartFragment : BaseFragment() {
             listOf(
                 CartCheckModel(
                     id = "cart_check",
-                    atLeastChecked = false,
-                    onAllCheck = {
-                        viewModel.updateAllCheck()
-                    },
-                    onRemove = {
-                        viewModel.removeItems()
-                    }
+                    atLeastChecked = false
                 ),
                 OrderInfoModel(
                     id = "order_info",
