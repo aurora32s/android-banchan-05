@@ -3,10 +3,13 @@ package com.seom.banchan.ui.adapter.viewholder.order
 import com.seom.banchan.databinding.ItemOrderStateBinding
 import com.seom.banchan.ui.adapter.viewholder.ModelViewHolder
 import com.seom.banchan.ui.model.order.OrderStateUiModel
+import com.seom.banchan.util.TimeUtil
+import com.seom.banchan.util.ext.toDate
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import kotlin.math.ceil
 
 /**
  * 배달 상태를 나타내는 viewHolder
@@ -36,6 +39,7 @@ class OrderDeliveryStateViewHolder(
      */
     private fun setDeliveryTime(time: Long, expectedTime: Long) {
         binding.pbExtraDeliveryTime.progress =
-            ((expectedTime - time) / expectedTime.toDouble() * 100).toInt()
+            (ceil((expectedTime - time) / expectedTime.toDouble() * 100)).toInt()
+        binding.tvExtraDeliveryTime.text = time.toDate()
     }
 }

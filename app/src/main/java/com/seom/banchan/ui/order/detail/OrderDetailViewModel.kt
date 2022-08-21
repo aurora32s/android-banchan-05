@@ -49,6 +49,9 @@ class OrderDetailViewModel @Inject constructor(
     private val timerTask = object : TimerTask() {
         override fun run() {
             _extraTime.value = _extraTime.value - 1000
+            if (_extraTime.value <= 0) {
+                timer.cancel()
+            }
         }
     }
 
