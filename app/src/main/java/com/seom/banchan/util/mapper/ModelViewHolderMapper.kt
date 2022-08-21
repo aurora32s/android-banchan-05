@@ -17,6 +17,7 @@ import com.seom.banchan.ui.adapter.viewholder.image.ImageSliderViewHolder
 import com.seom.banchan.ui.adapter.viewholder.menu.LargeMenuViewHolder
 import com.seom.banchan.ui.adapter.viewholder.menu.SmallMenuViewHolder
 import com.seom.banchan.ui.adapter.viewholder.order.OrderInfoViewHolder
+import com.seom.banchan.ui.adapter.viewholder.recent.RecentMenuViewHolder
 import com.seom.banchan.ui.adapter.viewholder.order.OrderListItemViewHolder
 import com.seom.banchan.ui.model.CellType
 import com.seom.banchan.ui.model.Model
@@ -36,8 +37,11 @@ object ModelViewHolderMapper {
             CellType.MENU_LIST_CELL -> BestMenuViewHolder(
                 ItemBestMenuBinding.inflate(inflater, parent, false)
             )
-            CellType.MENU_CELL, CellType.MENU_RECENT_CELL -> SmallMenuViewHolder(
+            CellType.MENU_CELL -> SmallMenuViewHolder(
                 ItemMenuSmallBinding.inflate(inflater, parent, false)
+            )
+            CellType.MENU_RECENT_CELL -> RecentMenuViewHolder(
+                ItemMenuRecentBinding.inflate(inflater, parent, false)
             )
             CellType.FILTER_CELL -> FilterViewHolder(
                 ItemHomeFilterBinding.inflate(inflater, parent, false)

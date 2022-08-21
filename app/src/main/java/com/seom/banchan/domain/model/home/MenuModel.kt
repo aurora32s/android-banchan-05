@@ -4,6 +4,7 @@ import com.seom.banchan.domain.model.cart.CartMenuModel
 import com.seom.banchan.ui.model.CellType
 import com.seom.banchan.ui.model.home.HomeMenuLargeModel
 import com.seom.banchan.ui.model.home.HomeMenuModel
+import com.seom.banchan.ui.model.recent.RecentMenuModel
 import java.io.Serializable
 import java.lang.Math.ceil
 
@@ -35,9 +36,7 @@ fun MenuModel.toHomeMenuModel(
     )
 }
 
-fun MenuModel.toHomeMenuLinearModel() = HomeMenuModel(
+fun MenuModel.toRecentMenuModel() = RecentMenuModel(
     id = id,
-    type = CellType.MENU_LARGE_CELL,
-    menu = this,
-    discountRate = if (normalPrice == 0) 0 else ceil((1 - (salePrice / normalPrice.toDouble())) * 100).toInt()
+    menu = this
 )

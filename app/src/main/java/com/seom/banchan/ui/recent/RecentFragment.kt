@@ -57,4 +57,9 @@ class RecentFragment : BaseFragment() {
             }
         }
     }
+
+    companion object {
+        const val TAG = ".RecentFragment"
+        fun newInstance() = RecentFragment()
+    }
 }
