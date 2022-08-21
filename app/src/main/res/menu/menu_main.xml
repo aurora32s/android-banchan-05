@@ -7,4 +7,9 @@
         android:id="@+id/menu_cart"
         android:title="@string/cart_title"
         android:icon="@drawable/ic_cart"/>
+
+    <item
+        android:id="@+id/menu_order_list"
+        android:title="@string/order_list_title"
+        android:icon="@drawable/ic_user"/>
 </menu>
