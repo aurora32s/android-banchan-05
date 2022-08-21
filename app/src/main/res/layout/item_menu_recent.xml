@@ -91,7 +91,7 @@
             android:textSize="12sp"
             android:layout_marginTop="2dp"
             app:layout_constraintStart_toStartOf="@id/iv_menu_thumbnail"
-            app:layout_constraintTop_toBottomOf="@id/tv_menu_normalPrice"
+            app:layout_constraintTop_toBottomOf="@id/tv_menu_salePrice"
             tools:text="hello world" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
