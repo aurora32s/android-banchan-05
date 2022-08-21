@@ -28,9 +28,9 @@ class OrderDetailItemDecoration(
         when(cellType) {
             CellType.ORDER_MENU_CELL -> {
                 view.setPadding(
-                    16f.fromDpToPx(),
                     8f.fromDpToPx(),
-                    16f.fromDpToPx(),
+                    8f.fromDpToPx(),
+                    8f.fromDpToPx(),
                     8f.fromDpToPx()
                 )
             }
