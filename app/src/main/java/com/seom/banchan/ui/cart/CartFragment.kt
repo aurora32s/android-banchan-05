@@ -17,6 +17,7 @@ import com.seom.banchan.ui.model.cart.CartMenuModel
 import com.seom.banchan.ui.model.cart.CartOrderModel
 import com.seom.banchan.ui.model.cart.CartRecentModel
 import com.seom.banchan.ui.model.order.OrderInfoModel
+import com.seom.banchan.ui.recent.RecentFragment
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.flatMapMerge
 import kotlinx.coroutines.flow.flattenMerge
@@ -74,7 +75,11 @@ class CartFragment : BaseFragment() {
                     totalPrice = 0,
                 ),
                 CartRecentModel(
-                    id = "cart_recent"
+                    id = "cart_recent",
+                    recentMenus =  emptyList(),
+                    onClick = {
+
+                    }
                 )
             )
         )
@@ -101,6 +106,12 @@ class CartFragment : BaseFragment() {
                 cartAdapter.updateModelAtPosition(it,0)
             }
         }
+        lifecycleScope.launch {
+            viewModel.cartRecent.collectLatest {
+                cartAdapter.updateModelAtPosition(it, viewModel.cartMenus.value.size + 3)
+            }
+        }
+
     }
 
     companion object {

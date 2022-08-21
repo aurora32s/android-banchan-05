@@ -10,10 +10,10 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class RecentDataSourceImpl @Inject constructor(
-    private val recentlyDao: RecentDao
+    private val recentDao: RecentDao
 ) : RecentDataSource {
     override suspend fun getRecents() : Flow<List<MenuModel>> {
-        return recentlyDao.getRecents().map {
+        return recentDao.getRecents().map {
             it.map {
                 it.toMenuModel()
             }
@@ -21,6 +21,6 @@ class RecentDataSourceImpl @Inject constructor(
     }
 
     override suspend fun upsertRecent(menuModel: MenuModel) {
-        recentlyDao.upsertRecent(menuModel.toRecentEntity())
+        recentDao.upsertRecent(menuModel.toRecentEntity())
     }
 }

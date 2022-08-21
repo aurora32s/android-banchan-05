@@ -1,19 +1,27 @@
 package com.seom.banchan.ui.cart
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.seom.banchan.domain.model.home.MenuModel
+import com.seom.banchan.domain.model.home.toHomeMenuModel
+import com.seom.banchan.domain.usecase.GetRecentMenusUseCase
+import com.seom.banchan.ui.model.CellType
 import com.seom.banchan.ui.model.cart.CartCheckModel
 import com.seom.banchan.ui.model.cart.CartMenuModel
 import com.seom.banchan.ui.model.cart.CartOrderModel
 import com.seom.banchan.ui.model.cart.CartRecentModel
 import com.seom.banchan.ui.model.home.HomeMenuModel
 import com.seom.banchan.ui.model.order.OrderInfoModel
+import com.seom.banchan.util.TimeUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CartViewModel @Inject constructor() : ViewModel() {
+class CartViewModel @Inject constructor(
+    private val getRecentMenusUseCase: GetRecentMenusUseCase
+) : ViewModel() {
 
     private val _selectedCartItemIds = MutableStateFlow<List<String>>(emptyList())
     val selectedCartItemIds: StateFlow<List<String>>
@@ -64,40 +72,24 @@ class CartViewModel @Inject constructor() : ViewModel() {
         )
     }
 
-    private val _cartRecent = MutableStateFlow<CartRecentModel>(CartRecentModel(id = "cart_recent"))
+    private val _cartRecent = MutableStateFlow<CartRecentModel>(
+        CartRecentModel(
+            id = "cart_recent",
+            recentMenus = listOf(
+            ),
+            onClick = {
+                recentAllEvent.value = true
+            }
+        )
+    )
     val cartRecent: StateFlow<CartRecentModel>
         get() = _cartRecent
 
-    fun fetchCartMenus(){ // 테스트를 위한 코드. 원래는 로컬 DB에서 들고 온다
-        val list = mutableListOf( // 임시 데이터
-            CartMenuModel(
-                id = "menu${System.currentTimeMillis()}",
-                onCheck = {
-                    updateCheck(it)
-                },
-                menu = homeMenuModel,
-                onRemove = { removeItem(it) },
-                onIncrease = { increaseCount(it) },
-                onDecrease = { decreaseCount(it) }),
-            CartMenuModel(
-                id = "menu${System.currentTimeMillis()}",
-                onCheck = {
-                    updateCheck(it)
-                },
-                menu = homeMenuModel1,
-                onRemove = { removeItem(it) },
-                onIncrease = { increaseCount(it) },
-                onDecrease = { decreaseCount(it) }),
-            CartMenuModel(
-                id = "menu${System.currentTimeMillis()}",
-                onCheck = {
-                    updateCheck(it)
-                },
-                menu = homeMenuModel2,
-                onRemove = { removeItem(it) },
-                onIncrease = { increaseCount(it) },
-                onDecrease = { decreaseCount(it) })
-        )
+    //데모용 임시 이벤트
+    val recentAllEvent = MutableStateFlow<Boolean>(false)
+
+    fun fetchCartMenus() { // 테스트를 위한 코드. 원래는 로컬 DB에서 들고 온다
+        val list = testMenus
         _cartMenus.value = list
         _selectedCartItemIds.value = list.map {
             it.id
@@ -163,34 +155,82 @@ class CartViewModel @Inject constructor() : ViewModel() {
     fun decreaseCount(cartMenuModel: CartMenuModel) {
 
     }
+
+    fun getRecentMenus(){
+//        viewModelScope.launch {
+//            getRecentMenusUseCase().collectLatest {
+//                _cartRecent.emit(
+//                    cartRecent.value.copy(
+//                        recentMenus = it.map { menuModel: MenuModel ->
+//                            menuModel.toHomeMenuModel(cellType = CellType.MENU_RECENT_CELL)
+//                        }
+//                    )
+//                )
+//            }
+//        }
+    }
+    private var testMenus = mutableListOf(
+        CartMenuModel(
+            id = "menu1${System.currentTimeMillis()}",
+            onCheck = {
+                updateCheck(it)
+            },
+            menu = homeMenuModel,
+            onRemove = { removeItem(it) },
+            onIncrease = { increaseCount(it) },
+            onDecrease = { decreaseCount(it) }),
+        CartMenuModel(
+            id = "menu2${System.currentTimeMillis()}",
+            onCheck = {
+                updateCheck(it)
+            },
+            menu = homeMenuModel1,
+            onRemove = { removeItem(it) },
+            onIncrease = { increaseCount(it) },
+            onDecrease = { decreaseCount(it) }),
+        CartMenuModel(
+            id = "menu3${System.currentTimeMillis()}",
+            onCheck = {
+                updateCheck(it)
+            },
+            menu = homeMenuModel2,
+            onRemove = { removeItem(it) },
+            onIncrease = { increaseCount(it) },
+            onDecrease = { decreaseCount(it) })
+    )
 }
 
-private val homeMenuModel = MenuModel( // 임시 데이터
+val homeMenuModel = MenuModel( // 임시 데이터
     id = "menu",
     normalPrice = 19300,
     salePrice = 17500,
     description = "",
     image = "http://public.codesquad.kr/jk/storeapp/data/main/349_ZIP_P_0024_T.jpg",
     deliveryType = listOf(),
-    name = "소갈비찜"
+    name = "소갈비찜",
+    recentTime = TimeUtil.getTimeData(System.currentTimeMillis() - 4000)
 )
 
-private val homeMenuModel1 = MenuModel( // 임시 데이터
+val homeMenuModel1 = MenuModel( // 임시 데이터
     id = "menu1",
     normalPrice = 0,
     salePrice = 11800,
     description = "",
     image = "http://public.codesquad.kr/jk/storeapp/data/main/739_ZIP_P__T.jpg",
     deliveryType = listOf(),
-    name = "초계국수"
+    name = "초계국수",
+    recentTime = TimeUtil.getTimeData(System.currentTimeMillis() - 2000)
+
 )
 
-private val homeMenuModel2 = MenuModel( // 임시 데이터
+val homeMenuModel2 = MenuModel( // 임시 데이터
     id = "menu2",
     normalPrice = 0,
     salePrice = 16900,
     description = "",
     image = "http://public.codesquad.kr/jk/storeapp/data/main/510_ZIP_P_0047_T.jpg",
     deliveryType = listOf(),
-    name = "쭈꾸미 한돈 제육볶음"
+    name = "쭈꾸미 한돈 제육볶음",
+    recentTime = TimeUtil.getTimeData(System.currentTimeMillis() - 1000)
+
 )
