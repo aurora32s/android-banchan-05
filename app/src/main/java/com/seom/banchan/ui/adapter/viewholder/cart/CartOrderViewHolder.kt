@@ -14,7 +14,7 @@ class CartOrderViewHolder(
     override fun bindData(model: CartOrderModel) {
         binding.btOrder.apply {
             if (model.totalPrice < model.limitPrice) {
-                this.text = binding.root.context.getString(R.string.cart_minimum_check)
+                this.text = binding.root.context.getString(R.string.cart_minimum_check,model.limitPrice)
                 this.isEnabled = false
             } else {
                 this.text =
