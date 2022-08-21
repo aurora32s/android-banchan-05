@@ -62,7 +62,7 @@
     <!-- order -->
     <string name="order_delivering">주문이 접수되었습니다.</string>
     <string name="order_delivered">배송이 완료되었습니다.</string>
-    <string name="order_time">배송까지 남은 시간</string>
+    <string name="order_time">남은시간</string>
     <string name="order_time_value">%d분</string>
     <string name="order_total_count">주문한 상품</string>
     <string name="order_total_count_value">총 %d개</string>

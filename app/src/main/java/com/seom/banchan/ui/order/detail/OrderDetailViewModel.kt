@@ -62,7 +62,7 @@ class OrderDetailViewModel @Inject constructor(
                 .onSuccess {
                     val order: OrderModel = it.order.first()
                     val orderMenus = it.menus.map { it.toUiModel() }
-                    val menuCount = orderMenus.size
+                    val menuCount = orderMenus.sumOf { it.count }
 
                     _extraTime.value =
                         order.expectedTime - (System.currentTimeMillis() - order.createdAt)

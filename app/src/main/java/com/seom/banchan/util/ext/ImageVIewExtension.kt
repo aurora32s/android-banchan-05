@@ -26,9 +26,13 @@ fun ImageView.load(
         .into(this)
 }
 
+@BindingAdapter("iconDrawable")
 fun ImageView.setIconDrawable(
     @DrawableRes
     imageId: Int
 ) {
-    setImageDrawable(ContextCompat.getDrawable(context, imageId))
+    Glide.with(this.context)
+        .load(imageId)
+        .into(this)
+//    setImageDrawable(ContextCompat.getDrawable(context, imageId))
 }

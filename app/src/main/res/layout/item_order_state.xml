@@ -12,7 +12,8 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/white">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_order_state"
@@ -21,40 +22,50 @@
             android:textColor="@color/black"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@id/tv_extra_delivery_time_title"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="주문이 접수되었습니다." />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_extra_delivery_time_title"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/ll_extra_delivery_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="8dp"
-            android:text="@string/order_time"
-            android:textColor="@color/greyScaleDefault"
-            android:textSize="14sp"
-            app:layout_constraintBottom_toTopOf="@id/pb_extra_delivery_time"
-            app:layout_constraintStart_toStartOf="@id/tv_order_state"
-            app:layout_constraintTop_toBottomOf="@id/tv_order_state" />
+            android:background="@drawable/background_rounded_surface"
+            android:padding="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_extra_delivery_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:textColor="@color/black"
-            android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="@id/tv_extra_delivery_time_title"
-            app:layout_constraintStart_toEndOf="@id/tv_extra_delivery_time_title"
-            app:layout_constraintTop_toTopOf="@id/tv_extra_delivery_time_title" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_extra_delivery_time_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp"
+                android:text="@string/order_time"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_extra_delivery_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_extra_delivery_time_title"
+                tools:text="1분" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ProgressBar
             android:id="@+id/pb_extra_delivery_time"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="0dp"
-            android:layout_height="20dp"
-            android:layout_marginTop="3dp"
+            android:layout_height="10dp"
+            android:layout_marginTop="16dp"
             android:max="100"
             android:paddingStart="0dp"
             android:paddingEnd="0dp"
@@ -62,7 +73,7 @@
             android:thumb="@android:color/transparent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_extra_delivery_time_title"
+            app:layout_constraintTop_toBottomOf="@id/ll_extra_delivery_time"
             tools:progress="50" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -84,9 +95,17 @@
             android:layout_marginStart="8dp"
             android:textColor="@color/black"
             android:textSize="14sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/tv_menu_count_title"
             app:layout_constraintStart_toEndOf="@id/tv_menu_count_title"
             app:layout_constraintTop_toTopOf="@id/tv_menu_count_title" />
+
+        <ImageView
+            android:id="@+id/iv_app_icon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:layout_constraintBottom_toTopOf="@id/pb_extra_delivery_time"
+            app:layout_constraintStart_toStartOf="@id/pb_extra_delivery_time" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

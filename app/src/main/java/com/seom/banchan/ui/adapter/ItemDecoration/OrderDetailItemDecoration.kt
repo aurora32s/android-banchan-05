@@ -32,6 +32,10 @@ class OrderDetailItemDecoration(
                     8f.fromDpToPx()
                 )
             }
+            CellType.ORDER_STATE_CELL -> {
+                outRect.bottom = 16f.fromDpToPx()
+                view.setPadding(16f.fromDpToPx())
+            }
             else -> {
                 view.setPadding(16f.fromDpToPx())
             }

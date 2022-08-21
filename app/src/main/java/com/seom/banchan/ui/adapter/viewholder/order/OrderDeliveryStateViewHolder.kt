@@ -1,13 +1,13 @@
 package com.seom.banchan.ui.adapter.viewholder.order
 
+import com.seom.banchan.R
 import com.seom.banchan.databinding.ItemOrderStateBinding
 import com.seom.banchan.ui.adapter.viewholder.ModelViewHolder
 import com.seom.banchan.ui.model.order.OrderStateUiModel
-import com.seom.banchan.util.TimeUtil
+import com.seom.banchan.util.ext.setIconDrawable
 import com.seom.banchan.util.ext.toDate
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlin.math.ceil
 
@@ -19,6 +19,8 @@ class OrderDeliveryStateViewHolder(
 ) : ModelViewHolder<OrderStateUiModel>(binding) {
 
     override fun bindData(model: OrderStateUiModel) {
+        binding.ivAppIcon.setIconDrawable(R.drawable.ic_app_icon)
+        binding.tvMenuCount.text = "${model.menuCount}개"
         CoroutineScope(Dispatchers.Main).launch {
             // 배달 상태 정보 업데이트
             model.orderDeliveryState.collect {
