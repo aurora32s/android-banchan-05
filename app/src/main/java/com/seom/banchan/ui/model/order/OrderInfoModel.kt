@@ -5,8 +5,8 @@ import com.seom.banchan.ui.model.Model
 import com.seom.banchan.util.DELIVERY_FEE
 
 class OrderInfoModel (
-    override val id: String = "order_info",
+    override val id: String = CellType.ORDER_INFO_CELL.name,
     override val type: CellType = CellType.ORDER_INFO_CELL,
-    val orderPrice : Int,
+    val orderPrice : Int = 0,
     val deliveryFee : Int = DELIVERY_FEE
 ) : Model(id, type)

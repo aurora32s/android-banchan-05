@@ -7,7 +7,7 @@ import com.seom.banchan.util.FREE_DELIVERY_LIMIT_PRICE
 import com.seom.banchan.util.LIMIT_PRICE
 
 class CartOrderModel (
-    override val id: String = "cart_order",
+    override val id: String =  CellType.CART_ORDER_CELL.name,
     override val type: CellType = CellType.CART_ORDER_CELL,
     val totalPrice : Int,
     val limitPrice : Int = LIMIT_PRICE,

@@ -28,16 +28,12 @@ class CartViewModel @Inject constructor(
         get() = _selectedCartItemIds
 
     private val _cartCheck = MutableStateFlow<CartCheckModel>(
-        CartCheckModel( // 임시 데이터
-            id = "cart_check",
-            atLeastChecked = false
-        )
+        CartCheckModel() // 임시 데이터
     )
     val cartCheck = _cartCheck.asStateFlow().combine(selectedCartItemIds) { cartCheck, ids ->
-        CartCheckModel( // 임시 데이터
-            id = "cart_check",
+        CartCheckModel(
             atLeastChecked = selectedCartItemIds.value.isNotEmpty()
-        )
+        ) // 임시
     }
 
     private val _cartMenus = MutableStateFlow<MutableList<CartMenuModel>>(
@@ -47,7 +43,7 @@ class CartViewModel @Inject constructor(
         get() = _cartMenus
 
 
-    private val _orderInfo = MutableStateFlow<OrderInfoModel>(OrderInfoModel(orderPrice = 0))
+    private val _orderInfo = MutableStateFlow<OrderInfoModel>(OrderInfoModel())
     val orderInfo = _orderInfo.asStateFlow()
         .combine(cartMenus) { orderInfo, menus ->
             OrderInfoModel(
@@ -61,17 +57,11 @@ class CartViewModel @Inject constructor(
 
     private val _cartOrder = MutableStateFlow<CartOrderModel>(CartOrderModel(totalPrice = 0))
     val cartOrder = _cartOrder.asStateFlow().combine(orderInfo) { _, orderInfo ->
-        CartOrderModel(
-            totalPrice = orderInfo.orderPrice
-        )
+        CartOrderModel(totalPrice = orderInfo.orderPrice)
     }
 
     private val _cartRecent = MutableStateFlow<CartRecentModel>(
-        CartRecentModel(
-            id = "cart_recent",
-            recentMenus = listOf(
-            )
-        )
+        CartRecentModel()
     )
     val cartRecent: StateFlow<CartRecentModel>
         get() = _cartRecent
@@ -81,22 +71,22 @@ class CartViewModel @Inject constructor(
         val list = testMenus
         _cartMenus.value = list
         _selectedCartItemIds.value = list.map {
-            it.id
+            it.menu.id
         }
     }
 
 
     fun updateCheck(cartMenuModel: CartMenuModel) {
-        if (selectedCartItemIds.value.contains(cartMenuModel.id)) {
+        if (selectedCartItemIds.value.contains(cartMenuModel.menu.id)) {
             _selectedCartItemIds.value = selectedCartItemIds.value.filter {
-                it != cartMenuModel.id
+                it != cartMenuModel.menu.id
             }
         } else {
-            _selectedCartItemIds.value = selectedCartItemIds.value + listOf(cartMenuModel.id)
+            _selectedCartItemIds.value = selectedCartItemIds.value + listOf(cartMenuModel.menu.id)
         }
         _cartMenus.value = cartMenus.value.map { cart ->
             cart.copy(
-                checked = if(cart.id == cartMenuModel.id) !cart.checked else cart.checked
+                checked = if(cart.menu.id == cartMenuModel.menu.id) !cart.checked else cart.checked
             )
         }.toMutableList()
     }
@@ -104,7 +94,7 @@ class CartViewModel @Inject constructor(
     fun updateAllCheck() {
         if (selectedCartItemIds.value.isEmpty()) { // 선택된 상품이 없으면 전체선택하는 로직
             _selectedCartItemIds.value = cartMenus.value.map {
-                it.id
+                it.menu.id
             }
             _cartMenus.value = cartMenus.value.map {
                 it.copy(
@@ -123,16 +113,16 @@ class CartViewModel @Inject constructor(
 
     fun removeItem(cartMenuModel: CartMenuModel) {
         _cartMenus.value = cartMenus.value.filter {
-            it.id != cartMenuModel.id
+            it.menu.id != cartMenuModel.menu.id
         }.toMutableList()
         _selectedCartItemIds.value = selectedCartItemIds.value.filter {
-            it != cartMenuModel.id
+            it != cartMenuModel.menu.id
         }
     }
 
     fun removeItems() {
         _cartMenus.value = cartMenus.value.filter {
-            !selectedCartItemIds.value.contains(it.id)
+            !selectedCartItemIds.value.contains(it.menu.id)
         }.toMutableList()
         _selectedCartItemIds.value = emptyList()
     }
@@ -140,7 +130,7 @@ class CartViewModel @Inject constructor(
     fun increaseCount(cartMenuModel: CartMenuModel) {
         _cartMenus.value = cartMenus.value.map { cart ->
             cart.copy(
-                count = if (cartMenuModel.id == cart.id) cart.count + 1 else cart.count,
+                count = if (cartMenuModel.menu.id == cart.menu.id) cart.count + 1 else cart.count,
             )
         }.toMutableList()
     }
@@ -148,7 +138,7 @@ class CartViewModel @Inject constructor(
     fun decreaseCount(cartMenuModel: CartMenuModel) {
         _cartMenus.value = cartMenus.value.map { cart ->
             cart.copy(
-                count = if (cartMenuModel.id == cart.id) {
+                count = if (cartMenuModel.menu.id == cart.menu.id) {
                     if (cart.count > 1) cart.count - 1 else cart.count
                 } else cart.count,
             )
@@ -171,15 +161,12 @@ class CartViewModel @Inject constructor(
 
     private var testMenus = mutableListOf(
         CartMenuModel(
-            id = "menu1${System.currentTimeMillis()}",
             menu = homeMenuModel
         ),
         CartMenuModel(
-            id = "menu2${System.currentTimeMillis()}",
             menu = homeMenuModel1,
         ),
         CartMenuModel(
-            id = "menu3${System.currentTimeMillis()}",
             menu = homeMenuModel2
         )
     )

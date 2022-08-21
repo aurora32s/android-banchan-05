@@ -1,6 +1,7 @@
 package com.seom.banchan.ui.adapter.viewholder.cart
 
 import android.util.Log
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.seom.banchan.databinding.ItemCartRecentBinding
 import com.seom.banchan.ui.adapter.ItemDecoration.BestItemDecoration
@@ -18,13 +19,16 @@ class CartRecentViewHolder(
     override fun bindData(model: CartRecentModel) {
 
         val recentMenuAdapter = ModelRecyclerAdapter<HomeMenuModel>()
-
-        binding.rvCartRecent.layoutManager =
-            LinearLayoutManager(binding.root.context, LinearLayoutManager.HORIZONTAL, false)
-        binding.rvCartRecent.adapter = recentMenuAdapter
-        if(binding.rvCartRecent.itemDecorationCount > 0) binding.rvCartRecent.removeItemDecorationAt(0)
-        binding.rvCartRecent.addItemDecoration(BestItemDecoration(binding.root.context))
         recentMenuAdapter.submitList(model.recentMenus)
+
+        binding.rvCartRecent.run {
+            layoutManager = LinearLayoutManager(binding.root.context, LinearLayoutManager.HORIZONTAL, false)
+            adapter = recentMenuAdapter
+            if(itemDecorationCount > 0) removeItemDecorationAt(0)
+            isVisible = model.recentMenus.isNotEmpty()
+        }
+
+        binding.tvEmpty.isVisible = model.recentMenus.isEmpty()
 
     }
     override fun bindViews(model: CartRecentModel, menuAdapterListener: ModelAdapterListener?) {
