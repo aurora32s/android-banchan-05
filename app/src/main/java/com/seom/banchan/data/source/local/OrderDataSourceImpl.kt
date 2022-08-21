@@ -25,7 +25,8 @@ class OrderDataSourceImpl @Inject constructor(
     override suspend fun insertOrder(): Result<Long> = try {
         val orderId = orderDao.insertOrder(
             OrderEntity(
-                createdAt = System.currentTimeMillis()
+                createdAt = System.currentTimeMillis(),
+                expectedTime = 10*1000
             )
         )
         val menus = listOf(

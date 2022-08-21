@@ -5,5 +5,6 @@ import com.seom.banchan.ui.model.order.OrderDeliveryState
 data class OrderModel(
     val orderId: Long?,
     val createdAt: Long,
-    val deliveryState: OrderDeliveryState
+    val deliveryState: OrderDeliveryState,
+    val expectedTime: Long
 )

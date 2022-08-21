@@ -13,6 +13,7 @@ data class OrderStateUiModel(
     override val type: CellType = CellType.ORDER_STATE_CELL,
     val orderDeliveryState: StateFlow<OrderDeliveryState>, // 배달 상태
     val createdAt: Long, // 배달이 시작된 시간
-    val expectedDeliveryTime: Flow<Long>, // 예상 배달 소요 시간
-    val menuCount: Int // 메뉴 개수
+    val extraTime: StateFlow<Long>, // 남은 시간
+    val expectedDeliveryTime: Long, // 예상 배달 소요 시간
+    val menuCount: Int, // 메뉴 개수
 ) : Model(id, type)

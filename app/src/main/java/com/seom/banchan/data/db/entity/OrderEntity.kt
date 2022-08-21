@@ -17,11 +17,14 @@ data class OrderEntity(
     @ColumnInfo(name = "createdAt") // 생성 날짜
     val createdAt: Long,
     @ColumnInfo(name = "delivery_state") // 배달상태
-    val deliveryState: Int = OrderDeliveryState.DELIVERING.type
+    val deliveryState: Int = OrderDeliveryState.DELIVERING.type,
+    @ColumnInfo(name = "expected_time") // 배달 예상 시간
+    val expectedTime: Long
 )
 
 fun OrderEntity.toModel() = OrderModel(
     orderId = orderId,
     createdAt = createdAt,
-    deliveryState = OrderDeliveryState.getDeliveryType(deliveryState)
+    deliveryState = OrderDeliveryState.getDeliveryType(deliveryState),
+    expectedTime = expectedTime
 )

@@ -34,7 +34,7 @@
             android:text="@string/order_time"
             android:textColor="@color/greyScaleDefault"
             android:textSize="14sp"
-            app:layout_constraintBottom_toTopOf="@id/sb_extra_delivery_time"
+            app:layout_constraintBottom_toTopOf="@id/pb_extra_delivery_time"
             app:layout_constraintStart_toStartOf="@id/tv_order_state"
             app:layout_constraintTop_toBottomOf="@id/tv_order_state" />
 
@@ -49,11 +49,13 @@
             app:layout_constraintStart_toEndOf="@id/tv_extra_delivery_time_title"
             app:layout_constraintTop_toTopOf="@id/tv_extra_delivery_time_title" />
 
-        <SeekBar
-            android:id="@+id/sb_extra_delivery_time"
+        <ProgressBar
+            android:id="@+id/pb_extra_delivery_time"
+            style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="0dp"
             android:layout_height="20dp"
             android:layout_marginTop="3dp"
+            android:max="100"
             android:paddingStart="0dp"
             android:paddingEnd="0dp"
             android:progressDrawable="@drawable/seekbar_delivery_time"
@@ -73,7 +75,7 @@
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@id/tv_order_state"
-            app:layout_constraintTop_toBottomOf="@id/sb_extra_delivery_time" />
+            app:layout_constraintTop_toBottomOf="@id/pb_extra_delivery_time" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_menu_count"

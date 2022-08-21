@@ -13,6 +13,7 @@ import com.seom.banchan.ui.model.order.OrderStateUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -32,24 +33,45 @@ class OrderDetailViewModel @Inject constructor(
      * 주문 배달 예상 소요 시간
      * 갑자기 중간에 변경될 수 있는 것을 생각해 MutableStateFlow 로
      */
-    private val _expectedDeliveryTime = MutableStateFlow<Long>(0L)
+    private val _expectedDeliveryTime = MutableStateFlow(0L)
     private val expectedDeliveryTime = _expectedDeliveryTime.asStateFlow()
+
+    /**
+     * 남은 배달 시간
+     */
+    private val _extraTime = MutableStateFlow(0L)
+    private val extraTime = _extraTime.asStateFlow()
+
+    /**
+     * 남은 시간 계산
+     */
+    private val timer = Timer()
+    private val timerTask = object : TimerTask() {
+        override fun run() {
+            _extraTime.value = _extraTime.value - 1000
+        }
+    }
 
     fun fetchData(orderId: Long) {
         _orderUiState.value = OrderDetailUiState.Loading
         viewModelScope.launch {
             getDetailOrderInfoUseCase(orderId)
                 .onSuccess {
-                    Log.d(OrderDetailFragment.TAG, it.toString())
-
                     val order: OrderModel = it.order.first()
                     val orderMenus = it.menus.map { it.toUiModel() }
                     val menuCount = orderMenus.size
 
+                    _extraTime.value =
+                        order.expectedTime - (System.currentTimeMillis() - order.createdAt)
+
+                    if (_extraTime.value > 0) {
+                        timer.schedule(timerTask, 0, 1000)
+                    }
                     val orderState = OrderStateUiModel(
                         orderDeliveryState = orderDeliveryState,
                         createdAt = order.createdAt,
-                        expectedDeliveryTime = expectedDeliveryTime,
+                        extraTime = extraTime,
+                        expectedDeliveryTime = order.expectedTime,
                         menuCount = menuCount
                     )
 
@@ -62,13 +84,13 @@ class OrderDetailViewModel @Inject constructor(
                         menus = orderMenus,
                         orderInfo = orderInfo
                     )
+
                     it.order.collect {
                         _orderDeliveryState.value = it.deliveryState
                     }
                 }
                 .onFailure {
                     // TODO 실패 처리
-                    Log.e(OrderDetailFragment.TAG, it.toString())
                     _orderUiState.value = OrderDetailUiState.Error
                 }
         }
