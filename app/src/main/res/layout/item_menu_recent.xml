@@ -9,7 +9,7 @@
 
         <variable
             name="menu"
-            type="com.seom.banchan.ui.model.recent.RecentMenuModel" />
+            type="com.seom.banchan.ui.model.home.HomeMenuModel" />
 
     </data>
 

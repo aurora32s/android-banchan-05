@@ -39,9 +39,6 @@ class MainActivity : AppCompatActivity(), BaseFragment.FragmentNavigation {
         setSupportActionBar(it.tbMain)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         it.tbMain.title = getString(R.string.main_title)
-        it.tbMain.setOnClickListener {
-            replaceFragment(RecentFragment())
-        }
     }
 
     private fun initViews() = binding?.let {

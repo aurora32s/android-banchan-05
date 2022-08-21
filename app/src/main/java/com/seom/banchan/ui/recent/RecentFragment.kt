@@ -6,22 +6,52 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.seom.banchan.R
 import com.seom.banchan.databinding.FragmentRecentBinding
 import com.seom.banchan.ui.adapter.ItemDecoration.GridItemDecoration
 import com.seom.banchan.ui.adapter.ModelRecyclerAdapter
 import com.seom.banchan.ui.base.BaseFragment
+import com.seom.banchan.ui.detail.DetailFragment
+import com.seom.banchan.ui.home.CartBottomSheetManager
+import com.seom.banchan.ui.model.CellType
 import com.seom.banchan.ui.model.Model
+import com.seom.banchan.ui.model.home.HomeMenuModel
+import com.seom.banchan.ui.view.OrderCartBottomSheetManager
 import com.seom.banchan.util.ext.setGridLayoutManager
+import com.seom.banchan.util.listener.ModelAdapterListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class RecentFragment : BaseFragment() {
+class RecentFragment : BaseFragment(), CartBottomSheetManager {
     private var _binding: FragmentRecentBinding? = null
     private val binding get() = _binding
 
-    private val recentldapter: ModelRecyclerAdapter<Model> by lazy { ModelRecyclerAdapter() }
+    private val recentAdapter: ModelRecyclerAdapter<Model> by lazy {
+        ModelRecyclerAdapter(modelAdapterListener =
+        object : ModelAdapterListener {
+            override fun onClick(view: View, model: Model, position: Int) {
+                when (model.type) {
+                    CellType.MENU_RECENT_CELL -> {
+                        if (view.id == R.id.iv_menu_thumbnail) {
+                            (model as? HomeMenuModel)?.menu?.let {
+                                fragmentNavigation.replaceFragment(
+                                    DetailFragment.newInstance(
+                                        menuModel = it
+                                    ),
+                                    DetailFragment.TAG
+                                )
+                            }
+                        } else if (view.id == R.id.iv_cart) {
+                            showBottomSheet((model as HomeMenuModel))
+                        }
+                    } // 메뉴 아이템 클릭
+                    else -> {}
+                }
+            }
+        })
+    }
 
     private val viewModel: RecentViewModel by viewModels()
 
@@ -45,7 +75,7 @@ class RecentFragment : BaseFragment() {
     }
 
     private fun initRecyclerView() = binding?.let {
-        it.rvRecent.adapter = recentldapter
+        it.rvRecent.adapter = recentAdapter
         it.rvRecent.setGridLayoutManager(requireContext())
         it.rvRecent.addItemDecoration(GridItemDecoration(requireContext(),true,noneApplyIndex =0))
     }
@@ -53,13 +83,21 @@ class RecentFragment : BaseFragment() {
     private fun initObserver(){
         lifecycleScope.launch{
             viewModel.recentMenus.collectLatest {
-                recentldapter.submitList(it)
+                recentAdapter.submitList(it)
             }
         }
     }
 
+
     companion object {
         const val TAG = ".RecentFragment"
         fun newInstance() = RecentFragment()
+    }
+
+
+    override fun showBottomSheet(menu: HomeMenuModel) {
+        OrderCartBottomSheetManager.build(childFragmentManager)
+            .setOnClickMoveToCartListener { }
+            .show(currentMenuModel = menu)
     }
 }

@@ -2,9 +2,7 @@ package com.seom.banchan.domain.model.home
 
 import com.seom.banchan.domain.model.cart.CartMenuModel
 import com.seom.banchan.ui.model.CellType
-import com.seom.banchan.ui.model.home.HomeMenuLargeModel
 import com.seom.banchan.ui.model.home.HomeMenuModel
-import com.seom.banchan.ui.model.recent.RecentMenuModel
 import java.io.Serializable
 import java.lang.Math.ceil
 
@@ -19,15 +17,16 @@ data class MenuModel(
     val recentTime : String = ""
 ): Serializable
 
+
 fun MenuModel.toHomeMenuModel(
     isBest: Boolean = false,
     cartMenus: List<CartMenuModel> = emptyList(),
-    cellType: CellType = CellType.MENU_CELL
+    isRecent : Boolean = false
 ): HomeMenuModel {
     val cartMenu = cartMenus.find { it.menuId == id }
     return HomeMenuModel(
         id = id,
-        type = cellType,
+        type = if(isRecent) CellType.MENU_RECENT_CELL else CellType.MENU_CELL,
         isBest = isBest,
         menu = this,
         count = cartMenu?.count ?: 1,
@@ -36,7 +35,9 @@ fun MenuModel.toHomeMenuModel(
     )
 }
 
-fun MenuModel.toRecentMenuModel() = RecentMenuModel(
+fun MenuModel.toHomeMenuLinearModel() = HomeMenuModel(
     id = id,
-    menu = this
+    type = CellType.MENU_LARGE_CELL,
+    menu = this,
+    discountRate = if (normalPrice == 0) 0 else ceil((1 - (salePrice / normalPrice.toDouble())) * 100).toInt()
 )
