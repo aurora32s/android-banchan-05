@@ -6,7 +6,9 @@ import com.seom.banchan.data.db.entity.OrderItemEntity
 import com.seom.banchan.data.db.entity.OrderListEntity
 import com.seom.banchan.data.db.entity.toModel
 import com.seom.banchan.data.source.OrderDataSource
+import com.seom.banchan.domain.model.order.OrderDetailModel
 import com.seom.banchan.domain.model.order.OrderListModel
+import com.seom.banchan.ui.model.order.OrderInfoModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -64,5 +66,17 @@ class OrderDataSourceImpl @Inject constructor(
         return orderDao.getOrderList().map {
             it.map { it.toModel() }
         }
+    }
+
+    override suspend fun getDetailOrderById(orderId: Long): Result<OrderDetailModel> = try {
+        val result = orderDao.getOrderInfoById(orderId)
+        Result.success(
+            OrderDetailModel(
+                order = result.order.map { it.toModel() },
+                menus = result.menus.map { it.toModel() },
+            )
+        )
+    } catch (exception: Exception) {
+        Result.failure(exception)
     }
 }

@@ -3,6 +3,7 @@ package com.seom.banchan.data.db.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.seom.banchan.domain.model.order.OrderModel
 import com.seom.banchan.ui.model.order.OrderDeliveryState
 
 /**
@@ -15,6 +16,12 @@ data class OrderEntity(
     val orderId: Long? = null,
     @ColumnInfo(name = "createdAt") // 생성 날짜
     val createdAt: Long,
-    @ColumnInfo(name = "delivery_type") // 배달상태
-    val deliveryType: Int = OrderDeliveryState.DELIVERING.type
+    @ColumnInfo(name = "delivery_state") // 배달상태
+    val deliveryState: Int = OrderDeliveryState.DELIVERING.type
+)
+
+fun OrderEntity.toModel() = OrderModel(
+    orderId = orderId,
+    createdAt = createdAt,
+    deliveryState = OrderDeliveryState.getDeliveryType(deliveryState)
 )

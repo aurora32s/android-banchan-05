@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.ForeignKey.CASCADE
 import androidx.room.PrimaryKey
+import com.seom.banchan.domain.model.order.OrderItemModel
 
 /**
  * 주문 내역에 담겨 있는 메뉴 아이템 Entity
@@ -28,4 +29,13 @@ data class OrderItemEntity(
     @ColumnInfo(name = "image") val image: String?,
     @ColumnInfo(name = "sale_price") val salePrice: Int,
     @ColumnInfo(name = "count") val count: Int
+)
+
+fun OrderItemEntity.toModel() = OrderItemModel(
+    menuId = menuId,
+    orderId = orderId,
+    name = name,
+    image = image,
+    salePrice = salePrice,
+    count = count
 )

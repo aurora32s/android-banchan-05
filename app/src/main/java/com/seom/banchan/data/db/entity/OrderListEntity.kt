@@ -13,7 +13,7 @@ data class OrderListEntity(
     @ColumnInfo(name = "image") val image: String?, // 대표 메뉴 이미지
     @ColumnInfo(name = "total_price") val totalPrice: Int, // 총 주문 금액
     @ColumnInfo(name = "menu_count") val menuCount: Int, // 해당 주문에 포함된 메뉴 개수
-    @ColumnInfo(name = "delivery_type") val deliveryType: Int // 배송 완료 여부(0: 배송중, 1: 배송완료)
+    @ColumnInfo(name = "delivery_state") val deliveryState: Int // 배송 완료 여부(0: 배송중, 1: 배송완료)
 )
 
 fun OrderListEntity.toModel() = OrderListModel(
@@ -22,5 +22,5 @@ fun OrderListEntity.toModel() = OrderListModel(
     image = image,
     totalPrice = totalPrice,
     menuCount = menuCount,
-    deliveryType = OrderDeliveryState.getDeliveryType(deliveryType)
+    deliveryType = OrderDeliveryState.getDeliveryType(deliveryState)
 )

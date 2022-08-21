@@ -1,9 +1,11 @@
 package com.seom.banchan.ui.order.detail
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.seom.banchan.databinding.FragmentOrderDetailBinding
@@ -24,6 +26,8 @@ class OrderDetailFragment : BaseFragment() {
     private val binding
         get() = _binding
 
+    private val viewModel: OrderDetailViewModel by viewModels()
+
     private val orderDetailAdapter by lazy {
         ModelRecyclerAdapter<Model>()
     }
@@ -40,8 +44,11 @@ class OrderDetailFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val orderId = arguments?.getLong(KEY_ORDER_ID)
+        if (orderId == null) fragmentNavigation.popStack()
+
         initRecyclerView()
-        initObserver()
+        initObserver(orderId!!)
     }
 
     private fun initRecyclerView() = binding?.let {
@@ -53,10 +60,28 @@ class OrderDetailFragment : BaseFragment() {
         it.rvOrderDetail.adapter = orderDetailAdapter
     }
 
-    private fun initObserver() {
+    private fun initObserver(orderId: Long) {
         lifecycleScope.launch {
-            orderDetailAdapter.submitList(mockData)
+            viewModel.orderUiState.collect {
+                when (it) {
+                    OrderDetailUiState.UnInitialized -> viewModel.fetchData(orderId)
+                    OrderDetailUiState.Loading -> { /* TODO 로딩 처리 */
+                    }
+                    is OrderDetailUiState.Success -> submitOrderDetailInfo(it)
+                    OrderDetailUiState.Error -> { /* TODO 에러 처리 필요 */
+                    }
+                }
+            }
         }
+    }
+
+    private fun submitOrderDetailInfo(orderDetailInfo: OrderDetailUiState.Success) {
+        Log.d(TAG, orderDetailInfo.toString())
+        orderDetailAdapter.submitList(
+    listOf<Model>(orderDetailInfo.order) +
+            orderDetailInfo.menus +
+            listOf<Model>(orderDetailInfo.orderInfo)
+        )
     }
 
     companion object {
@@ -74,81 +99,3 @@ class OrderDetailFragment : BaseFragment() {
         }
     }
 }
-
-val mockData = listOf(
-    OrderStateUiModel(
-        orderDeliveryState = OrderDeliveryState.DELIVERING,
-        createdAt = System.currentTimeMillis(),
-        expectedDeliveryTime = 10 * 1000,
-        menuCount = 4
-    ),
-    OrderMenuUiModel(
-        menuName = "오리 주물럭_반조리",
-        image = "http://public.codesquad.kr/jk/storeapp/data/main/1155_ZIP_P_0081_T.jpg",
-        count = 3,
-        salePrice = 6000
-    ),
-    OrderMenuUiModel(
-        menuName = "오리 주물럭_반조리",
-        image = "http://public.codesquad.kr/jk/storeapp/data/main/1155_ZIP_P_0081_T.jpg",
-        count = 3,
-        salePrice = 6000
-    ),
-    OrderMenuUiModel(
-        menuName = "오리 주물럭_반조리",
-        image = "http://public.codesquad.kr/jk/storeapp/data/main/1155_ZIP_P_0081_T.jpg",
-        count = 3,
-        salePrice = 6000
-    ),
-    OrderMenuUiModel(
-        menuName = "오리 주물럭_반조리",
-        image = "http://public.codesquad.kr/jk/storeapp/data/main/1155_ZIP_P_0081_T.jpg",
-        count = 3,
-        salePrice = 6000
-    ),
-    OrderMenuUiModel(
-        menuName = "오리 주물럭_반조리",
-        image = "http://public.codesquad.kr/jk/storeapp/data/main/1155_ZIP_P_0081_T.jpg",
-        count = 3,
-        salePrice = 6000
-    ),
-    OrderMenuUiModel(
-        menuName = "오리 주물럭_반조리",
-        image = "http://public.codesquad.kr/jk/storeapp/data/main/1155_ZIP_P_0081_T.jpg",
-        count = 3,
-        salePrice = 6000
-    ),
-    OrderMenuUiModel(
-        menuName = "오리 주물럭_반조리",
-        image = "http://public.codesquad.kr/jk/storeapp/data/main/1155_ZIP_P_0081_T.jpg",
-        count = 3,
-        salePrice = 6000
-    ),
-    OrderMenuUiModel(
-        menuName = "오리 주물럭_반조리",
-        image = "http://public.codesquad.kr/jk/storeapp/data/main/1155_ZIP_P_0081_T.jpg",
-        count = 3,
-        salePrice = 6000
-    ),
-    OrderMenuUiModel(
-        menuName = "오리 주물럭_반조리",
-        image = "http://public.codesquad.kr/jk/storeapp/data/main/1155_ZIP_P_0081_T.jpg",
-        count = 3,
-        salePrice = 6000
-    ),
-    OrderMenuUiModel(
-        menuName = "오리 주물럭_반조리",
-        image = "http://public.codesquad.kr/jk/storeapp/data/main/1155_ZIP_P_0081_T.jpg",
-        count = 3,
-        salePrice = 6000
-    ),
-    OrderMenuUiModel(
-        menuName = "오리 주물럭_반조리",
-        image = "http://public.codesquad.kr/jk/storeapp/data/main/1155_ZIP_P_0081_T.jpg",
-        count = 3,
-        salePrice = 6000
-    ),
-    OrderInfoModel(
-        orderPrice = 33320
-    )
-)
