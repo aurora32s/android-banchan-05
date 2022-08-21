@@ -15,5 +15,5 @@ data class OrderStateUiModel(
     val createdAt: Long, // 배달이 시작된 시간
     val extraTime: StateFlow<Long>, // 남은 시간
     val expectedDeliveryTime: Long, // 예상 배달 소요 시간
-    val menuCount: Int, // 메뉴 개수
+    val menuCount: Int // 메뉴 개수
 ) : Model(id, type)

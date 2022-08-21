@@ -36,7 +36,7 @@ class OrderDeliveryStateViewHolder(
     }
 
     /**
-     * time: 배송이 시작되고 지난 시간
+     * time: 남은 배송 시간
      * expectedTime: 예상 배송 완료 시간
      */
     private fun setDeliveryTime(time: Long, expectedTime: Long) {

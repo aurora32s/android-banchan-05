@@ -30,13 +30,6 @@ class OrderDetailViewModel @Inject constructor(
     private val orderDeliveryState = _orderDeliveryState.asStateFlow()
 
     /**
-     * 주문 배달 예상 소요 시간
-     * 갑자기 중간에 변경될 수 있는 것을 생각해 MutableStateFlow 로
-     */
-    private val _expectedDeliveryTime = MutableStateFlow(0L)
-    private val expectedDeliveryTime = _expectedDeliveryTime.asStateFlow()
-
-    /**
      * 남은 배달 시간
      */
     private val _extraTime = MutableStateFlow(0L)
