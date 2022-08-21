@@ -25,9 +25,15 @@ enum class CellType {
 
     //장바구니, 주문 내역, 주문 확인 화면 공통
     ORDER_INFO_CELL,
+
     // 주문 내역 리스트
     ORDER_LIST_ITEM, // 주문 내역 리스트 아이템
 
     // 주문 상세 화면
-    ORDER_STATE_CELL // 주문 배송 상태
+    ORDER_STATE_CELL, // 주문 배송 상태
+    ORDER_MENU_CELL; // 주문한 메뉴 cell
+
+    companion object {
+        fun getCellTypeByViewType(viewType: Int) = values().find { it.ordinal == viewType }
+    }
 }

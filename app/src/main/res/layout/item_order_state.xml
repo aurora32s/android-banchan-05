@@ -18,8 +18,6 @@
             android:id="@+id/tv_order_state"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:paddingTop="22dp"
             android:text="@{deliveryType.stateLongTitle}"
             android:textColor="@color/black"
             android:textSize="16sp"
@@ -41,12 +39,24 @@
             app:layout_constraintStart_toStartOf="@id/tv_order_state"
             app:layout_constraintTop_toBottomOf="@id/tv_order_state" />
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_extra_delivery_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@id/tv_extra_delivery_time_title"
+            app:layout_constraintStart_toEndOf="@id/tv_extra_delivery_time_title"
+            app:layout_constraintTop_toTopOf="@id/tv_extra_delivery_time_title" />
+
         <SeekBar
             android:id="@+id/sb_extra_delivery_time"
             android:layout_width="0dp"
             android:layout_height="20dp"
             android:layout_marginTop="3dp"
-            android:paddingHorizontal="16dp"
+            android:paddingStart="0dp"
+            android:paddingEnd="0dp"
             android:progressDrawable="@drawable/seekbar_delivery_time"
             android:thumb="@android:color/transparent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -59,7 +69,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:layout_marginBottom="22dp"
             android:text="@string/order_total_count"
             android:textColor="@color/greyScaleDefault"
             android:textSize="14sp"
@@ -67,11 +76,16 @@
             app:layout_constraintStart_toStartOf="@id/tv_order_state"
             app:layout_constraintTop_toBottomOf="@id/sb_extra_delivery_time" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/greyScaleLine"
-            app:layout_constraintBottom_toBottomOf="parent" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_menu_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@id/tv_menu_count_title"
+            app:layout_constraintStart_toEndOf="@id/tv_menu_count_title"
+            app:layout_constraintTop_toTopOf="@id/tv_menu_count_title" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

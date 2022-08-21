@@ -20,6 +20,7 @@ import com.seom.banchan.ui.adapter.viewholder.order.OrderDeliveryStateViewHolder
 import com.seom.banchan.ui.adapter.viewholder.order.OrderInfoViewHolder
 import com.seom.banchan.ui.adapter.viewholder.recent.RecentMenuViewHolder
 import com.seom.banchan.ui.adapter.viewholder.order.OrderListItemViewHolder
+import com.seom.banchan.ui.adapter.viewholder.order.OrderMenuViewHolder
 import com.seom.banchan.ui.model.CellType
 import com.seom.banchan.ui.model.Model
 
@@ -91,6 +92,9 @@ object ModelViewHolderMapper {
             )
             CellType.ORDER_STATE_CELL -> OrderDeliveryStateViewHolder(
                 ItemOrderStateBinding.inflate(inflater, parent, false)
+            )
+            CellType.ORDER_MENU_CELL -> OrderMenuViewHolder(
+                ItemOrderDetailMenuBinding.inflate(inflater, parent, false)
             )
         }
         return viewHolder as ModelViewHolder<M>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="menu"
+            type="com.seom.banchan.ui.model.order.OrderMenuUiModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_order_thumbnail"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            app:imageUrl="@{menu.image}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_menu_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toTopOf="@id/tv_menu_count"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toEndOf="@id/iv_order_thumbnail"
+            app:layout_constraintTop_toTopOf="@id/iv_order_thumbnail"
+            app:text="@{menu.menuName}" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_menu_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@id/tv_menu_total_price"
+            app:layout_constraintStart_toStartOf="@id/tv_menu_name"
+            app:layout_constraintTop_toBottomOf="@id/tv_menu_name"
+            app:text="@{@string/order_list_item_count_value(menu.count)}" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_menu_total_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{@string/menu_price_value(menu.salePrice * menu.count)}"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/iv_order_thumbnail"
+            app:layout_constraintStart_toStartOf="@id/tv_menu_name"
+            app:layout_constraintTop_toBottomOf="@id/tv_menu_count" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -74,7 +74,7 @@
     <string name="order_list_prepare">배송 준비중</string>
     <string name="order_list_delivering">배송중</string>
     <string name="order_list_delivered">배송 완료</string>
-    <string name="order_list_item_count_value">외 %d개</string>
+    <string name="order_list_item_count_value">%d개</string>
 
     <!-- recently -->
     <string name="recent_title">Recently viewed products</string>
