@@ -79,6 +79,10 @@ class CartViewModel @Inject constructor(
     val cartRecent: StateFlow<CartRecentModel>
         get() = _cartRecent
 
+    private val _orderEventFlow = MutableStateFlow(-1L)
+    val orderEventFlow : StateFlow<Long>
+        get() = _orderEventFlow
+
     private fun fetchCartMenus() {
         viewModelScope.launch {
             getCartMenusIdUseCase().collectLatest { list ->
@@ -159,6 +163,18 @@ class CartViewModel @Inject constructor(
                 menuId = cartMenuUiModel.menu.id,
                 count = count
             )
+        }
+    }
+
+    fun insertOrderAndRemoveCartMenus(){
+        viewModelScope.launch {
+            cartMenus.value.filter {
+                it.checked
+            }
+            // TODO 주문하는 유즈케이스
+            // 주문 성공하면 카트에서 메뉴 삭제
+            removeItems()
+            _orderEventFlow.value = 0L // order insert 이후 받은 orderId 값
         }
     }
 

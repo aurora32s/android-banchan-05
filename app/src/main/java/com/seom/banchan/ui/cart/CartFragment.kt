@@ -6,7 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.seom.banchan.R
 import com.seom.banchan.databinding.FragmentCartBinding
@@ -21,9 +23,9 @@ import com.seom.banchan.ui.model.cart.CartOrderModel
 import com.seom.banchan.ui.model.cart.CartRecentModel
 import com.seom.banchan.ui.model.home.HomeMenuModel
 import com.seom.banchan.ui.model.order.OrderInfoModel
+import com.seom.banchan.ui.order.detail.OrderDetailFragment
 import com.seom.banchan.ui.recent.RecentFragment
 import com.seom.banchan.ui.view.dialog.CartMenuCountAlert
-import com.seom.banchan.ui.view.dialog.DetailAddCartAlert
 import com.seom.banchan.util.listener.ModelAdapterListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -33,6 +35,8 @@ import kotlinx.coroutines.launch
 class CartFragment : BaseFragment() {
     private var _binding: FragmentCartBinding? = null
     private val binding get() = _binding
+
+    private val viewModel: CartViewModel by viewModels()
 
     private val cartAdapter: ModelRecyclerAdapter<Model> by lazy {
         ModelRecyclerAdapter(
@@ -65,8 +69,7 @@ class CartFragment : BaseFragment() {
                         }
                         CellType.CART_ORDER_CELL -> {
                             if (view.id == R.id.bt_order) {
-                                //주문 화면으로 이동
-                                Toast.makeText(requireContext(),"주문이 완료되었습니다.",Toast.LENGTH_SHORT).show()
+                                viewModel.insertOrderAndRemoveCartMenus()
                             }
                         }
                         CellType.CART_RECENT_CELL -> {
@@ -95,8 +98,6 @@ class CartFragment : BaseFragment() {
         )
     }
 
-    private val viewModel: CartViewModel by viewModels()
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -118,55 +119,60 @@ class CartFragment : BaseFragment() {
         it.rvCart.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         cartAdapter.submitList(
-            //임시 데이터
             listOf(
-                CartCheckModel(
-                    id = "cart_check",
-                    atLeastChecked = false
-                ),
-                OrderInfoModel(
-                    id = "order_info",
-                    orderPrice = 0
-                ),
+                CartCheckModel(),
+                OrderInfoModel(),
                 CartOrderModel(
-                    id = "cart_order",
                     totalPrice = 0,
                 ),
-                CartRecentModel(
-                    id = "cart_recent",
-                    recentMenus =  emptyList()
-                )
+                CartRecentModel()
             )
         )
     }
 
     private fun initObserver() {
-        lifecycleScope.launch {
-            viewModel.cartMenus.collectLatest {
-                cartAdapter.updateModelsAtPosition(it,1,it.size+1)
-            }
-        }
         lifecycleScope.launch{
-            viewModel.orderInfo.collectLatest {
-                cartAdapter.updateModelAtPosition(it,viewModel.cartMenus.value.size + 1)
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                launch {
+                    viewModel.cartMenus.collectLatest {
+                        cartAdapter.updateModelsAtPosition(it,1,it.size+1)
+                    }
+                }
+                launch{
+                    viewModel.orderInfo.collectLatest {
+                        cartAdapter.updateModelAtPosition(it,viewModel.cartMenus.value.size + 1)
+                    }
+                }
+                launch{
+                    viewModel.cartOrder.collectLatest {
+                        cartAdapter.updateModelAtPosition(it,viewModel.cartMenus.value.size+2)
+                    }
+                }
+                launch {
+                    viewModel.cartCheck.collectLatest {
+                        cartAdapter.updateModelAtPosition(it,0)
+                    }
+                }
+                launch {
+                    viewModel.cartRecent.collectLatest {
+                        cartAdapter.updateModelAtPosition(it, viewModel.cartMenus.value.size + 3)
+                    }
+                }
+                launch {
+                    viewModel.orderEventFlow.collectLatest {
+                        if(it != -1L){
+                            fragmentNavigation.popStack()
+//                    fragmentNavigation.replaceFragment(
+//                        OrderDetailFragment.newInstance(it)
+//                    )  orderId에 해당하는 OrderDetail 이 없으면 OrderDetailViewModel - fetchData 에서
+//                       size가 0인 success 가 나옴. -> 에러 발생 -> 앱 종료
+//                       size 가 0일 때도 error로 처리하게 변경하는게 어떨지 싶습니다.
+                            Toast.makeText(requireContext(),"주문이 완료되었습니다.",Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
             }
         }
-        lifecycleScope.launch{
-            viewModel.cartOrder.collectLatest {
-                cartAdapter.updateModelAtPosition(it,viewModel.cartMenus.value.size+2)
-            }
-        }
-        lifecycleScope.launch {
-            viewModel.cartCheck.collectLatest {
-                cartAdapter.updateModelAtPosition(it,0)
-            }
-        }
-        lifecycleScope.launch {
-            viewModel.cartRecent.collectLatest {
-                cartAdapter.updateModelAtPosition(it, viewModel.cartMenus.value.size + 3)
-            }
-        }
-
     }
 
     companion object {
