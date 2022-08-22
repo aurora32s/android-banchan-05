@@ -36,4 +36,28 @@ class CartDataSourceImpl @Inject constructor(
             emit(it.map { it.toModel() })
         }
     }
+
+    override suspend fun deleteCartMenuList(menuIds: List<String>): Int {
+        return cartDao.deleteCartMenuList(menuIds)
+    }
+
+    override suspend fun deleteCartMenu(menuId: String): Int {
+        return cartDao.deleteCartMenu(menuId)
+    }
+
+    override suspend fun updateCartMenuListSelected(menuIds: List<String>): Int {
+        return cartDao.updateCartMenuListSelected(menuIds)
+    }
+
+    override suspend fun updateCartMenuSelected(menuId: String): Int {
+        return cartDao.updateCartMenuSelected(menuId)
+    }
+
+    override suspend fun updateCartMenuCountIncrease(menuId: String): Int {
+        return cartDao.updateCartMenuCountIncrease(menuId)
+    }
+
+    override suspend fun updateCartMenuCountDecrease(menuId: String): Int {
+        return cartDao.updateCartMenuCountDecrease(menuId)
+    }
 }

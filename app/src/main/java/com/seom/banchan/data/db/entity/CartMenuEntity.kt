@@ -12,7 +12,8 @@ data class CartMenuEntity(
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "image") val image: String?,
     @ColumnInfo(name = "sale_price") val salePrice: Int,
-    @ColumnInfo(name = "count") val count: Int
+    @ColumnInfo(name = "count") val count: Int,
+    @ColumnInfo(name = "selected") val selected : Boolean
 )
 
 fun CartMenuEntity.toModel() = CartMenuModel(
@@ -20,5 +21,6 @@ fun CartMenuEntity.toModel() = CartMenuModel(
     name = name,
     image = image,
     salePrice = salePrice,
-    count = count
+    count = count,
+    selected = selected
 )

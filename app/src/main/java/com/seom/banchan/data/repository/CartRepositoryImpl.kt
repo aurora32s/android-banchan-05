@@ -23,4 +23,28 @@ class CartRepositoryImpl @Inject constructor(
     override fun getCartMenusId(): Flow<List<CartMenuModel>> {
         return cartDataSource.getCartMenusId()
     }
+
+    override suspend fun deleteCartMenuList(menuIds: List<String>): Int {
+        return cartDataSource.deleteCartMenuList(menuIds)
+    }
+
+    override suspend fun deleteCartMenu(menuId: String): Int {
+        return cartDataSource.deleteCartMenu(menuId)
+    }
+
+    override suspend fun updateCartMenuListSelected(menuIds: List<String>): Int {
+        return cartDataSource.updateCartMenuListSelected(menuIds)
+    }
+
+    override suspend fun updateCartMenuSelected(menuId: String): Int {
+        return cartDataSource.updateCartMenuSelected(menuId)
+    }
+
+    override suspend fun updateCartMenuCountIncrease(menuId: String): Int {
+        return cartDataSource.updateCartMenuCountIncrease(menuId)
+    }
+
+    override suspend fun updateCartMenuCountDecrease(menuId: String): Int {
+        return cartDataSource.updateCartMenuCountIncrease(menuId)
+    }
 }
