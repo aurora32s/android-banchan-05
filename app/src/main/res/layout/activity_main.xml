@@ -13,11 +13,12 @@
             android:layout_height="wrap_content"
             android:background="@color/primaryMain"
             app:layout_constraintTop_toTopOf="parent"
-            app:titleTextColor="@color/white">
+            app:titleTextColor="@color/greyScaleBlack">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:visibility="gone"
                 android:paddingHorizontal="16dp">
 
                 <androidx.appcompat.widget.AppCompatTextView
