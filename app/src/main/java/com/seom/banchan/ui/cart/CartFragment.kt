@@ -22,6 +22,8 @@ import com.seom.banchan.ui.model.cart.CartRecentModel
 import com.seom.banchan.ui.model.home.HomeMenuModel
 import com.seom.banchan.ui.model.order.OrderInfoModel
 import com.seom.banchan.ui.recent.RecentFragment
+import com.seom.banchan.ui.view.dialog.CartMenuCountAlert
+import com.seom.banchan.ui.view.dialog.DetailAddCartAlert
 import com.seom.banchan.util.listener.ModelAdapterListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -53,6 +55,12 @@ class CartFragment : BaseFragment() {
                                 viewModel.increaseCount((model as CartMenuUiModel))
                             } else if (view.id == R.id.iv_down) {
                                 viewModel.decreaseCount((model as CartMenuUiModel))
+                            } else if (view.id == R.id.tv_count) {
+                                CartMenuCountAlert.build((model as CartMenuUiModel).count)
+                                    .setOnClickMoveToCart {
+                                        viewModel.updateCount(model, it)
+                                    }
+                                    .show(parentFragmentManager)
                             }
                         }
                         CellType.CART_ORDER_CELL -> {

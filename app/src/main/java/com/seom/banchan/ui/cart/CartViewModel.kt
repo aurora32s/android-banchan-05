@@ -26,17 +26,14 @@ class CartViewModel @Inject constructor(
     private val updateCartMenuSelectedUseCase: UpdateCartMenuSelectedUseCase,
     private val updateCartMenuCountIncreaseUseCase: UpdateCartMenuCountIncreaseUseCase,
     private val updateCartMenuCountDecreaseUseCase: UpdateCartMenuCountDecreaseUseCase,
+    private val updateCartMenuCountUseCase: UpdateCartMenuCountUseCase,
     private val getRecentMenusUseCase: GetRecentMenusUseCase
 ) : ViewModel() {
 
     init {
-        getRecentMenus()
+        fetchRecentMenus()
         fetchCartMenus()
     }
-
-    private val _selectedCartItemIds = MutableStateFlow<List<String>>(emptyList())
-    val selectedCartItemIds: StateFlow<List<String>>
-        get() = _selectedCartItemIds
 
     private val _cartMenus = MutableStateFlow<List<CartMenuUiModel>>(
         mutableListOf()
@@ -156,7 +153,16 @@ class CartViewModel @Inject constructor(
         }
     }
 
-    private fun getRecentMenus() {
+    fun updateCount(cartMenuUiModel: CartMenuUiModel, count : Int){
+        viewModelScope.launch {
+            updateCartMenuCountUseCase(
+                menuId = cartMenuUiModel.menu.id,
+                count = count
+            )
+        }
+    }
+
+    private fun fetchRecentMenus() {
         viewModelScope.launch {
             getRecentMenusUseCase(isLatest = true).collectLatest { list ->
                 _cartRecent.value = cartRecent.value.copy(
