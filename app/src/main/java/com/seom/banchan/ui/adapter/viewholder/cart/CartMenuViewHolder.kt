@@ -10,7 +10,7 @@ class CartMenuViewHolder(
 ) : ModelViewHolder<CartMenuUiModel>(binding) {
     override fun bindData(model: CartMenuUiModel) {
         binding.model = model
-        binding.etCount.setText(model.count.toString())
+        binding.tvCount.text = model.count.toString()
     }
 
     override fun bindViews(model: CartMenuUiModel, menuAdapterListener: ModelAdapterListener?) {
@@ -24,6 +24,9 @@ class CartMenuViewHolder(
             menuAdapterListener?.onClick(it, model, adapterPosition)
         }
         binding.ivDown.setOnClickListener {
+            menuAdapterListener?.onClick(it, model, adapterPosition)
+        }
+        binding.tvCount.setOnClickListener {
             menuAdapterListener?.onClick(it, model, adapterPosition)
         }
     }

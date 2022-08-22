@@ -58,6 +58,10 @@
     <string name="cart_recent_title">최근 본 상품</string>
     <string name="cart_recent_all">전체보기</string>
     <string name="cart_recent_empty">최근 본 상품이 없습니다.</string>
+    <string name="cart_dialog_title">상품의 수량을 입력하세요 (최대 99개)</string>
+    <string name="cart_dialog_hint">최대 99</string>
+    <string name="cart_dialog_ok">확인</string>
+    <string name="cart_dialog_cancel">취소</string>
 
     <!-- order -->
     <string name="order_delivering">주문이 접수되었습니다.</string>
