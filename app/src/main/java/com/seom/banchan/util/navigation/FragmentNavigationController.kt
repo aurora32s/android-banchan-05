@@ -27,6 +27,10 @@ class FragmentNavigationController(
         fragmentManager.popBackStack()
     }
 
+    fun getCurrentFragment() : Fragment? {
+        return fragmentManager.findFragmentById(containerId)
+    }
+
     /**
      * 한번 compose 의 navigation 처럼 화면 별로 function 을 만들어 보았어요.
      */

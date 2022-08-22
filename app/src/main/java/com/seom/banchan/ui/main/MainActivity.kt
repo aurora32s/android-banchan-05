@@ -1,15 +1,19 @@
 package com.seom.banchan.ui.main
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.MenuProvider
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.seom.banchan.R
 import com.seom.banchan.databinding.ActivityMainBinding
 import com.seom.banchan.ui.base.BaseFragment
 import com.seom.banchan.ui.cart.CartFragment
+import com.seom.banchan.ui.detail.DetailFragment
 import com.seom.banchan.ui.home.HomeFragment
-import com.seom.banchan.ui.recent.RecentFragment
 import com.seom.banchan.util.navigation.FragmentNavigationController
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -37,11 +41,9 @@ class MainActivity : AppCompatActivity(), BaseFragment.FragmentNavigation {
 
     private fun initToolbar() = binding?.let {
         setSupportActionBar(it.tbMain)
-        supportActionBar?.setDisplayShowTitleEnabled(false)
-        it.tbMain.title = getString(R.string.main_title)
-        it.ivCart.setOnClickListener {
-            replaceFragment(CartFragment.newInstance(),CartFragment.TAG)
-        }
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_arrow_left)
+        //it.tbMain.title = getString(R.string.main_title)
+
     }
 
     private fun initViews() = binding?.let {
@@ -68,4 +70,16 @@ class MainActivity : AppCompatActivity(), BaseFragment.FragmentNavigation {
     override fun popStack() {
         fragmentNavigationController.popStack()
     }
+
+    override fun getCurrentFragment(): Fragment? {
+        return fragmentNavigationController.getCurrentFragment()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if(item.itemId == android.R.id.home){
+            popStack()
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
 }
