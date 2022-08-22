@@ -20,6 +20,14 @@ class RecentDataSourceImpl @Inject constructor(
         }
     }
 
+    override suspend fun getLatestRecents(): Flow<List<MenuModel>> {
+        return recentDao.getLatestRecents().map {
+            it.map {
+                it.toMenuModel()
+            }
+        }
+    }
+
     override suspend fun upsertRecent(menuModel: MenuModel) {
         recentDao.upsertRecent(menuModel.toRecentEntity())
     }

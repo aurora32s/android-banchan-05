@@ -13,6 +13,10 @@ class RecentRepositoryImpl @Inject constructor(
        return recentDataSource.getRecents()
     }
 
+    override suspend fun getLatestRecents(): Flow<List<MenuModel>> {
+        return recentDataSource.getLatestRecents()
+    }
+
     override suspend fun upsertRecent(menuModel: MenuModel) {
         recentDataSource.upsertRecent(menuModel)
     }

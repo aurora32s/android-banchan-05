@@ -13,7 +13,8 @@ class GetRecentMenusUseCase @Inject constructor(
     @IODispatcher
     private val ioDispatcher: CoroutineDispatcher
 ) {
-    suspend operator fun invoke() : Flow<List<MenuModel>> {
-        return recentRepository.getRecents()
+    suspend operator fun invoke(isLatest : Boolean = false) : Flow<List<MenuModel>> {
+        return if(isLatest) recentRepository.getLatestRecents()
+        else recentRepository.getRecents()
     }
 }

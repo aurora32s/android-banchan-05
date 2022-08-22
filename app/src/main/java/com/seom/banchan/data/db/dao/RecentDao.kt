@@ -14,6 +14,9 @@ interface RecentDao {
     @Query("SELECT * FROM recent_table ORDER BY recent_time DESC")
     fun getRecents() : Flow<List<RecentEntity>>
 
+    @Query("SELECT * FROM recent_table ORDER BY recent_time DESC LIMIT 7")
+    fun getLatestRecents() : Flow<List<RecentEntity>>
+
     @Insert
     suspend fun insertRecent(recentEntity: RecentEntity)
 
