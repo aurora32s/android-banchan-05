@@ -45,10 +45,14 @@ class OrderDetailFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val orderId = arguments?.getLong(KEY_ORDER_ID)
-        if (orderId == null) fragmentNavigation.popStack()
+
+        if (orderId == null) {
+            fragmentNavigation.popStack()
+            return
+        }
 
         initRecyclerView()
-        initObserver(orderId!!)
+        initObserver(orderId)
     }
 
     private fun initRecyclerView() = binding?.let {
@@ -78,9 +82,9 @@ class OrderDetailFragment : BaseFragment() {
     private fun submitOrderDetailInfo(orderDetailInfo: OrderDetailUiState.Success) {
         Log.d(TAG, orderDetailInfo.toString())
         orderDetailAdapter.submitList(
-    listOf<Model>(orderDetailInfo.order) +
-            orderDetailInfo.menus +
-            listOf<Model>(orderDetailInfo.orderInfo)
+            listOf<Model>(orderDetailInfo.order) +
+                    orderDetailInfo.menus +
+                    listOf<Model>(orderDetailInfo.orderInfo)
         )
     }
 
