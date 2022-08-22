@@ -23,6 +23,10 @@ class CartViewModel @Inject constructor(
     private val getRecentMenusUseCase: GetRecentMenusUseCase
 ) : ViewModel() {
 
+    init {
+        getRecentMenus()
+    }
+
     private val _selectedCartItemIds = MutableStateFlow<List<String>>(emptyList())
     val selectedCartItemIds: StateFlow<List<String>>
         get() = _selectedCartItemIds
@@ -146,17 +150,16 @@ class CartViewModel @Inject constructor(
     }
 
     fun getRecentMenus() {
-//        viewModelScope.launch {
-//            getRecentMenusUseCase().collectLatest {
-//                _cartRecent.emit(
-//                    cartRecent.value.copy(
-//                        recentMenus = it.map { menuModel: MenuModel ->
-//                            menuModel.toHomeMenuModel(cellType = CellType.MENU_RECENT_CELL)
-//                        }
-//                    )
-//                )
-//            }
-//        }
+        viewModelScope.launch {
+            getRecentMenusUseCase(isLatest = true).collectLatest { list ->
+                _cartRecent.value = cartRecent.value.copy(
+                    recentMenus = list
+                        .map { menuModel ->
+                        menuModel.toHomeMenuModel(inCart = true, isRecent = true)
+                    }
+                )
+            }
+        }
     }
 
     private var testMenus = mutableListOf(

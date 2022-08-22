@@ -22,11 +22,14 @@ fun MenuModel.toHomeMenuModel(
     isBest: Boolean = false,
     cartMenus: List<CartMenuModel> = emptyList(),
     cellType: CellType = CellType.MENU_CELL,
+    isRecent : Boolean = false,
+    inCart : Boolean = false
 ): HomeMenuModel {
     val cartMenu = cartMenus.find { it.menuId == id }
     return HomeMenuModel(
         id = id,
         type = cellType,
+        inCart = inCart,
         isBest = isBest,
         menu = this,
         count = cartMenu?.count ?: 1,

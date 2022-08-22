@@ -13,12 +13,14 @@ import com.seom.banchan.R
 import com.seom.banchan.databinding.FragmentCartBinding
 import com.seom.banchan.ui.adapter.ModelRecyclerAdapter
 import com.seom.banchan.ui.base.BaseFragment
+import com.seom.banchan.ui.detail.DetailFragment
 import com.seom.banchan.ui.model.CellType
 import com.seom.banchan.ui.model.Model
 import com.seom.banchan.ui.model.cart.CartCheckModel
 import com.seom.banchan.ui.model.cart.CartMenuModel
 import com.seom.banchan.ui.model.cart.CartOrderModel
 import com.seom.banchan.ui.model.cart.CartRecentModel
+import com.seom.banchan.ui.model.home.HomeMenuModel
 import com.seom.banchan.ui.model.order.OrderInfoModel
 import com.seom.banchan.ui.recent.RecentFragment
 import com.seom.banchan.util.listener.ModelAdapterListener
@@ -68,6 +70,18 @@ class CartFragment : BaseFragment() {
                                 fragmentNavigation.replaceFragment(
                                     RecentFragment()
                                 )
+                            }
+                        }
+                        CellType.MENU_RECENT_CELL -> {
+                            if(view.id == R.id.iv_menu_thumbnail){
+                                (model as? HomeMenuModel)?.menu?.let {
+                                    fragmentNavigation.replaceFragment(
+                                        DetailFragment.newInstance(
+                                            menuModel = it
+                                        ),
+                                        DetailFragment.TAG
+                                    )
+                                }
                             }
                         }
                         else -> {}
