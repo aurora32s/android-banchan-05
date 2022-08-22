@@ -59,5 +59,11 @@ interface CartDao {
     @Query ("UPDATE cart_table SET count = count - 1 WHERE menu_id = :menuId")
     suspend fun updateCartMenuCountDecrease(menuId: String) : Int
 
+    /*
+    장바구니 해당 메뉴 개수 값 변경
+     */
+    @Query ("UPDATE cart_table SET count = :count WHERE menu_id = :menuId")
+    suspend fun updateCartMenuCount(menuId: String,count : Int) : Int
+
 
 }

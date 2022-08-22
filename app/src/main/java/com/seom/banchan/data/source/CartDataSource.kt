@@ -54,4 +54,8 @@ interface CartDataSource {
      */
     suspend fun updateCartMenuCountDecrease(menuId: String) : Int
 
+    /*
+    장바구니 해당 메뉴 개수 값 변경
+     */
+    suspend fun updateCartMenuCount(menuId: String,count : Int) : Int
 }

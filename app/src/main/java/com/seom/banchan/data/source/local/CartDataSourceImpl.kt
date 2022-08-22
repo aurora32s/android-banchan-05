@@ -60,4 +60,8 @@ class CartDataSourceImpl @Inject constructor(
     override suspend fun updateCartMenuCountDecrease(menuId: String): Int {
         return cartDao.updateCartMenuCountDecrease(menuId)
     }
+
+    override suspend fun updateCartMenuCount(menuId: String, count: Int): Int {
+        return cartDao.updateCartMenuCount(menuId, count)
+    }
 }
