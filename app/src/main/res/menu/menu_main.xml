@@ -6,10 +6,12 @@
     <item
         android:id="@+id/menu_cart"
         android:title="@string/cart_title"
-        android:icon="@drawable/ic_cart"/>
+        app:showAsAction="ifRoom"
+        android:actionLayout="@layout/layout_action_main"/>
 
     <item
         android:id="@+id/menu_order_list"
         android:title="@string/order_list_title"
+        app:showAsAction="ifRoom"
         android:icon="@drawable/ic_user"/>
 </menu>
