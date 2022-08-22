@@ -82,7 +82,8 @@ class DetailViewModel @Inject constructor(
             name = currentMenu.name,
             image = currentMenu.thumbnail?.firstOrNull(),
             salePrice = currentMenu.salePrice,
-            count = count.value
+            count = count.value,
+            selected = true // 기본은 선택된 상태
         )
         addOrUpdateMenuToCartUseCase(cartMenu)
             .onSuccess {

@@ -56,7 +56,8 @@ class OrderBottomSheetViewModel @Inject constructor(
                 name = it.name,
                 image = it.image,
                 salePrice = it.salePrice,
-                count = count.value
+                count = count.value,
+                selected = true // 기본은 선택된 상태
             )
             addOrReplaceMenuToCartUseCase(cartMenu)
                 .onSuccess {
