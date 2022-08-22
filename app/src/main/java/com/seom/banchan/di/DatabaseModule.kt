@@ -35,14 +35,12 @@ object DatabaseModule {
 object DaoModule {
     @Singleton
     @Provides
-    @Singleton
     fun provideCartDao(
         database: BanChanDatabase
     ) = database.cartDao()
 
     @Singleton
     @Provides
-    @Singleton
     fun provideRecentDao(
         database: BanChanDatabase
     ): RecentDao {
