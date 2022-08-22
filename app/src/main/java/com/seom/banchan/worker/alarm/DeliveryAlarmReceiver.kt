@@ -1,4 +1,4 @@
-package com.seom.banchan.work.alarm
+package com.seom.banchan.worker.alarm
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -7,7 +7,8 @@ import android.util.Log
 
 class DeliveryAlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
-        Log.d(TAG, "on Received")
+        val deliveryInfo = intent?.getSerializableExtra(KEY_ORDER_ITEM) ?: return
+        Log.d(TAG, "on Received $deliveryInfo")
     }
 
     companion object {

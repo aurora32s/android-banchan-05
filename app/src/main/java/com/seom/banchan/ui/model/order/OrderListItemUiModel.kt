@@ -2,7 +2,6 @@ package com.seom.banchan.ui.model.order
 
 import com.seom.banchan.ui.model.CellType
 import com.seom.banchan.ui.model.Model
-import java.io.Serializable
 
 /**
  * 주문 내역 리스트의 주문 아이템 model
@@ -16,4 +15,4 @@ data class OrderListItemUiModel(
     val totalPrice: Int, // 총 주문 금액
     val menuCount: Int, // 해당 주문에 포함된 메뉴의 개수
     val deliveryCompleted: OrderDeliveryState // 배송 전, 배송중, 배송완료
-) : Model(id, type), Serializable
+) : Model(id, type)

@@ -18,7 +18,7 @@ import com.seom.banchan.util.navigation.FragmentNavigationController
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(), BaseFragment.FragmentNavigation,FragmentManager.OnBackStackChangedListener {
+class MainActivity : AppCompatActivity(), BaseFragment.FragmentNavigation {
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding
 
