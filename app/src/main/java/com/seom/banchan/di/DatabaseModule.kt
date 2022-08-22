@@ -18,6 +18,7 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object DatabaseModule {
+    @Singleton
     @Provides
     fun provideDatabase(
         @ApplicationContext context: Context
@@ -33,7 +34,6 @@ object DatabaseModule {
 @Module
 @InstallIn(SingletonComponent::class)
 object DaoModule {
-    @Singleton
     @Provides
     fun provideCartDao(
         database: BanChanDatabase
