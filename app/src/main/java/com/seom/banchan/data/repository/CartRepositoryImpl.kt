@@ -45,6 +45,6 @@ class CartRepositoryImpl @Inject constructor(
     }
 
     override suspend fun updateCartMenuCountDecrease(menuId: String): Int {
-        return cartDataSource.updateCartMenuCountIncrease(menuId)
+        return cartDataSource.updateCartMenuCountDecrease(menuId)
     }
 }

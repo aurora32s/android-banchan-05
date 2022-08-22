@@ -1,7 +1,6 @@
 package com.seom.banchan.ui.cart
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +16,7 @@ import com.seom.banchan.ui.detail.DetailFragment
 import com.seom.banchan.ui.model.CellType
 import com.seom.banchan.ui.model.Model
 import com.seom.banchan.ui.model.cart.CartCheckModel
-import com.seom.banchan.ui.model.cart.CartMenuModel
+import com.seom.banchan.ui.model.cart.CartMenuUiModel
 import com.seom.banchan.ui.model.cart.CartOrderModel
 import com.seom.banchan.ui.model.cart.CartRecentModel
 import com.seom.banchan.ui.model.home.HomeMenuModel
@@ -26,9 +25,6 @@ import com.seom.banchan.ui.recent.RecentFragment
 import com.seom.banchan.util.listener.ModelAdapterListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.flatMapMerge
-import kotlinx.coroutines.flow.flattenMerge
-import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -50,13 +46,13 @@ class CartFragment : BaseFragment() {
                         }
                         CellType.CART_MENU_CELL -> {
                             if (view.id == R.id.cb_menu) {
-                                viewModel.updateCheck((model as CartMenuModel))
+                                viewModel.updateCheck((model as CartMenuUiModel))
                             } else if (view.id == R.id.iv_delete) {
-                                viewModel.removeItem((model as CartMenuModel))
+                                viewModel.removeItem((model as CartMenuUiModel))
                             } else if (view.id == R.id.iv_up) {
-                                viewModel.increaseCount((model as CartMenuModel))
+                                viewModel.increaseCount((model as CartMenuUiModel))
                             } else if (view.id == R.id.iv_down) {
-                                viewModel.decreaseCount((model as CartMenuModel))
+                                viewModel.decreaseCount((model as CartMenuUiModel))
                             }
                         }
                         CellType.CART_ORDER_CELL -> {
@@ -107,7 +103,6 @@ class CartFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
         initObserver()
-        viewModel.fetchCartMenus()
     }
 
     private fun initRecyclerView() = binding?.let {

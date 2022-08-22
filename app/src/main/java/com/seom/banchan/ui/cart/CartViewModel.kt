@@ -2,15 +2,14 @@ package com.seom.banchan.ui.cart
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.seom.banchan.domain.model.cart.toUiModel
 import com.seom.banchan.domain.model.home.MenuModel
 import com.seom.banchan.domain.model.home.toHomeMenuModel
-import com.seom.banchan.domain.usecase.GetRecentMenusUseCase
-import com.seom.banchan.ui.model.CellType
+import com.seom.banchan.domain.usecase.*
 import com.seom.banchan.ui.model.cart.CartCheckModel
-import com.seom.banchan.ui.model.cart.CartMenuModel
+import com.seom.banchan.ui.model.cart.CartMenuUiModel
 import com.seom.banchan.ui.model.cart.CartOrderModel
 import com.seom.banchan.ui.model.cart.CartRecentModel
-import com.seom.banchan.ui.model.home.HomeMenuModel
 import com.seom.banchan.ui.model.order.OrderInfoModel
 import com.seom.banchan.util.TimeUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,36 +19,46 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CartViewModel @Inject constructor(
+    private val getCartMenusIdUseCase: GetCartMenusIdUseCase,
+    private val deleteCartMenuListUseCase: DeleteCartMenuListUseCase,
+    private val deleteCartMenuUseCase: DeleteCartMenuUseCase,
+    private val updateCartMenuListSelectedUseCase: UpdateCartMenuListSelectedUseCase,
+    private val updateCartMenuSelectedUseCase: UpdateCartMenuSelectedUseCase,
+    private val updateCartMenuCountIncreaseUseCase: UpdateCartMenuCountIncreaseUseCase,
+    private val updateCartMenuCountDecreaseUseCase: UpdateCartMenuCountDecreaseUseCase,
     private val getRecentMenusUseCase: GetRecentMenusUseCase
 ) : ViewModel() {
 
     init {
         getRecentMenus()
+        fetchCartMenus()
     }
 
     private val _selectedCartItemIds = MutableStateFlow<List<String>>(emptyList())
     val selectedCartItemIds: StateFlow<List<String>>
         get() = _selectedCartItemIds
 
-    private val _cartCheck = MutableStateFlow<CartCheckModel>(
-        CartCheckModel() // 임시 데이터
-    )
-    val cartCheck = _cartCheck.asStateFlow().combine(selectedCartItemIds) { cartCheck, ids ->
-        CartCheckModel(
-            atLeastChecked = selectedCartItemIds.value.isNotEmpty()
-        ) // 임시
-    }
-
-    private val _cartMenus = MutableStateFlow<MutableList<CartMenuModel>>(
+    private val _cartMenus = MutableStateFlow<List<CartMenuUiModel>>(
         mutableListOf()
     )
-    val cartMenus: StateFlow<MutableList<CartMenuModel>>
+    val cartMenus: StateFlow<List<CartMenuUiModel>>
         get() = _cartMenus
 
+    private val _cartCheck = MutableStateFlow<CartCheckModel>(
+        CartCheckModel()
+    )
+    val cartCheck = _cartCheck.asStateFlow()
+        .combine(cartMenus) { _, menus ->
+            CartCheckModel(
+                atLeastChecked = menus.any { // List<*>.any -> 조건을 만족하는 원소가 1개 이상 존재하면 true
+                    it.checked
+                }
+            )
+        }
 
     private val _orderInfo = MutableStateFlow<OrderInfoModel>(OrderInfoModel())
     val orderInfo = _orderInfo.asStateFlow()
-        .combine(cartMenus) { orderInfo, menus ->
+        .combine(cartMenus) { _, menus ->
             OrderInfoModel(
                 orderPrice = menus.filter {
                     it.checked
@@ -60,9 +69,12 @@ class CartViewModel @Inject constructor(
         }
 
     private val _cartOrder = MutableStateFlow<CartOrderModel>(CartOrderModel(totalPrice = 0))
-    val cartOrder = _cartOrder.asStateFlow().combine(orderInfo) { _, orderInfo ->
-        CartOrderModel(totalPrice = orderInfo.orderPrice)
-    }
+    val cartOrder = _cartOrder.asStateFlow()
+        .combine(orderInfo) { _, info ->
+            CartOrderModel(
+                totalPrice = info.orderPrice
+            )
+        }
 
     private val _cartRecent = MutableStateFlow<CartRecentModel>(
         CartRecentModel()
@@ -70,142 +82,90 @@ class CartViewModel @Inject constructor(
     val cartRecent: StateFlow<CartRecentModel>
         get() = _cartRecent
 
-
-    fun fetchCartMenus() { // 테스트를 위한 코드. 원래는 로컬 DB에서 들고 온다
-        val list = testMenus
-        _cartMenus.value = list
-        _selectedCartItemIds.value = list.map {
-            it.menu.id
+    private fun fetchCartMenus() {
+        viewModelScope.launch {
+            getCartMenusIdUseCase().collectLatest { list ->
+                _cartMenus.value = list.map {
+                    it.toUiModel()
+                }
+            }
         }
     }
 
-
-    fun updateCheck(cartMenuModel: CartMenuModel) {
-        if (selectedCartItemIds.value.contains(cartMenuModel.menu.id)) {
-            _selectedCartItemIds.value = selectedCartItemIds.value.filter {
-                it != cartMenuModel.menu.id
-            }
-        } else {
-            _selectedCartItemIds.value = selectedCartItemIds.value + listOf(cartMenuModel.menu.id)
-        }
-        _cartMenus.value = cartMenus.value.map { cart ->
-            cart.copy(
-                checked = if(cart.menu.id == cartMenuModel.menu.id) !cart.checked else cart.checked
+    fun updateCheck(cartMenuUiModel: CartMenuUiModel) {
+        viewModelScope.launch {
+            updateCartMenuSelectedUseCase(
+                cartMenuUiModel.menu.id
             )
-        }.toMutableList()
+        }
     }
 
     fun updateAllCheck() {
-        if (selectedCartItemIds.value.isEmpty()) { // 선택된 상품이 없으면 전체선택하는 로직
-            _selectedCartItemIds.value = cartMenus.value.map {
-                it.menu.id
-            }
-            _cartMenus.value = cartMenus.value.map {
-                it.copy(
-                    checked = true
-                )
-            }.toMutableList()
-        } else { // 선택된 상품이 하나라도 있으면 모두 선택 해제하는 로직
-            _selectedCartItemIds.value = emptyList()
-            _cartMenus.value = cartMenus.value.map {
-                it.copy(
-                    checked = false
-                )
-            }.toMutableList()
+        viewModelScope.launch {
+            updateCartMenuListSelectedUseCase(
+                cartMenus.value.filter { cartMenu ->
+                    if (cartMenus.value.any { it.checked }) { // 하나라도 선택된 게 있으면 선택된 메뉴들 선택 해제 로직
+                        cartMenu.checked
+                    } else { // 하나도 없으면 전체 선택
+                        !cartMenu.checked
+                    }
+                }.map {
+                    it.menu.id
+                }
+            )
         }
     }
 
-    fun removeItem(cartMenuModel: CartMenuModel) {
-        _cartMenus.value = cartMenus.value.filter {
-            it.menu.id != cartMenuModel.menu.id
-        }.toMutableList()
-        _selectedCartItemIds.value = selectedCartItemIds.value.filter {
-            it != cartMenuModel.menu.id
+    fun removeItem(cartMenuUiModel: CartMenuUiModel) {
+        viewModelScope.launch {
+            deleteCartMenuUseCase(
+                cartMenuUiModel.menu.id
+            )
         }
     }
 
     fun removeItems() {
-        _cartMenus.value = cartMenus.value.filter {
-            !selectedCartItemIds.value.contains(it.menu.id)
-        }.toMutableList()
-        _selectedCartItemIds.value = emptyList()
-    }
-
-    fun increaseCount(cartMenuModel: CartMenuModel) {
-        _cartMenus.value = cartMenus.value.map { cart ->
-            cart.copy(
-                count = if (cartMenuModel.menu.id == cart.menu.id) cart.count + 1 else cart.count,
+        viewModelScope.launch {
+            deleteCartMenuListUseCase(
+                cartMenus.value.filter {
+                    it.checked
+                }.map {
+                    it.menu.id
+                }
             )
-        }.toMutableList()
+        }
     }
 
-    fun decreaseCount(cartMenuModel: CartMenuModel) {
-        _cartMenus.value = cartMenus.value.map { cart ->
-            cart.copy(
-                count = if (cartMenuModel.menu.id == cart.menu.id) {
-                    if (cart.count > 1) cart.count - 1 else cart.count
-                } else cart.count,
-            )
-        }.toMutableList()
+    fun increaseCount(cartMenuUiModel: CartMenuUiModel) {
+        if (cartMenuUiModel.count < 99) {
+            viewModelScope.launch {
+                updateCartMenuCountIncreaseUseCase(
+                    cartMenuUiModel.menu.id
+                )
+            }
+        }
     }
 
-    fun getRecentMenus() {
+    fun decreaseCount(cartMenuUiModel: CartMenuUiModel) {
+        if (cartMenuUiModel.count > 1) {
+            viewModelScope.launch {
+                updateCartMenuCountDecreaseUseCase(
+                    cartMenuUiModel.menu.id
+                )
+            }
+        }
+    }
+
+    private fun getRecentMenus() {
         viewModelScope.launch {
             getRecentMenusUseCase(isLatest = true).collectLatest { list ->
                 _cartRecent.value = cartRecent.value.copy(
                     recentMenus = list
                         .map { menuModel ->
-                        menuModel.toHomeMenuModel(inCart = true, isRecent = true)
-                    }
+                            menuModel.toHomeMenuModel(inCart = true, isRecent = true)
+                        }
                 )
             }
         }
     }
-
-    private var testMenus = mutableListOf(
-        CartMenuModel(
-            menu = homeMenuModel
-        ),
-        CartMenuModel(
-            menu = homeMenuModel1,
-        ),
-        CartMenuModel(
-            menu = homeMenuModel2
-        )
-    )
 }
-
-val homeMenuModel = MenuModel( // 임시 데이터
-    id = "menu",
-    normalPrice = 19300,
-    salePrice = 17500,
-    description = "",
-    image = "http://public.codesquad.kr/jk/storeapp/data/main/349_ZIP_P_0024_T.jpg",
-    deliveryType = listOf(),
-    name = "소갈비찜",
-    recentTime = TimeUtil.getTimeData(System.currentTimeMillis() - 4000)
-)
-
-val homeMenuModel1 = MenuModel( // 임시 데이터
-    id = "menu1",
-    normalPrice = 0,
-    salePrice = 11800,
-    description = "",
-    image = "http://public.codesquad.kr/jk/storeapp/data/main/739_ZIP_P__T.jpg",
-    deliveryType = listOf(),
-    name = "초계국수",
-    recentTime = TimeUtil.getTimeData(System.currentTimeMillis() - 2000)
-
-)
-
-val homeMenuModel2 = MenuModel( // 임시 데이터
-    id = "menu2",
-    normalPrice = 0,
-    salePrice = 16900,
-    description = "",
-    image = "http://public.codesquad.kr/jk/storeapp/data/main/510_ZIP_P_0047_T.jpg",
-    deliveryType = listOf(),
-    name = "쭈꾸미 한돈 제육볶음",
-    recentTime = TimeUtil.getTimeData(System.currentTimeMillis() - 1000)
-
-)
