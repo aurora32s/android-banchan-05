@@ -78,9 +78,9 @@ class MainDishFragment : BaseFragment() {
 
     private fun initObserver() {
         lifecycleScope.launch {
-            viewModel.mainDishUiState.collect {
+            viewModel.mainMenus.collect {
                 homeAdapter.updateList(
-                    it.mainMenus, getDefaultHeaders().size
+                    it, getDefaultHeaders().size
                 )
             }
         }

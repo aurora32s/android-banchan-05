@@ -3,29 +3,46 @@ package com.seom.banchan.ui.home.maindish
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seom.banchan.domain.model.home.MenuModel
-import com.seom.banchan.domain.model.home.toHomeMenuLinearModel
 import com.seom.banchan.domain.model.home.toHomeMenuModel
+import com.seom.banchan.domain.usecase.GetCartMenusIdUseCase
 import com.seom.banchan.domain.usecase.GetMainMenusUseCase
+import com.seom.banchan.ui.model.CellType
 import com.seom.banchan.ui.model.Model
 import com.seom.banchan.ui.model.SortItem
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MainDishViewModel @Inject constructor(
-    private val getMainMenusUseCase: GetMainMenusUseCase
+    private val getMainMenusUseCase: GetMainMenusUseCase,
+    getCartMenusIdUseCase: GetCartMenusIdUseCase
 ) : ViewModel() {
 
-    private val _mainDishUiState = MutableStateFlow<MainDishUiState>(MainDishUiState())
-    val mainDishUiState: StateFlow<MainDishUiState>
-        get() = _mainDishUiState
+//    private val _mainDishUiState = MutableStateFlow<MainDishUiState>(MainDishUiState())
+//    val mainDishUiState: StateFlow<MainDishUiState>
+//        get() = _mainDishUiState
 
-    private val _toggleState = MutableStateFlow<ToggleState>(ToggleState.GRID)
+    private val _toggleState = MutableStateFlow(ToggleState.GRID)
     val toggleState: StateFlow<ToggleState>
         get() = _toggleState
+
+    private val cartMenus = getCartMenusIdUseCase()
+    private val _mainMenus = MutableStateFlow<List<MenuModel>>(emptyList())
+    val mainMenus = _mainMenus
+        .combine(_toggleState) { menus, _ -> menus }
+        .combine(cartMenus) { menus, carts ->
+            menus.map {
+                it.toHomeMenuModel(
+                    cartMenus = carts,
+                    cellType = when (toggleState.value) {
+                        ToggleState.LINEAR -> CellType.MENU_LARGE_CELL
+                        ToggleState.GRID -> CellType.MENU_CELL
+                    }
+                )
+            }
+        }
 
     private var menuModels = emptyList<MenuModel>()
 
@@ -33,13 +50,7 @@ class MainDishViewModel @Inject constructor(
         getMainMenusUseCase(sortItem.sortCriteria)
             .onSuccess { result ->
                 menuModels = result
-                _mainDishUiState.value = mainDishUiState.value.copy(
-                    mainMenus = if (toggleState.value == ToggleState.LINEAR) result.map {
-                        it.toHomeMenuLinearModel()
-                    } else result.map {
-                        it.toHomeMenuModel()
-                    }
-                )
+                _mainMenus.value = result
             }
             .onFailure {
                 println(it)
@@ -48,13 +59,6 @@ class MainDishViewModel @Inject constructor(
 
     fun updateToggle(toggle: ToggleState) {
         _toggleState.value = toggle
-        _mainDishUiState.value = mainDishUiState.value.copy(
-            mainMenus = if (toggle == ToggleState.LINEAR) menuModels.map {
-                it.toHomeMenuLinearModel()
-            } else menuModels.map {
-                it.toHomeMenuModel()
-            }
-        )
     }
 }
 

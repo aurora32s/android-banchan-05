@@ -21,12 +21,12 @@ data class MenuModel(
 fun MenuModel.toHomeMenuModel(
     isBest: Boolean = false,
     cartMenus: List<CartMenuModel> = emptyList(),
-    isRecent : Boolean = false
+    cellType: CellType = CellType.MENU_CELL,
 ): HomeMenuModel {
     val cartMenu = cartMenus.find { it.menuId == id }
     return HomeMenuModel(
         id = id,
-        type = if(isRecent) CellType.MENU_RECENT_CELL else CellType.MENU_CELL,
+        type = cellType,
         isBest = isBest,
         menu = this,
         count = cartMenu?.count ?: 1,
@@ -34,10 +34,3 @@ fun MenuModel.toHomeMenuModel(
         isLoadedCart = cartMenu != null
     )
 }
-
-fun MenuModel.toHomeMenuLinearModel() = HomeMenuModel(
-    id = id,
-    type = CellType.MENU_LARGE_CELL,
-    menu = this,
-    discountRate = if (normalPrice == 0) 0 else ceil((1 - (salePrice / normalPrice.toDouble())) * 100).toInt()
-)

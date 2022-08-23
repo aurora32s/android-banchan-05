@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seom.banchan.domain.model.home.toHomeMenuModel
 import com.seom.banchan.domain.usecase.GetRecentMenusUseCase
+import com.seom.banchan.ui.model.CellType
 import com.seom.banchan.ui.model.home.HomeMenuModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,14 +19,14 @@ class RecentViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _recentMenus = MutableStateFlow<List<HomeMenuModel>>(emptyList())
-    val recentMenus : StateFlow<List<HomeMenuModel>>
+    val recentMenus: StateFlow<List<HomeMenuModel>>
         get() = _recentMenus
 
-    fun getRecentMenus(){
+    fun getRecentMenus() {
         viewModelScope.launch {
             getRecentMenusUseCase().collectLatest {
                 _recentMenus.value = it.map {
-                    it.toHomeMenuModel(isRecent = true)
+                    it.toHomeMenuModel(cellType = CellType.MENU_RECENT_CELL)
                 }
             }
         }
