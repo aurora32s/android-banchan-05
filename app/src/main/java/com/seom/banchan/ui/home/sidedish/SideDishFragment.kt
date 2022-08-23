@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.seom.banchan.R
@@ -77,12 +76,12 @@ class SideDishFragment : BaseFragment() {
 
     private fun initObserver() {
         lifecycleScope.launch {
-            viewModel.sideDishUiState.collect {
-                homeAdapter.updateList(it.sideMenus, getDefaultHeaders().size)
+            viewModel.sideMenus.collect {
+                homeAdapter.updateList(it, getDefaultHeaders().size)
                 homeAdapter.updateModelAtPosition(
                     TotalMenuModel(
                         id = ModelId.TOTAL.name,
-                        count = viewModel.sideDishUiState.value.sideMenus.size, // 따로 구현
+                        count = it.size, // 따로 구현
                     ),
                     1
                 )
@@ -112,7 +111,7 @@ class SideDishFragment : BaseFragment() {
         ),
         TotalMenuModel(
             id = ModelId.TOTAL.name,
-            count = viewModel.sideDishUiState.value.sideMenus.size
+            count = viewModel.sideMenus.value.size
         ),
         SortMenuModel(
             id = ModelId.SORT.name,

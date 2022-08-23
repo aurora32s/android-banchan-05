@@ -2,31 +2,43 @@ package com.seom.banchan.ui.home.sidedish
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.seom.banchan.domain.model.home.MenuModel
 import com.seom.banchan.domain.model.home.toHomeMenuModel
+import com.seom.banchan.domain.usecase.GetCartMenusIdUseCase
 import com.seom.banchan.domain.usecase.GetSideMenusUseCase
 import com.seom.banchan.ui.model.Model
 import com.seom.banchan.ui.model.SortItem
+import com.seom.banchan.ui.model.home.HomeMenuModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SideDishViewModel @Inject constructor(
-    private val getSideMenusUseCase: GetSideMenusUseCase
+    private val getSideMenusUseCase: GetSideMenusUseCase,
+    getCartMenusIdUseCase: GetCartMenusIdUseCase
 ) : ViewModel() {
 
-    private val _sideDishUiState = MutableStateFlow<SideDishUiState>(SideDishUiState())
-    val sideDishUiState: StateFlow<SideDishUiState>
-        get() = _sideDishUiState
+    private val cartMenus = getCartMenusIdUseCase()
+    private val _sideMenus = MutableStateFlow<List<MenuModel>>(emptyList())
+    val sideMenus = _sideMenus
+        .combine(cartMenus) { menus, carts ->
+            menus.map { it.toHomeMenuModel(cartMenus = carts) }
+        }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(1000),
+            initialValue = emptyList()
+        )
+//    private val _sideDishUiState = MutableStateFlow(SideDishUiState())
+//    val sideDishUiState: StateFlow<SideDishUiState>
+//        get() = _sideDishUiState
 
     fun fetchSortedSideMenus(sortItem: SortItem) = viewModelScope.launch {
         getSideMenusUseCase(sortItem.sortCriteria)
             .onSuccess { result ->
-                _sideDishUiState.value = sideDishUiState.value.copy(
-                    sideMenus = result.map { it.toHomeMenuModel() }
-                )
+                _sideMenus.value = result
             }
             .onFailure {
                 println(it)
