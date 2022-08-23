@@ -10,8 +10,13 @@ class FragmentNavigationController(
     private val fragmentManager: FragmentManager,
     @IdRes private val containerId: Int
 ) {
+
     fun addFragment(fragment: Fragment, fragmentTag: String? = null) {
-        fragmentManager.beginTransaction().add(containerId, fragment, fragmentTag).commit()
+        fragmentManager.commit {
+            setReorderingAllowed(true)
+            addToBackStack(fragmentTag)
+            add(containerId, fragment, fragmentTag)
+        }
     }
 
     // 필요한 Transaction 추가 ..
