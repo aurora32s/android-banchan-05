@@ -79,12 +79,12 @@ class SoupDishFragment : BaseFragment() {
 
     private fun initObserver() {
         lifecycleScope.launch {
-            viewModel.soupDishUiState.collect {
-                homeAdapter.updateList(it.soupMenus,getDefaultHeaders().size)
+            viewModel.soupMenus.collect {
+                homeAdapter.updateList(it,getDefaultHeaders().size)
                 homeAdapter.updateModelAtPosition(
                     TotalMenuModel(
                         id = ModelId.TOTAL.name,
-                        count = viewModel.soupDishUiState.value.soupMenus.size
+                        count = it.size
                     ),
                     1
                 )
@@ -108,7 +108,7 @@ class SoupDishFragment : BaseFragment() {
         ),
         TotalMenuModel(
             id = ModelId.TOTAL.name,
-            count = viewModel.soupDishUiState.value.soupMenus.size
+            count = viewModel.soupMenus.value.size
         ),
         SortMenuModel(
             id = ModelId.SORT.name,
@@ -118,7 +118,7 @@ class SoupDishFragment : BaseFragment() {
             }
         )
     )
-    
+
     private fun showCartBottomSheetDialog(menuModel: HomeMenuModel) {
         (parentFragment as? CartBottomSheetManager)?.showBottomSheet(menuModel)
     }
