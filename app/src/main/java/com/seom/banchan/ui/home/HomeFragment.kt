@@ -1,30 +1,29 @@
 package com.seom.banchan.ui.home
 
 import android.os.Bundle
-import android.view.*
-import androidx.core.view.MenuHost
-import androidx.core.view.MenuProvider
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import com.google.android.material.tabs.TabLayoutMediator
 import com.seom.banchan.R
 import com.seom.banchan.databinding.FragmentHomeBinding
 import com.seom.banchan.ui.adapter.FragmentPagerAdapter
 import com.seom.banchan.ui.base.BaseFragment
-import com.seom.banchan.ui.cart.CartFragment
 import com.seom.banchan.ui.home.best.BestFragment
 import com.seom.banchan.ui.home.maindish.MainDishFragment
 import com.seom.banchan.ui.home.sidedish.SideDishFragment
 import com.seom.banchan.ui.home.soupdish.SoupDishFragment
 import com.seom.banchan.ui.model.home.HomeMenuModel
 import com.seom.banchan.ui.view.OrderCartBottomSheetManager
-import com.seom.banchan.ui.view.bottomsheet.OrderBottomSheetDialog
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment(), CartBottomSheetManager {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding
+
+    private val viewModel: HomeViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,7 +36,7 @@ class HomeFragment : BaseFragment(), CartBottomSheetManager {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        addMainMenuProvider(viewLifecycleOwner)
+        addMainMenuProvider(viewLifecycleOwner, viewModel.cartMenus,viewModel.orderList)
         initViewPager()
     }
 
