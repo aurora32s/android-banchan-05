@@ -1,5 +1,6 @@
 package com.seom.banchan.worker.notification
 
+import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -41,6 +42,7 @@ object DeliveryNotificationManager {
         }
     }
 
+    @SuppressLint("ObsoleteSdkInt")
     fun buildNotification(
         context: Context,
         notificationManager: NotificationManager,
@@ -55,7 +57,7 @@ object DeliveryNotificationManager {
         )
 
         NotificationCompat.Builder(context, CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_app_icon)
+            .setSmallIcon(R.drawable.ic_app_icon_small)
             .setContentTitle("배달이 도착했어요!")
             .setContentText(
                 "" +
@@ -68,6 +70,11 @@ object DeliveryNotificationManager {
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true)
             .setDefaults(NotificationCompat.DEFAULT_ALL)
+            .apply {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    this.color = context.resources.getColor(R.color.primaryAccent, null)
+                }
+            }
             .run {
                 notificationManager.notify(
                     deliveryAlarmModel.orderId.toInt(),
