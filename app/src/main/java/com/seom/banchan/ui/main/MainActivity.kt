@@ -1,24 +1,24 @@
 package com.seom.banchan.ui.main
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.MenuProvider
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import com.seom.banchan.R
 import com.seom.banchan.databinding.ActivityMainBinding
 import com.seom.banchan.ui.base.BaseFragment
 import com.seom.banchan.ui.cart.CartFragment
-import com.seom.banchan.ui.detail.DetailFragment
 import com.seom.banchan.ui.home.HomeFragment
+import com.seom.banchan.ui.order.OrderListFragment
+import com.seom.banchan.ui.order.detail.OrderDetailFragment
+import com.seom.banchan.ui.recent.RecentFragment
 import com.seom.banchan.util.navigation.FragmentNavigationController
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(), BaseFragment.FragmentNavigation {
+class MainActivity : AppCompatActivity(), BaseFragment.FragmentNavigation,FragmentManager.OnBackStackChangedListener {
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding
 
@@ -36,27 +36,22 @@ class MainActivity : AppCompatActivity(), BaseFragment.FragmentNavigation {
 
         initToolbar()
         initContainer()
-        initViews()
     }
 
     private fun initToolbar() = binding?.let {
         setSupportActionBar(it.tbMain)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_arrow_left)
-        //it.tbMain.title = getString(R.string.main_title)
-
-    }
-
-    private fun initViews() = binding?.let {
-        // 상단 프로필 사진 클릭 이벤트
-        it.ivUser.setOnClickListener {
-            fragmentNavigationController.moveToOrderListFragment()
-        }
     }
 
     private fun initContainer() = binding?.let {
         fragmentNavigationController =
             FragmentNavigationController(supportFragmentManager, it.flMain.id)
-        fragmentNavigationController.addFragment(HomeFragment.newInstance(), HomeFragment.TAG)
+        supportFragmentManager.addOnBackStackChangedListener(this)
+        addFragment(HomeFragment.newInstance(), HomeFragment.TAG)
+    }
+
+    override fun onBackStackChanged() {
+        setActionBar()
     }
 
     override fun addFragment(fragment: Fragment, fragmentTag: String?) {
@@ -71,6 +66,10 @@ class MainActivity : AppCompatActivity(), BaseFragment.FragmentNavigation {
         fragmentNavigationController.popStack()
     }
 
+    override fun onBackPressed() { // 휴대폰 뒤로 가기 -> popStack으로
+        popStack()
+    }
+
     override fun getCurrentFragment(): Fragment? {
         return fragmentNavigationController.getCurrentFragment()
     }
@@ -82,4 +81,30 @@ class MainActivity : AppCompatActivity(), BaseFragment.FragmentNavigation {
         return super.onOptionsItemSelected(item)
     }
 
+    private fun setActionBar() {
+        supportActionBar?.let{
+            when(getCurrentFragment()){
+                is CartFragment ->{
+                    it.setTitle(R.string.cart_title)
+                    it.setDisplayHomeAsUpEnabled(true)
+                }
+                is RecentFragment -> {
+                    it.setTitle(R.string.recent_title)
+                    it.setDisplayHomeAsUpEnabled(true)
+                }
+                is OrderListFragment -> {
+                    it.setTitle(R.string.order_list_title)
+                    it.setDisplayHomeAsUpEnabled(true)
+                }
+                is OrderDetailFragment -> {
+                    it.setTitle(R.string.blank)
+                    it.setDisplayHomeAsUpEnabled(true)
+                }
+                else -> {
+                    it.setTitle(R.string.main_title)
+                    it.setDisplayHomeAsUpEnabled(false)
+                }
+            }
+        }
+    }
 }
