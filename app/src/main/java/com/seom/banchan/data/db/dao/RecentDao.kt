@@ -1,6 +1,7 @@
 package com.seom.banchan.data.db.dao
 
 import android.database.sqlite.SQLiteConstraintException
+import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
@@ -16,6 +17,9 @@ interface RecentDao {
 
     @Query("SELECT * FROM recent_table ORDER BY recent_time DESC LIMIT 7")
     fun getLatestRecents() : Flow<List<RecentEntity>>
+
+    @Query("SELECT * FROM recent_table ORDER BY recent_time DESC")
+    fun getRecentPaging() : PagingSource<Int,RecentEntity>
 
     @Insert
     suspend fun insertRecent(recentEntity: RecentEntity)
