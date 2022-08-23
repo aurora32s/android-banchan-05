@@ -12,25 +12,52 @@ import com.seom.banchan.R
 import com.seom.banchan.databinding.FragmentMainDishBinding
 import com.seom.banchan.ui.adapter.ItemDecoration.GridItemDecoration
 import com.seom.banchan.ui.adapter.ModelRecyclerAdapter
-import com.seom.banchan.ui.model.Model
-import com.seom.banchan.ui.model.ModelId
-import com.seom.banchan.ui.model.SortItem
-import com.seom.banchan.ui.model.defaultSortItems
+import com.seom.banchan.ui.base.BaseFragment
+import com.seom.banchan.ui.detail.DetailFragment
+import com.seom.banchan.ui.home.CartBottomSheetManager
+import com.seom.banchan.ui.model.*
 import com.seom.banchan.ui.model.home.FilterMenuModel
 import com.seom.banchan.ui.model.home.HeaderMenuModel
+import com.seom.banchan.ui.model.home.HomeMenuModel
 import com.seom.banchan.ui.model.home.SortMenuModel
 import com.seom.banchan.util.ext.setGridLayoutManager
+import com.seom.banchan.util.listener.ModelAdapterListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class MainDishFragment : Fragment() {
+class MainDishFragment : BaseFragment() {
     private var _binding: FragmentMainDishBinding? = null
     private val binding get() = _binding
 
     private val viewModel: MainDishViewModel by viewModels()
 
-    private val homeAdapter: ModelRecyclerAdapter<Model> by lazy { ModelRecyclerAdapter() }
+    private val homeAdapter: ModelRecyclerAdapter<Model> by lazy {
+        ModelRecyclerAdapter(modelAdapterListener =
+        object : ModelAdapterListener {
+            override fun onClick(view: View, model: Model, position: Int) {
+                println(model.type)
+                when (model.type) {
+                    CellType.MENU_CELL, CellType.MENU_LARGE_CELL -> {
+                        if (view.id == R.id.iv_menu_thumbnail) {
+                            (model as? HomeMenuModel)?.menu?.let {
+                                fragmentNavigation.replaceFragment(
+                                    DetailFragment.newInstance(
+                                        menuModel = it
+                                    ),
+                                    DetailFragment.TAG
+                                )
+                            }
+                        } else if (view.id == R.id.iv_cart) {
+                            showCartBottomSheetDialog((model as HomeMenuModel))
+                        }
+                    }
+                    else -> {}
+                }
+            }
+        }
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,7 +80,7 @@ class MainDishFragment : Fragment() {
         lifecycleScope.launch {
             viewModel.mainDishUiState.collect {
                 homeAdapter.updateList(
-                    it.mainMenus,getDefaultHeaders().size
+                    it.mainMenus, getDefaultHeaders().size
                 )
             }
         }
@@ -75,10 +102,10 @@ class MainDishFragment : Fragment() {
         )
     }
 
-    private fun setItemDecoration(toggle : Boolean) = binding?.rvMainDish?.let {
-        if(it.itemDecorationCount != 0)
+    private fun setItemDecoration(toggle: Boolean) = binding?.rvMainDish?.let {
+        if (it.itemDecorationCount != 0)
             it.removeItemDecorationAt(0)
-        it.addItemDecoration(GridItemDecoration(requireContext(),!toggle,noneApplyIndex = 3))
+        it.addItemDecoration(GridItemDecoration(requireContext(), !toggle, noneApplyIndex = 3))
     }
 
     private fun getDefaultHeaders() = listOf(
@@ -97,6 +124,10 @@ class MainDishFragment : Fragment() {
             }
         )
     )
+
+    private fun showCartBottomSheetDialog(menuModel: HomeMenuModel) {
+        (parentFragment as? CartBottomSheetManager)?.showBottomSheet(menuModel)
+    }
 
     companion object {
         const val TAG = ".MainDishFragment"
