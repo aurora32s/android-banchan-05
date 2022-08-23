@@ -11,25 +11,55 @@ import com.seom.banchan.R
 import com.seom.banchan.databinding.FragmentSoupDishBinding
 import com.seom.banchan.ui.adapter.ItemDecoration.GridItemDecoration
 import com.seom.banchan.ui.adapter.ModelRecyclerAdapter
+import com.seom.banchan.ui.base.BaseFragment
+import com.seom.banchan.ui.detail.DetailFragment
+import com.seom.banchan.ui.home.CartBottomSheetManager
+import com.seom.banchan.ui.model.CellType
 import com.seom.banchan.ui.model.Model
 import com.seom.banchan.ui.model.ModelId
 import com.seom.banchan.ui.model.defaultSortItems
 import com.seom.banchan.ui.model.home.HeaderMenuModel
+import com.seom.banchan.ui.model.home.HomeMenuModel
 import com.seom.banchan.ui.model.home.SortMenuModel
 import com.seom.banchan.ui.model.home.TotalMenuModel
 import com.seom.banchan.util.ext.setGridLayoutManager
+import com.seom.banchan.util.listener.ModelAdapterListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class SoupDishFragment : Fragment() {
+class SoupDishFragment : BaseFragment() {
     private var _binding: FragmentSoupDishBinding? = null
     private val binding get() = _binding
 
     private val viewModel: SoupDishViewModel by viewModels()
 
-    private val homeAdapter: ModelRecyclerAdapter<Model> by lazy { ModelRecyclerAdapter() }
-
+    private val homeAdapter: ModelRecyclerAdapter<Model> by lazy {
+        ModelRecyclerAdapter(
+            modelAdapterListener =
+            object : ModelAdapterListener {
+                override fun onClick(view: View, model: Model, position: Int) {
+                    when (model.type) {
+                        CellType.MENU_CELL -> {
+                            if (view.id == R.id.iv_menu_thumbnail) {
+                                (model as? HomeMenuModel)?.menu?.let {
+                                    fragmentNavigation.replaceFragment(
+                                        DetailFragment.newInstance(
+                                            menuModel = it
+                                        ),
+                                        DetailFragment.TAG
+                                    )
+                                }
+                            } else if (view.id == R.id.iv_cart) {
+                                showCartBottomSheetDialog((model as HomeMenuModel))
+                            }
+                        }
+                        else -> {}
+                    }
+                }
+            }
+        )
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -88,6 +118,10 @@ class SoupDishFragment : Fragment() {
             }
         )
     )
+    
+    private fun showCartBottomSheetDialog(menuModel: HomeMenuModel) {
+        (parentFragment as? CartBottomSheetManager)?.showBottomSheet(menuModel)
+    }
 
     companion object {
         const val TAG = ".SoupDishFragment"
