@@ -110,4 +110,9 @@ class MainActivity : AppCompatActivity(), BaseFragment.FragmentNavigation {
             }
         }
     }
+
+    companion object {
+        const val TAG = ".MainActivity"
+        const val KEY_ORDER_ID = "order_id"
+    }
 }

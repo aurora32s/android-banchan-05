@@ -49,6 +49,8 @@ object DeliveryNotificationManager {
         deliveryAlarmModel: DeliveryAlarmModel
     ) {
         val contentIntent = Intent(context, MainActivity::class.java)
+        contentIntent.putExtra(MainActivity.KEY_ORDER_ID, deliveryAlarmModel.orderId)
+        
         val contentPendingIntent = PendingIntent.getActivity(
             context,
             deliveryAlarmModel.orderId.toInt(),
