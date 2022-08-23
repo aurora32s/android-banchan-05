@@ -7,7 +7,7 @@
         android:id="@+id/menu_cart"
         android:title="@string/cart_title"
         app:showAsAction="ifRoom"
-        android:actionLayout="@layout/layout_action_main"/>
+        app:actionLayout="@layout/layout_action_main"/>
 
     <item
         android:id="@+id/menu_order_list"
