@@ -75,7 +75,8 @@ class CartFragment : BaseFragment() {
                         CellType.CART_RECENT_CELL -> {
                             if (view.id == R.id.tv_all) {
                                 fragmentNavigation.replaceFragment(
-                                    RecentFragment()
+                                    RecentFragment.newInstance(),
+                                    RecentFragment.TAG
                                 )
                             }
                         }
