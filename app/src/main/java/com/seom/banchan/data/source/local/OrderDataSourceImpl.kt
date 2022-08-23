@@ -26,7 +26,7 @@ class OrderDataSourceImpl @Inject constructor(
         val orderId = orderDao.insertOrder(
             OrderEntity(
                 createdAt = System.currentTimeMillis(),
-                expectedTime = 10*1000
+                expectedTime = 10 * 1000
             )
         )
         val menus = listOf(
@@ -77,6 +77,13 @@ class OrderDataSourceImpl @Inject constructor(
                 menus = result.menus.map { it.toModel() },
             )
         )
+    } catch (exception: Exception) {
+        Result.failure(exception)
+    }
+
+    override suspend fun setDeliveryCompletedById(orderId: Long): Result<Int> = try {
+        val result = orderDao.setDeliveryCompletedById(orderId)
+        Result.success(result)
     } catch (exception: Exception) {
         Result.failure(exception)
     }

@@ -25,4 +25,9 @@ interface OrderDataSource {
      * 주문 내역 상세 요청
      */
     suspend fun getDetailOrderById(orderId: Long): Result<OrderDetailModel>
+
+    /**
+     * 특정 주문 배달 완료 처리
+     */
+    suspend fun setDeliveryCompletedById(orderId: Long): Result<Int>
 }

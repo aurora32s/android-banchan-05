@@ -1,8 +1,11 @@
 package com.seom.banchan.ui.adapter.viewholder.order
 
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import com.seom.banchan.R
 import com.seom.banchan.databinding.ItemOrderStateBinding
 import com.seom.banchan.ui.adapter.viewholder.ModelViewHolder
+import com.seom.banchan.ui.model.order.OrderDeliveryState
 import com.seom.banchan.ui.model.order.OrderStateUiModel
 import com.seom.banchan.util.ext.setIconDrawable
 import com.seom.banchan.util.ext.toDate
@@ -25,6 +28,10 @@ class OrderDeliveryStateViewHolder(
             // 배달 상태 정보 업데이트
             model.orderDeliveryState.collect {
                 binding.tvOrderState.text = binding.root.context.getString(it.stateLongTitle)
+                if (it == OrderDeliveryState.DELIVERED) {
+                    binding.tvExtraDeliveryTimeTitle.text =
+                        binding.root.context.getString(R.string.order_delivered_completed)
+                }
             }
         }
         CoroutineScope(Dispatchers.Main).launch {
@@ -42,6 +49,6 @@ class OrderDeliveryStateViewHolder(
     private fun setDeliveryTime(time: Long, expectedTime: Long) {
         binding.pbExtraDeliveryTime.progress =
             (ceil((expectedTime - time) / expectedTime.toDouble() * 100)).toInt()
-        binding.tvExtraDeliveryTime.text = time.toDate()
+        binding.tvExtraDeliveryTime.text = if (time > 0) time.toDate() else expectedTime.toDate()
     }
 }

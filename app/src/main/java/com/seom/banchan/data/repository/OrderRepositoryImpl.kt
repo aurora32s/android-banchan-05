@@ -20,4 +20,9 @@ class OrderRepositoryImpl @Inject constructor(
     override suspend fun getDetailOrderInfo(orderId: Long): Result<OrderDetailModel> {
         return orderDataSource.getDetailOrderById(orderId)
     }
+
+    // 특정 주문 배달 완료 처리
+    override suspend fun setDeliveryCompletedById(orderId: Long): Result<Int> {
+        return orderDataSource.setDeliveryCompletedById(orderId)
+    }
 }

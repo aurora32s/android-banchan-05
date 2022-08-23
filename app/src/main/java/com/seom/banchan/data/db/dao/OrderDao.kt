@@ -9,6 +9,8 @@ import com.seom.banchan.data.db.entity.OrderEntity
 import com.seom.banchan.data.db.entity.OrderInfoEntity
 import com.seom.banchan.data.db.entity.OrderItemEntity
 import com.seom.banchan.data.db.entity.OrderListEntity
+import com.seom.banchan.data.source.OrderDataSource
+import com.seom.banchan.ui.model.order.OrderDeliveryState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
@@ -67,4 +69,13 @@ interface OrderDao {
             menus = getOrderMenuById(orderId)
         )
     }
+
+    /**
+     * 특정 주문 배달 완료 처리
+     */
+    @Query("UPDATE order_table SET delivery_state = :deliveryComplete WHERE order_id = :orderId")
+    suspend fun setDeliveryCompletedById(
+        orderId: Long,
+        deliveryComplete: Int = OrderDeliveryState.DELIVERED.type
+    ): Int
 }
