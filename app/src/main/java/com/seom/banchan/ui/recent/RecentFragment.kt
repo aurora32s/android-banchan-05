@@ -11,6 +11,7 @@ import com.seom.banchan.databinding.FragmentRecentBinding
 import com.seom.banchan.ui.adapter.ItemDecoration.GridItemDecoration
 import com.seom.banchan.ui.adapter.ModelRecyclerAdapter
 import com.seom.banchan.ui.base.BaseFragment
+import com.seom.banchan.ui.cart.CartFragment
 import com.seom.banchan.ui.detail.DetailFragment
 import com.seom.banchan.ui.home.CartBottomSheetManager
 import com.seom.banchan.ui.model.CellType
@@ -27,6 +28,8 @@ import kotlinx.coroutines.launch
 class RecentFragment : BaseFragment(), CartBottomSheetManager {
     private var _binding: FragmentRecentBinding? = null
     private val binding get() = _binding
+
+    private val viewModel: RecentViewModel by viewModels()
 
     private val recentAdapter: ModelRecyclerAdapter<Model> by lazy {
         ModelRecyclerAdapter(modelAdapterListener =
@@ -52,8 +55,6 @@ class RecentFragment : BaseFragment(), CartBottomSheetManager {
             }
         })
     }
-
-    private val viewModel: RecentViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -88,16 +89,18 @@ class RecentFragment : BaseFragment(), CartBottomSheetManager {
         }
     }
 
-
     companion object {
         const val TAG = ".RecentFragment"
         fun newInstance() = RecentFragment()
     }
 
-
     override fun showBottomSheet(menu: HomeMenuModel) {
         OrderCartBottomSheetManager.build(childFragmentManager)
-            .setOnClickMoveToCartListener { }
+            .setOnClickMoveToCartListener {
+                fragmentNavigation.popStack() // 최근 본 상품은 장바구니 화면에서만 이동 가능 -> 뒤로 가면 장바구니 -> popStack()
+                // 기존의 CartFragment는 지우고 새로운 CartFragment.newInstance를 띄우고 싶음.. 어떻게?
+                //fragmentNavigation.replaceFragment(CartFragment.newInstance(), CartFragment.TAG)
+            }
             .show(currentMenuModel = menu)
     }
 }

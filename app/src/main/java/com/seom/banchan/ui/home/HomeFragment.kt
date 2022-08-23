@@ -10,6 +10,8 @@ import com.seom.banchan.R
 import com.seom.banchan.databinding.FragmentHomeBinding
 import com.seom.banchan.ui.adapter.FragmentPagerAdapter
 import com.seom.banchan.ui.base.BaseFragment
+
+import com.seom.banchan.ui.cart.CartFragment
 import com.seom.banchan.ui.home.best.BestFragment
 import com.seom.banchan.ui.home.maindish.MainDishFragment
 import com.seom.banchan.ui.home.sidedish.SideDishFragment
@@ -61,7 +63,9 @@ class HomeFragment : BaseFragment(), CartBottomSheetManager {
 
     override fun showBottomSheet(menu: HomeMenuModel) {
         OrderCartBottomSheetManager.build(childFragmentManager)
-            .setOnClickMoveToCartListener { }
+            .setOnClickMoveToCartListener {
+                fragmentNavigation.replaceFragment(CartFragment.newInstance(),CartFragment.TAG)
+            }
             .show(currentMenuModel = menu)
     }
 
