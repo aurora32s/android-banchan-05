@@ -13,8 +13,6 @@ class FragmentNavigationController(
 
     fun addFragment(fragment: Fragment, fragmentTag: String? = null) {
         fragmentManager.commit {
-            setReorderingAllowed(true)
-            addToBackStack(fragmentTag)
             add(containerId, fragment, fragmentTag)
         }
     }
