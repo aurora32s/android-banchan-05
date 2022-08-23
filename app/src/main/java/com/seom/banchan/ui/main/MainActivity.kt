@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity(), BaseFragment.FragmentNavigation,Fragme
         fragmentNavigationController =
             FragmentNavigationController(supportFragmentManager, it.flMain.id)
         supportFragmentManager.addOnBackStackChangedListener(this)
-        addFragment(HomeFragment.newInstance(), HomeFragment.TAG)
+        replaceFragment(HomeFragment.newInstance(), HomeFragment.TAG)
     }
 
     override fun onBackStackChanged() {
