@@ -3,6 +3,7 @@ package com.seom.banchan.di
 import android.content.Context
 import androidx.room.Room
 import com.seom.banchan.data.db.BanChanDatabase
+import com.seom.banchan.data.db.MIGRATION_1_2
 import com.seom.banchan.data.db.dao.OrderDao
 import com.seom.banchan.data.db.dao.RecentDao
 import dagger.Module
@@ -27,7 +28,9 @@ object DatabaseModule {
             context,
             BanChanDatabase::class.java,
             BanChanDatabase.DATABASE_NAME
-        ).build()
+        ).fallbackToDestructiveMigration() // Migration을 찾지 못하여 crash 발생 시 db 재생성, 데이터 모두 유실
+            // .addMigrations(MIGRATION_1_2) Migration 추가
+            .build()
     }
 }
 
