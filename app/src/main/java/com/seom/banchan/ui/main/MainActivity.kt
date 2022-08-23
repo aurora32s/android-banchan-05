@@ -63,6 +63,9 @@ class MainActivity : AppCompatActivity(), BaseFragment.FragmentNavigation,Fragme
     }
 
     override fun popStack() {
+        if(getCurrentFragment() is HomeFragment){
+            finish()
+        }
         fragmentNavigationController.popStack()
     }
 
