@@ -11,25 +11,52 @@ import com.seom.banchan.R
 import com.seom.banchan.databinding.FragmentSideDishBinding
 import com.seom.banchan.ui.adapter.ItemDecoration.GridItemDecoration
 import com.seom.banchan.ui.adapter.ModelRecyclerAdapter
-import com.seom.banchan.ui.model.Model
-import com.seom.banchan.ui.model.ModelId
-import com.seom.banchan.ui.model.SortItem
-import com.seom.banchan.ui.model.defaultSortItems
+import com.seom.banchan.ui.base.BaseFragment
+import com.seom.banchan.ui.detail.DetailFragment
+import com.seom.banchan.ui.home.CartBottomSheetManager
+import com.seom.banchan.ui.model.*
 import com.seom.banchan.ui.model.home.HeaderMenuModel
+import com.seom.banchan.ui.model.home.HomeMenuModel
 import com.seom.banchan.ui.model.home.SortMenuModel
 import com.seom.banchan.ui.model.home.TotalMenuModel
 import com.seom.banchan.util.ext.setGridLayoutManager
+import com.seom.banchan.util.listener.ModelAdapterListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class SideDishFragment : Fragment() {
+class SideDishFragment : BaseFragment() {
     private var _binding: FragmentSideDishBinding? = null
     private val binding get() = _binding
 
     private val viewModel: SideDishViewModel by viewModels()
 
-    private val homeAdapter: ModelRecyclerAdapter<Model> by lazy { ModelRecyclerAdapter() }
+    private val homeAdapter: ModelRecyclerAdapter<Model> by lazy {
+        ModelRecyclerAdapter(
+            modelAdapterListener =
+            object : ModelAdapterListener {
+                override fun onClick(view: View, model: Model, position: Int) {
+                    when (model.type) {
+                        CellType.MENU_CELL -> {
+                            if (view.id == R.id.iv_menu_thumbnail) {
+                                (model as? HomeMenuModel)?.menu?.let {
+                                    fragmentNavigation.replaceFragment(
+                                        DetailFragment.newInstance(
+                                            menuModel = it
+                                        ),
+                                        DetailFragment.TAG
+                                    )
+                                }
+                            } else if (view.id == R.id.iv_cart) {
+                                showCartBottomSheetDialog((model as HomeMenuModel))
+                            }
+                        }
+                        else -> {}
+                    }
+                }
+            }
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,12 +78,12 @@ class SideDishFragment : Fragment() {
     private fun initObserver() {
         lifecycleScope.launch {
             viewModel.sideDishUiState.collect {
-                homeAdapter.updateList(it.sideMenus,getDefaultHeaders().size)
+                homeAdapter.updateList(it.sideMenus, getDefaultHeaders().size)
                 homeAdapter.updateModelAtPosition(
                     TotalMenuModel(
-                    id = ModelId.TOTAL.name,
-                    count = viewModel.sideDishUiState.value.sideMenus.size, // 따로 구현
-                ),
+                        id = ModelId.TOTAL.name,
+                        count = viewModel.sideDishUiState.value.sideMenus.size, // 따로 구현
+                    ),
                     1
                 )
             }
@@ -66,7 +93,13 @@ class SideDishFragment : Fragment() {
     private fun initRecyclerView() = binding?.let {
         it.rvSideDish.adapter = homeAdapter
         it.rvSideDish.setGridLayoutManager(requireContext())
-        it.rvSideDish.addItemDecoration(GridItemDecoration(requireContext(),true,noneApplyIndex =3))
+        it.rvSideDish.addItemDecoration(
+            GridItemDecoration(
+                requireContext(),
+                true,
+                noneApplyIndex = 3
+            )
+        )
         homeAdapter.submitList(
             getDefaultHeaders()
         )
@@ -89,6 +122,10 @@ class SideDishFragment : Fragment() {
             }
         )
     )
+
+    private fun showCartBottomSheetDialog(menuModel: HomeMenuModel) {
+        (parentFragment as? CartBottomSheetManager)?.showBottomSheet(menuModel)
+    }
 
     companion object {
         const val TAG = ".SideDishFragment"
