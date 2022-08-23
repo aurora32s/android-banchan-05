@@ -1,44 +1,37 @@
 package com.seom.banchan.ui.adapter.viewholder.cart
 
-import android.view.View
+import androidx.core.view.isVisible
 import com.seom.banchan.R
 import com.seom.banchan.databinding.ItemCartOrderBinding
 import com.seom.banchan.ui.adapter.viewholder.ModelViewHolder
-import com.seom.banchan.ui.model.Model
 import com.seom.banchan.ui.model.cart.CartOrderModel
+import com.seom.banchan.util.DEFAULT_DELIVERY_FEE
+import com.seom.banchan.util.FREE_DELIVERY_MINIMUM_PRICE
+import com.seom.banchan.util.MINIMUM_PRICE
 import com.seom.banchan.util.listener.ModelAdapterListener
 
 class CartOrderViewHolder(
     private val binding: ItemCartOrderBinding
 ) : ModelViewHolder<CartOrderModel>(binding) {
     override fun bindData(model: CartOrderModel) {
-        binding.btOrder.apply {
-            if (model.totalPrice < model.limitPrice) {
-                this.text = binding.root.context.getString(R.string.cart_minimum_check,model.limitPrice)
-                this.isEnabled = false
-            } else {
-                this.text =
-                    if(model.totalPrice >= model.freeDeliveryLimitPrice)
-                        binding.root.context.getString(R.string.cart_order_value, model.totalPrice)
-                    else binding.root.context.getString(R.string.cart_order_value, model.totalPrice + model.deliveryFee)
-                this.isEnabled = true
-            }
+        val context = binding.root.context
+        val isAbleOrder = model.totalPrice >= MINIMUM_PRICE
+        val isFreeDelivery = model.totalPrice >= FREE_DELIVERY_MINIMUM_PRICE
+
+        binding.btOrder.isEnabled = isAbleOrder
+        binding.btOrder.text = when {
+            isAbleOrder -> context.getString(
+                R.string.cart_order_value,
+                model.totalPrice + if (!isFreeDelivery) DEFAULT_DELIVERY_FEE else 0
+            )
+            else -> context.getString(R.string.cart_minimum_check,MINIMUM_PRICE)
         }
-        binding.tvNotification.apply {
-            if (model.totalPrice > model.limitPrice) {
-                if (model.totalPrice < model.freeDeliveryLimitPrice) {
-                    this.text = binding.root.context.getString(
-                        R.string.cart_free_alarm_value,
-                        model.freeDeliveryLimitPrice - model.totalPrice
-                    )
-                    this.visibility = View.VISIBLE
-                } else {
-                    this.visibility = View.GONE
-                }
-            } else {
-                this.visibility = View.GONE
-            }
-        }
+
+        binding.tvNotification.isVisible = isAbleOrder && isFreeDelivery.not()
+        binding.tvNotification.text = context.getString(
+            R.string.cart_free_alarm_value,
+            FREE_DELIVERY_MINIMUM_PRICE - model.totalPrice
+        )
     }
 
     override fun bindViews(model: CartOrderModel, menuAdapterListener: ModelAdapterListener?) {

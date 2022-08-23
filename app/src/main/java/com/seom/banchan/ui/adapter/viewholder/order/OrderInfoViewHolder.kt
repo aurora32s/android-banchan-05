@@ -2,13 +2,11 @@ package com.seom.banchan.ui.adapter.viewholder.order
 
 
 import com.seom.banchan.R
-import com.seom.banchan.databinding.ItemCartOrderBinding
 import com.seom.banchan.databinding.ItemOrderInfoBinding
 import com.seom.banchan.ui.adapter.viewholder.ModelViewHolder
-import com.seom.banchan.ui.model.Model
 import com.seom.banchan.ui.model.order.OrderInfoModel
-import com.seom.banchan.util.DELIVERY_FEE
-import com.seom.banchan.util.FREE_DELIVERY_LIMIT_PRICE
+import com.seom.banchan.util.DEFAULT_DELIVERY_FEE
+import com.seom.banchan.util.FREE_DELIVERY_MINIMUM_PRICE
 
 class OrderInfoViewHolder(
     private val binding: ItemOrderInfoBinding
@@ -17,13 +15,13 @@ class OrderInfoViewHolder(
         binding.model = model
 
         binding.tvDeliveryFee.text =
-            if(model.orderPrice >= FREE_DELIVERY_LIMIT_PRICE)
+            if(model.orderPrice >= FREE_DELIVERY_MINIMUM_PRICE)
                 binding.root.context.getString(R.string.menu_price_value,0)
-            else binding.root.context.getString(R.string.menu_price_value,DELIVERY_FEE)
+            else binding.root.context.getString(R.string.menu_price_value,DEFAULT_DELIVERY_FEE)
 
         binding.tvOrderTotalPrice.text =
-            if(model.orderPrice >= FREE_DELIVERY_LIMIT_PRICE)
+            if(model.orderPrice >= FREE_DELIVERY_MINIMUM_PRICE)
                 binding.root.context.getString(R.string.menu_price_value,model.orderPrice)
-            else binding.root.context.getString(R.string.menu_price_value,model.orderPrice + DELIVERY_FEE)
+            else binding.root.context.getString(R.string.menu_price_value,model.orderPrice + DEFAULT_DELIVERY_FEE)
     }
 }
