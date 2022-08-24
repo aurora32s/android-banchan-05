@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seom.banchan.domain.model.home.MenuModel
 import com.seom.banchan.domain.model.home.toHomeMenuModel
-import com.seom.banchan.domain.usecase.GetCartMenusIdUseCase
+import com.seom.banchan.domain.usecase.GetCartMenusUseCase
 import com.seom.banchan.domain.usecase.GetMainMenusUseCase
 import com.seom.banchan.ui.model.CellType
 import com.seom.banchan.ui.model.Model
@@ -17,7 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MainDishViewModel @Inject constructor(
     private val getMainMenusUseCase: GetMainMenusUseCase,
-    getCartMenusIdUseCase: GetCartMenusIdUseCase
+    getCartMenusUseCase: GetCartMenusUseCase
 ) : ViewModel() {
 
 //    private val _mainDishUiState = MutableStateFlow<MainDishUiState>(MainDishUiState())
@@ -28,7 +28,7 @@ class MainDishViewModel @Inject constructor(
     val toggleState: StateFlow<ToggleState>
         get() = _toggleState
 
-    private val cartMenus = getCartMenusIdUseCase()
+    private val cartMenus = getCartMenusUseCase()
     private val _mainMenus = MutableStateFlow<List<MenuModel>>(emptyList())
     val mainMenus = _mainMenus
         .combine(_toggleState) { menus, _ -> menus }

@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seom.banchan.domain.model.home.MenuModel
 import com.seom.banchan.domain.model.home.toHomeMenuModel
-import com.seom.banchan.domain.usecase.GetCartMenusIdUseCase
+import com.seom.banchan.domain.usecase.GetCartMenusUseCase
 import com.seom.banchan.domain.usecase.GetSoupMenusUseCase
 import com.seom.banchan.ui.model.Model
 import com.seom.banchan.ui.model.SortItem
@@ -16,10 +16,10 @@ import javax.inject.Inject
 @HiltViewModel
 class SoupDishViewModel @Inject constructor(
     private val getSoupMenusUseCase: GetSoupMenusUseCase,
-    getCartMenusIdUseCase: GetCartMenusIdUseCase
+    getCartMenusUseCase: GetCartMenusUseCase
 ) : ViewModel() {
 
-    private val cartMenus = getCartMenusIdUseCase()
+    private val cartMenus = getCartMenusUseCase()
     private val _soupMenus = MutableStateFlow<List<MenuModel>>(emptyList())
     val soupMenus = _soupMenus
         .combine(cartMenus) { menus, carts ->

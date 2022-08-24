@@ -17,6 +17,7 @@ import com.seom.banchan.ui.base.BaseFragment
 import com.seom.banchan.ui.detail.DetailFragment
 import com.seom.banchan.ui.model.CellType
 import com.seom.banchan.ui.model.Model
+import com.seom.banchan.ui.model.NoneDataUiModel
 import com.seom.banchan.ui.model.cart.CartCheckModel
 import com.seom.banchan.ui.model.cart.CartMenuUiModel
 import com.seom.banchan.ui.model.cart.CartOrderModel
@@ -140,17 +141,25 @@ class CartFragment : BaseFragment() {
         repeatLaunch {
             launch { // 카트에 담긴 메뉴
                 viewModel.cartMenus.collectLatest {
-                    cartAdapter.updateModelsAtPosition(it, 1, it.size + 1)
+                    if (it.isEmpty()) {
+                        cartAdapter.updateModelsAtPosition(listOf(NoneDataUiModel()), 1, 2)
+                    } else {
+                        cartAdapter.updateModelsAtPosition(it, 1, it.size + 1)
+                    }
                 }
             }
             launch { // 주문 정보(주문 금액, 배달료, 총 주문 금액)
                 viewModel.orderInfo.collectLatest {
-                    cartAdapter.updateModelAtPosition(it, viewModel.cartMenus.value.size + 1)
+                    val cartSize =
+                        if (viewModel.cartMenus.value.isEmpty()) 1 else viewModel.cartMenus.value.size
+                    cartAdapter.updateModelAtPosition(it, cartSize + 1)
                 }
             }
             launch { // 주문하기 버튼
                 viewModel.cartOrder.collectLatest {
-                    cartAdapter.updateModelAtPosition(it, viewModel.cartMenus.value.size + 2)
+                    val cartSize =
+                        if (viewModel.cartMenus.value.isEmpty()) 1 else viewModel.cartMenus.value.size
+                    cartAdapter.updateModelAtPosition(it, cartSize + 2)
                 }
             }
             launch { // 선택
@@ -160,7 +169,9 @@ class CartFragment : BaseFragment() {
             }
             launch { // 최근 본 상품
                 viewModel.cartRecent.collectLatest {
-                    cartAdapter.updateModelAtPosition(it, viewModel.cartMenus.value.size + 3)
+                    val cartSize =
+                        if (viewModel.cartMenus.value.isEmpty()) 1 else viewModel.cartMenus.value.size
+                    cartAdapter.updateModelAtPosition(it, cartSize + 3)
                 }
             }
             launch {

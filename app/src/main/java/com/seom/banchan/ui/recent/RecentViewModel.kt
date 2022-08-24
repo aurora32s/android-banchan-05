@@ -7,7 +7,7 @@ import androidx.paging.cachedIn
 import androidx.paging.map
 import com.seom.banchan.domain.model.home.MenuModel
 import com.seom.banchan.domain.model.home.toHomeMenuModel
-import com.seom.banchan.domain.usecase.GetCartMenusIdUseCase
+import com.seom.banchan.domain.usecase.GetCartMenusUseCase
 import com.seom.banchan.domain.usecase.GetRecentMenusPagingUseCase
 import com.seom.banchan.domain.usecase.GetRecentMenusUseCase
 import com.seom.banchan.ui.model.CellType
@@ -25,10 +25,10 @@ import javax.inject.Inject
 class RecentViewModel @Inject constructor(
     private val getRecentMenusUseCase: GetRecentMenusUseCase,
     private val getRecentMenusPagingUseCase: GetRecentMenusPagingUseCase,
-    getCartMenusIdUseCase: GetCartMenusIdUseCase
+    getCartMenusUseCase: GetCartMenusUseCase
 ) : ViewModel() {
 
-    private val cartMenus = getCartMenusIdUseCase()
+    private val cartMenus = getCartMenusUseCase()
 
     private val _recentMenus = MutableStateFlow<PagingData<MenuModel>>(PagingData.empty())
     val recentMenus = _recentMenus

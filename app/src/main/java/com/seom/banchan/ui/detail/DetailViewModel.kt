@@ -19,20 +19,20 @@ class DetailViewModel @Inject constructor(
     private val getMenuDetailUseCase: GetMenuDetailUseCase,
     private val addOrUpdateMenuToCartUseCase: AddOrUpdateMenuToCartUseCase,
     private val upsertRecentMenuUseCase: UpsertRecentMenuUseCase,
-    private val getCartMenusIdUseCase: GetCartMenusIdUseCase,
+    private val getCartMenusUseCase: GetCartMenusUseCase,
     private val getOrderListUseCase: GetOrderListUseCase
 ) : ViewModel() {
     private val _detailMenuUiModel = MutableStateFlow<DetailUiState>(DetailUiState.UnInitialized)
     val detailMenuModel: StateFlow<DetailUiState>
         get() = _detailMenuUiModel
 
-    private val _cartMenus = getCartMenusIdUseCase()
-    val cartMenus : Flow<List<CartMenuModel>>
+    private val _cartMenus = getCartMenusUseCase()
+    val cartMenus: Flow<List<CartMenuModel>>
         get() = _cartMenus
 
 
     private val _orderList = getOrderListUseCase()
-    val orderList : Flow<List<OrderListModel>>
+    val orderList: Flow<List<OrderListModel>>
         get() = _orderList
 
     // 선택한 음식의 개수

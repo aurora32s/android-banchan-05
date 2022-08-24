@@ -33,7 +33,9 @@ enum class CellType {
 
     // 주문 상세 화면
     ORDER_STATE_CELL, // 주문 배송 상태
-    ORDER_MENU_CELL; // 주문한 메뉴 cell
+    ORDER_MENU_CELL, // 주문한 메뉴 cell
+
+    NONE_DATE_CELL; // 데어터가 없는 경우
 
     companion object {
         fun getCellTypeByViewType(viewType: Int) = values().find { it.ordinal == viewType }
