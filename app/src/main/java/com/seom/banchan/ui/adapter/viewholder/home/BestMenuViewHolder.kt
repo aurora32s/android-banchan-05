@@ -9,6 +9,7 @@ import com.seom.banchan.ui.adapter.ModelRecyclerAdapter
 import com.seom.banchan.ui.adapter.viewholder.ModelViewHolder
 import com.seom.banchan.ui.model.home.CategoryMenuModel
 import com.seom.banchan.ui.model.home.HomeMenuModel
+import com.seom.banchan.util.ext.addHorizontalAndVerticalScrollListener
 import com.seom.banchan.util.listener.ModelAdapterListener
 
 class BestMenuViewHolder(
@@ -27,7 +28,7 @@ class BestMenuViewHolder(
         binding.rvBest.layoutManager =
             LinearLayoutManager(binding.root.context, LinearLayoutManager.HORIZONTAL, false)
         binding.rvBest.adapter = bestMenuAdapter
-
+        binding.rvBest.addHorizontalAndVerticalScrollListener()
         if(binding.rvBest.itemDecorationCount != 0)
             binding.rvBest.removeItemDecorationAt(0)
 
