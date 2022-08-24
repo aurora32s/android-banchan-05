@@ -10,6 +10,7 @@ import com.seom.banchan.ui.model.CellType
 import com.seom.banchan.ui.model.cart.*
 import com.seom.banchan.ui.model.order.OrderInfoModel
 import com.seom.banchan.util.TimeUtil
+import com.seom.banchan.worker.model.DeliveryAlarmModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -179,7 +180,7 @@ class CartViewModel @Inject constructor(
             addOrderUseCase(orderMenus)
                 .onSuccess {
                     val orderId = it
-                    _cartUiEvent.value = CartUiEventModel.SuccessOrder(orderId)
+                    _cartUiEvent.value = CartUiEventModel.SuccessOrder(it)
                     removeItems()
                 }
                 .onFailure {

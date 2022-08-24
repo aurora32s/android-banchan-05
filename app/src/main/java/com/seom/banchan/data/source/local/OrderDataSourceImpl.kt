@@ -7,6 +7,7 @@ import com.seom.banchan.domain.model.order.OrderDetailModel
 import com.seom.banchan.domain.model.order.OrderItemModel
 import com.seom.banchan.domain.model.order.OrderListModel
 import com.seom.banchan.ui.model.order.OrderInfoModel
+import com.seom.banchan.worker.model.DeliveryAlarmModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -57,6 +58,13 @@ class OrderDataSourceImpl @Inject constructor(
     override suspend fun setDeliveryCompletedById(orderId: Long): Result<Int> = try {
         val result = orderDao.setDeliveryCompletedById(orderId)
         Result.success(result)
+    } catch (exception: Exception) {
+        Result.failure(exception)
+    }
+
+    override suspend fun getDeliveryInfoById(orderId: Long): Result<DeliveryAlarmModel> = try {
+        val result = orderDao.getDeliveryInfoById(orderId)
+        Result.success(result.toModel())
     } catch (exception: Exception) {
         Result.failure(exception)
     }

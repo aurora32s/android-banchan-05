@@ -5,12 +5,10 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
-import com.seom.banchan.data.db.entity.OrderEntity
-import com.seom.banchan.data.db.entity.OrderInfoEntity
-import com.seom.banchan.data.db.entity.OrderItemEntity
-import com.seom.banchan.data.db.entity.OrderListEntity
+import com.seom.banchan.data.db.entity.*
 import com.seom.banchan.data.source.OrderDataSource
 import com.seom.banchan.ui.model.order.OrderDeliveryState
+import com.seom.banchan.worker.model.DeliveryAlarmModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
@@ -49,6 +47,22 @@ interface OrderDao {
                 "group by o.order_id"
     )
     fun getOrderList(): Flow<List<OrderListEntity>>
+
+    @Query(
+        "select \n" +
+                "  order_id as order_id,\n" +
+                "  menu_name as menu_name,\n" +
+                "  total_count as total_count,\n" +
+                "  expected_time as expected_time\n" +
+                "from order_table o, (\n" +
+                "select\n" +
+                "name as menu_name,\n" +
+                "sum(count) as total_count\n" +
+                "from order_item_table\n" +
+                ")\n" +
+                "where order_id = :orderId"
+    )
+    fun getDeliveryInfoById(orderId: Long): DeliveryInfoEntity
 
     /**
      * 특정 주문 id 의 주문 정보 받아오기

@@ -5,6 +5,7 @@ import com.seom.banchan.domain.model.order.OrderDetailModel
 import com.seom.banchan.domain.model.order.OrderItemModel
 import com.seom.banchan.domain.model.order.OrderListModel
 import com.seom.banchan.ui.model.order.OrderInfoModel
+import com.seom.banchan.worker.model.DeliveryAlarmModel
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -31,4 +32,9 @@ interface OrderDataSource {
      * 특정 주문 배달 완료 처리
      */
     suspend fun setDeliveryCompletedById(orderId: Long): Result<Int>
+
+    /**
+     * 특정 주문의 배달 정보 요청
+     */
+    suspend fun getDeliveryInfoById(orderId: Long): Result<DeliveryAlarmModel>
 }

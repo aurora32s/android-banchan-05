@@ -27,15 +27,18 @@ import com.seom.banchan.ui.order.detail.OrderDetailFragment
 import com.seom.banchan.ui.recent.RecentFragment
 import com.seom.banchan.ui.view.dialog.CartMenuCountAlert
 import com.seom.banchan.util.listener.ModelAdapterListener
+import com.seom.banchan.worker.alarm.DeliveryAlarmManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class CartFragment : BaseFragment() {
     private var _binding: FragmentCartBinding? = null
     private val binding get() = _binding
 
+    @Inject lateinit var deliveryAlarmManager: DeliveryAlarmManager
     private val viewModel: CartViewModel by viewModels()
 
     private val cartAdapter: ModelRecyclerAdapter<Model> by lazy {
@@ -81,7 +84,7 @@ class CartFragment : BaseFragment() {
                             }
                         }
                         CellType.MENU_RECENT_CELL -> {
-                            if(view.id == R.id.iv_menu_thumbnail){
+                            if (view.id == R.id.iv_menu_thumbnail) {
                                 (model as? HomeMenuModel)?.menu?.let {
                                     fragmentNavigation.replaceFragment(
                                         DetailFragment.newInstance(
@@ -132,26 +135,26 @@ class CartFragment : BaseFragment() {
     }
 
     private fun initObserver() {
-        lifecycleScope.launch{
-            repeatOnLifecycle(Lifecycle.State.STARTED){
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
                     viewModel.cartMenus.collectLatest {
-                        cartAdapter.updateModelsAtPosition(it,1,it.size+1)
+                        cartAdapter.updateModelsAtPosition(it, 1, it.size + 1)
                     }
                 }
-                launch{
+                launch {
                     viewModel.orderInfo.collectLatest {
-                        cartAdapter.updateModelAtPosition(it,viewModel.cartMenus.value.size + 1)
+                        cartAdapter.updateModelAtPosition(it, viewModel.cartMenus.value.size + 1)
                     }
                 }
-                launch{
+                launch {
                     viewModel.cartOrder.collectLatest {
-                        cartAdapter.updateModelAtPosition(it,viewModel.cartMenus.value.size+2)
+                        cartAdapter.updateModelAtPosition(it, viewModel.cartMenus.value.size + 2)
                     }
                 }
                 launch {
                     viewModel.cartCheck.collectLatest {
-                        cartAdapter.updateModelAtPosition(it,0)
+                        cartAdapter.updateModelAtPosition(it, 0)
                     }
                 }
                 launch {
@@ -163,6 +166,11 @@ class CartFragment : BaseFragment() {
                     viewModel.cartUiEvent.collectLatest {
                         when (it) {
                             is CartUiEventModel.SuccessOrder -> {
+                                // 알람 발생
+                                deliveryAlarmManager.create(
+                                    requireContext(),
+                                    it.orderId
+                                )
                                 fragmentNavigation.popStack()
                                 fragmentNavigation.replaceFragment(
                                     OrderDetailFragment.newInstance(it.orderId),
