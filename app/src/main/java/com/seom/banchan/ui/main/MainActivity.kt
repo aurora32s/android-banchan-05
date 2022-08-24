@@ -38,14 +38,7 @@ class MainActivity : AppCompatActivity(), BaseFragment.FragmentNavigation,
 
         initToolbar()
         initContainer()
-
-        val orderId = intent?.getLongExtra(KEY_ORDER_ID, -1L) ?: -1L
-        if (orderId >= 0) {
-            fragmentNavigationController.replaceFragment(
-                OrderDetailFragment.newInstance(orderId),
-                OrderDetailFragment.TAG
-            )
-        }
+        checkIntentExtra()
     }
 
     private fun initToolbar() = binding?.let {
@@ -58,6 +51,16 @@ class MainActivity : AppCompatActivity(), BaseFragment.FragmentNavigation,
             FragmentNavigationController(supportFragmentManager, it.flMain.id)
         supportFragmentManager.addOnBackStackChangedListener(this)
         replaceFragment(HomeFragment.newInstance(), HomeFragment.TAG)
+    }
+
+    private fun checkIntentExtra() {
+        val orderId = intent?.getLongExtra(KEY_ORDER_ID, -1L) ?: -1L
+        if (orderId >= 0) {
+            fragmentNavigationController.replaceFragment(
+                OrderDetailFragment.newInstance(orderId),
+                OrderDetailFragment.TAG
+            )
+        }
     }
 
     override fun onBackStackChanged() {
