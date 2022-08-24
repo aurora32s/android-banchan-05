@@ -32,6 +32,7 @@ class DeliveryAlarmManager(
                 )
 
                 val triggerTime = SystemClock.elapsedRealtime() + it.expectedTime
+                // TODO 절전모드에서 알람이 가는게 맞을지 usecase에 대해 고민해보기
                 alarmManager.setExact(
                     AlarmManager.ELAPSED_REALTIME, // 절전모드에서는 작동 안함
                     triggerTime,
