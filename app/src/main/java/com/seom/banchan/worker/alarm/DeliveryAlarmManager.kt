@@ -32,7 +32,7 @@ class DeliveryAlarmManager(
                 )
 
                 val triggerTime = SystemClock.elapsedRealtime() + it.expectedTime
-                alarmManager.set(
+                alarmManager.setExact(
                     AlarmManager.ELAPSED_REALTIME, // 절전모드에서는 작동 안함
                     triggerTime,
                     pendingIntent

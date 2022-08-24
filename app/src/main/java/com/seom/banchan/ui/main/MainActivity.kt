@@ -10,6 +10,7 @@ import com.seom.banchan.R
 import com.seom.banchan.databinding.ActivityMainBinding
 import com.seom.banchan.ui.base.BaseFragment
 import com.seom.banchan.ui.cart.CartFragment
+import com.seom.banchan.ui.detail.DetailFragment
 import com.seom.banchan.ui.home.HomeFragment
 import com.seom.banchan.ui.order.OrderListFragment
 import com.seom.banchan.ui.order.detail.OrderDetailFragment
@@ -18,7 +19,8 @@ import com.seom.banchan.util.navigation.FragmentNavigationController
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(), BaseFragment.FragmentNavigation,FragmentManager.OnBackStackChangedListener {
+class MainActivity : AppCompatActivity(), BaseFragment.FragmentNavigation,
+    FragmentManager.OnBackStackChangedListener {
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding
 
@@ -36,6 +38,14 @@ class MainActivity : AppCompatActivity(), BaseFragment.FragmentNavigation,Fragme
 
         initToolbar()
         initContainer()
+
+        val orderId = intent?.getLongExtra(KEY_ORDER_ID, -1L) ?: -1L
+        if (orderId >= 0) {
+            fragmentNavigationController.replaceFragment(
+                OrderDetailFragment.newInstance(orderId),
+                OrderDetailFragment.TAG
+            )
+        }
     }
 
     private fun initToolbar() = binding?.let {
@@ -63,7 +73,7 @@ class MainActivity : AppCompatActivity(), BaseFragment.FragmentNavigation,Fragme
     }
 
     override fun popStack() {
-        if(getCurrentFragment() is HomeFragment){
+        if (getCurrentFragment() is HomeFragment) {
             finish()
         }
         fragmentNavigationController.popStack()
@@ -78,16 +88,16 @@ class MainActivity : AppCompatActivity(), BaseFragment.FragmentNavigation,Fragme
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if(item.itemId == android.R.id.home){
+        if (item.itemId == android.R.id.home) {
             popStack()
         }
         return super.onOptionsItemSelected(item)
     }
 
     private fun setActionBar() {
-        supportActionBar?.let{
-            when(getCurrentFragment()){
-                is CartFragment ->{
+        supportActionBar?.let {
+            when (getCurrentFragment()) {
+                is CartFragment -> {
                     it.setTitle(R.string.cart_title)
                     it.setDisplayHomeAsUpEnabled(true)
                 }

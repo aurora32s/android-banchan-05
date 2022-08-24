@@ -59,6 +59,7 @@ interface OrderDao {
                 "name as menu_name,\n" +
                 "sum(count) as total_count\n" +
                 "from order_item_table\n" +
+                "where order_id = :orderId\n" +
                 ")\n" +
                 "where order_id = :orderId"
     )
