@@ -14,6 +14,7 @@ import com.seom.banchan.ui.model.CellType
 import com.seom.banchan.ui.model.Model
 import com.seom.banchan.ui.model.order.OrderListItemUiModel
 import com.seom.banchan.ui.order.detail.OrderDetailFragment
+import com.seom.banchan.util.ext.repeatLaunch
 import com.seom.banchan.util.listener.ModelAdapterListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -32,7 +33,6 @@ class OrderListFragment : BaseFragment() {
             object : ModelAdapterListener {
                 override fun onClick(view: View, model: Model, position: Int) {
                     if (model.type == CellType.ORDER_LIST_ITEM) {
-                        // TODO 주문 상세 화면으로 이동 구현
                         val orderId = (model as OrderListItemUiModel).orderId
                         fragmentNavigation.replaceFragment(
                             OrderDetailFragment.newInstance(orderId),
@@ -63,7 +63,7 @@ class OrderListFragment : BaseFragment() {
      * viewModel 의 flow state observing 설정
      */
     private fun initObserver() {
-        lifecycleScope.launch {
+        repeatLaunch {
             viewModel.orderList().collect {
                 orderListAdapter.submitList(it)
             }
