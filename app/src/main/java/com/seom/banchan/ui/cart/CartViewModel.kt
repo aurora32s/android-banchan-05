@@ -6,6 +6,7 @@ import com.seom.banchan.domain.model.cart.toUiModel
 import com.seom.banchan.domain.model.home.MenuModel
 import com.seom.banchan.domain.model.home.toHomeMenuModel
 import com.seom.banchan.domain.usecase.*
+import com.seom.banchan.ui.model.CellType
 import com.seom.banchan.ui.model.cart.CartCheckModel
 import com.seom.banchan.ui.model.cart.CartMenuUiModel
 import com.seom.banchan.ui.model.cart.CartOrderModel
@@ -184,7 +185,7 @@ class CartViewModel @Inject constructor(
                 _cartRecent.value = cartRecent.value.copy(
                     recentMenus = list
                         .map { menuModel ->
-                            menuModel.toHomeMenuModel(inCart = true, isRecent = true)
+                            menuModel.toHomeMenuModel(cellType = CellType.CART_MENU_RECENT_CELL)
                         }
                 )
             }

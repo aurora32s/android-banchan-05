@@ -4,6 +4,7 @@ enum class CellType {
     HEADER_CELL,
     MENU_LIST_CELL,
     MENU_CELL,
+    MENU_BEST_CELL,
     MENU_LARGE_CELL,
     MENU_RECENT_CELL,
     FILTER_CELL,
@@ -22,6 +23,7 @@ enum class CellType {
     CART_MENU_CELL,
     CART_ORDER_CELL,
     CART_RECENT_CELL,
+    CART_MENU_RECENT_CELL,
 
     //장바구니, 주문 내역, 주문 확인 화면 공통
     ORDER_INFO_CELL,

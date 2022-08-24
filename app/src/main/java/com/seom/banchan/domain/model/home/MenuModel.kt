@@ -19,18 +19,13 @@ data class MenuModel(
 
 
 fun MenuModel.toHomeMenuModel(
-    isBest: Boolean = false,
     cartMenus: List<CartMenuModel> = emptyList(),
     cellType: CellType = CellType.MENU_CELL,
-    isRecent : Boolean = false,
-    inCart : Boolean = false
 ): HomeMenuModel {
     val cartMenu = cartMenus.find { it.menuId == id }
     return HomeMenuModel(
         id = id,
         type = cellType,
-        inCart = inCart,
-        isBest = isBest,
         menu = this,
         count = cartMenu?.count ?: 1,
         discountRate = if (normalPrice == 0) 0 else ceil((1 - (salePrice / normalPrice.toDouble())) * 100).toInt(),

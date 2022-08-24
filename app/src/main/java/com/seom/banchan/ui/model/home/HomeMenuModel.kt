@@ -8,8 +8,6 @@ data class HomeMenuModel(
     override val id: String,
     override val type: CellType = CellType.MENU_CELL,
     val menu: MenuModel,
-    val isBest : Boolean = false,
-    val inCart : Boolean = false, // 최근 본 상품이 Cart 화면에서 쓰이는지 아닌지에 대한 Boolean
     val discountRate: Int, // 소수점 버림
     val count: Int = 1, // 선택 개수
     val isLoadedCart: Boolean = false // 장바구니 포함 여부

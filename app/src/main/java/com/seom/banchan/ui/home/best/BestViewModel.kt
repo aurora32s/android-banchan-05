@@ -23,7 +23,7 @@ class BestViewModel @Inject constructor(
     private val _bestMenus = MutableStateFlow<List<CategoryModel>>(emptyList())
     val bestMenus = _bestMenus.asStateFlow()
         .combine(cartMenus) { menus, carts ->
-            baseMenu + menus.map { it.toUiModel(isBest = true, cartMenus = carts) }
+            baseMenu + menus.map { it.toUiModel(cartMenus = carts) }
         }
 
     private val baseMenu = listOf<Model>(

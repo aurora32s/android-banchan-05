@@ -3,6 +3,7 @@ package com.seom.banchan.ui.adapter.viewholder.recent
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.seom.banchan.databinding.ItemMenuRecentBinding
 import com.seom.banchan.ui.adapter.viewholder.ModelViewHolder
+import com.seom.banchan.ui.model.CellType
 import com.seom.banchan.ui.model.home.HomeMenuModel
 import com.seom.banchan.util.listener.ModelAdapterListener
 
@@ -11,8 +12,9 @@ class RecentMenuViewHolder(
 ) : ModelViewHolder<HomeMenuModel>(binding) {
     override fun bindData(model: HomeMenuModel) {
         binding.menu = model
+        binding.inCart = model.type == CellType.CART_MENU_RECENT_CELL
 
-        if(!model.inCart)// 기획전과 비슷하게 Cart 화면과 Recently viewed products 화면에서의 구조가 다름
+        if(model.type != CellType.CART_MENU_RECENT_CELL)
             binding.root.layoutParams = ConstraintLayout.LayoutParams(
                 ConstraintLayout.LayoutParams.MATCH_PARENT,
                 ConstraintLayout.LayoutParams.WRAP_CONTENT

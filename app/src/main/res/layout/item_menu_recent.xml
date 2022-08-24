@@ -10,6 +10,9 @@
         <variable
             name="menu"
             type="com.seom.banchan.ui.model.home.HomeMenuModel" />
+        <variable
+            name="inCart"
+            type="Boolean" />
 
     </data>
 
@@ -37,7 +40,7 @@
             android:padding="7dp"
             android:src="@{menu.isLoadedCart ? @drawable/ic_check : @drawable/ic_cart}"
             android:tint="@{menu.isLoadedCart ? @color/white : @color/black}"
-            android:visibility="@{menu.inCart ? View.GONE : View.VISIBLE}"
+            android:visibility="@{inCart ? View.GONE : View.VISIBLE}"
             app:layout_constraintBottom_toBottomOf="@id/iv_menu_thumbnail"
             app:layout_constraintEnd_toEndOf="@id/iv_menu_thumbnail" />
 
