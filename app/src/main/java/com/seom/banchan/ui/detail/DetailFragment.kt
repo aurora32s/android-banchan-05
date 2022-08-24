@@ -69,7 +69,7 @@ class DetailFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        addMainMenuProvider(viewLifecycleOwner,viewModel.cartMenus,viewModel.orderList)
+        setToolBar(viewLifecycleOwner,viewModel.cartMenus,viewModel.orderList)
         val menu: MenuModel? = arguments?.getSerializable(KEY_MODEL_BUNDLE) as? MenuModel
         lifecycleScope.launch {
             viewModel.detailMenuModel.collect {

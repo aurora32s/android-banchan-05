@@ -42,7 +42,7 @@ open class BaseFragment : Fragment() {
         fun getCurrentFragment() : Fragment?
     }
 
-    fun addMainMenuProvider(
+    fun setToolBar(
         lifecycleOwner: LifecycleOwner,
         cartMenusFlow: Flow<List<CartMenuModel>>,
         orderMenusFlow : Flow<List<OrderListModel>>

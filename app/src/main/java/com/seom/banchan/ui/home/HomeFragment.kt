@@ -36,7 +36,7 @@ class HomeFragment : BaseFragment(), CartBottomSheetManager {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        addMainMenuProvider(viewLifecycleOwner, viewModel.cartMenus,viewModel.orderList)
+        setToolBar(viewLifecycleOwner, viewModel.cartMenus,viewModel.orderList)
         initViewPager()
     }
 
