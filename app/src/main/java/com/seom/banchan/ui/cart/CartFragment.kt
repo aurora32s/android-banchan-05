@@ -26,7 +26,9 @@ import com.seom.banchan.ui.model.order.OrderInfoModel
 import com.seom.banchan.ui.order.detail.OrderDetailFragment
 import com.seom.banchan.ui.recent.RecentFragment
 import com.seom.banchan.ui.view.dialog.CartMenuCountAlert
+import com.seom.banchan.util.ext.repeatLaunch
 import com.seom.banchan.util.listener.ModelAdapterListener
+import com.seom.banchan.util.provider.impl.ResourceProviderImpl
 import com.seom.banchan.worker.alarm.DeliveryAlarmManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -38,11 +40,13 @@ class CartFragment : BaseFragment() {
     private var _binding: FragmentCartBinding? = null
     private val binding get() = _binding
 
-    @Inject lateinit var deliveryAlarmManager: DeliveryAlarmManager
+    @Inject
+    lateinit var deliveryAlarmManager: DeliveryAlarmManager
     private val viewModel: CartViewModel by viewModels()
 
     private val cartAdapter: ModelRecyclerAdapter<Model> by lazy {
         ModelRecyclerAdapter(
+            resourceProvider = ResourceProviderImpl(requireContext()),
             modelAdapterListener = object : ModelAdapterListener {
                 override fun onClick(view: View, model: Model, position: Int) {
                     when (model.type) {
@@ -54,20 +58,19 @@ class CartFragment : BaseFragment() {
                             }
                         }
                         CellType.CART_MENU_CELL -> {
-                            if (view.id == R.id.cb_menu) {
-                                viewModel.updateCheck((model as CartMenuUiModel))
-                            } else if (view.id == R.id.iv_delete) {
-                                viewModel.removeItem((model as CartMenuUiModel))
-                            } else if (view.id == R.id.iv_up) {
-                                viewModel.increaseCount((model as CartMenuUiModel))
-                            } else if (view.id == R.id.iv_down) {
-                                viewModel.decreaseCount((model as CartMenuUiModel))
-                            } else if (view.id == R.id.tv_count) {
-                                CartMenuCountAlert.build((model as CartMenuUiModel).count)
-                                    .setOnClickMoveToCart {
-                                        viewModel.updateCount(model, it)
-                                    }
-                                    .show(parentFragmentManager)
+                            val cartMenu = model as CartMenuUiModel
+                            when (view.id) {
+                                R.id.cb_menu -> viewModel.updateCheck(cartMenu)
+                                R.id.iv_delete -> viewModel.removeItem(cartMenu)
+                                R.id.iv_up -> viewModel.increaseCount(cartMenu)
+                                R.id.iv_down -> viewModel.decreaseCount(cartMenu)
+                                R.id.tv_count -> {
+                                    CartMenuCountAlert.build(cartMenu.count)
+                                        .setOnClickMoveToCart {
+                                            viewModel.updateCount(model, it)
+                                        }
+                                        .show(parentFragmentManager)
+                                }
                             }
                         }
                         CellType.CART_ORDER_CELL -> {
@@ -108,7 +111,6 @@ class CartFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentCartBinding.inflate(inflater)
-
         return binding?.root
     }
 
@@ -135,50 +137,48 @@ class CartFragment : BaseFragment() {
     }
 
     private fun initObserver() {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                launch {
-                    viewModel.cartMenus.collectLatest {
-                        cartAdapter.updateModelsAtPosition(it, 1, it.size + 1)
-                    }
+        repeatLaunch {
+            launch { // 카트에 담긴 메뉴
+                viewModel.cartMenus.collectLatest {
+                    cartAdapter.updateModelsAtPosition(it, 1, it.size + 1)
                 }
-                launch {
-                    viewModel.orderInfo.collectLatest {
-                        cartAdapter.updateModelAtPosition(it, viewModel.cartMenus.value.size + 1)
-                    }
+            }
+            launch { // 주문 정보(주문 금액, 배달료, 총 주문 금액)
+                viewModel.orderInfo.collectLatest {
+                    cartAdapter.updateModelAtPosition(it, viewModel.cartMenus.value.size + 1)
                 }
-                launch {
-                    viewModel.cartOrder.collectLatest {
-                        cartAdapter.updateModelAtPosition(it, viewModel.cartMenus.value.size + 2)
-                    }
+            }
+            launch { // 주문하기 버튼
+                viewModel.cartOrder.collectLatest {
+                    cartAdapter.updateModelAtPosition(it, viewModel.cartMenus.value.size + 2)
                 }
-                launch {
-                    viewModel.cartCheck.collectLatest {
-                        cartAdapter.updateModelAtPosition(it, 0)
-                    }
+            }
+            launch { // 선택
+                viewModel.cartCheck.collectLatest {
+                    cartAdapter.updateModelAtPosition(it, 0)
                 }
-                launch {
-                    viewModel.cartRecent.collectLatest {
-                        cartAdapter.updateModelAtPosition(it, viewModel.cartMenus.value.size + 3)
-                    }
+            }
+            launch { // 최근 본 상품
+                viewModel.cartRecent.collectLatest {
+                    cartAdapter.updateModelAtPosition(it, viewModel.cartMenus.value.size + 3)
                 }
-                launch {
-                    viewModel.cartUiEvent.collectLatest {
-                        when (it) {
-                            is CartUiEventModel.SuccessOrder -> {
-                                // 알람 발생
-                                deliveryAlarmManager.create(
-                                    requireContext(),
-                                    it.orderId
-                                )
-                                fragmentNavigation.popStack()
-                                fragmentNavigation.replaceFragment(
-                                    OrderDetailFragment.newInstance(it.orderId),
-                                    OrderDetailFragment.TAG
-                                )
-                            }
-                            CartUiEventModel.UnInitialized -> {}
+            }
+            launch {
+                viewModel.cartUiEvent.collectLatest {
+                    when (it) {
+                        is CartUiEventModel.SuccessOrder -> {
+                            // 알람 발생
+                            deliveryAlarmManager.create(
+                                requireContext(),
+                                it.orderId
+                            )
+                            fragmentNavigation.popStack()
+                            fragmentNavigation.replaceFragment(
+                                OrderDetailFragment.newInstance(it.orderId),
+                                OrderDetailFragment.TAG
+                            )
                         }
+                        CartUiEventModel.UnInitialized -> {}
                     }
                 }
             }
