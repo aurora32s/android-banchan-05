@@ -30,10 +30,10 @@ class OrderCartBottomSheetManager(
     }
 
     fun show(currentMenuModel: HomeMenuModel) {
-        OrderBottomSheetDialog.build(fragmentManager)
+        OrderBottomSheetDialog.build()
             .setMenu(currentMenuModel)
             .setOnSuccessAddToCart(::handleAfterAddToCart)
-            .show()
+            .show(fragmentManager)
     }
 
     companion object {
