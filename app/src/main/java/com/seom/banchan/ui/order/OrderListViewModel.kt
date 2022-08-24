@@ -1,15 +1,12 @@
 package com.seom.banchan.ui.order
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.seom.banchan.data.source.OrderDataSource
 import com.seom.banchan.domain.model.order.toUiModel
 import com.seom.banchan.domain.usecase.GetOrderListUseCase
+import com.seom.banchan.util.exception.DatabaseFlowException
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
-import java.lang.Exception
+import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -21,5 +18,8 @@ class OrderListViewModel @Inject constructor(
      */
     fun orderList() = getOrderListUseCase().map { orders ->
         orders.map { order -> order.toUiModel() }
+    }.catch {
+        Log.e(OrderListFragment.TAG, this.toString())
+        throw DatabaseFlowException(it.toString())
     }
 }

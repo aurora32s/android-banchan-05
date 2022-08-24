@@ -23,13 +23,15 @@ import com.seom.banchan.ui.adapter.viewholder.order.OrderListItemViewHolder
 import com.seom.banchan.ui.adapter.viewholder.order.OrderMenuViewHolder
 import com.seom.banchan.ui.model.CellType
 import com.seom.banchan.ui.model.Model
+import com.seom.banchan.util.provider.ResourceProvider
 
 object ModelViewHolderMapper {
 
     @Suppress("UNCHECKED_CAST")
     fun <M : Model> map(
         parent: ViewGroup,
-        type: CellType
+        type: CellType,
+        resourceProvider: ResourceProvider?
     ): ModelViewHolder<M> {
         val inflater = LayoutInflater.from(parent.context)
         val viewHolder = when (type) {
@@ -90,10 +92,12 @@ object ModelViewHolderMapper {
                 ItemOrderInfoBinding.inflate(inflater, parent, false)
             )
             CellType.ORDER_LIST_ITEM -> OrderListItemViewHolder(
-                ItemOrderBinding.inflate(inflater, parent, false)
+                ItemOrderBinding.inflate(inflater, parent, false),
+                resourceProvider
             )
             CellType.ORDER_STATE_CELL -> OrderDeliveryStateViewHolder(
-                ItemOrderStateBinding.inflate(inflater, parent, false)
+                ItemOrderStateBinding.inflate(inflater, parent, false),
+                resourceProvider
             )
             CellType.ORDER_MENU_CELL -> OrderMenuViewHolder(
                 ItemOrderDetailMenuBinding.inflate(inflater, parent, false)

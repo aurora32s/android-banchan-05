@@ -24,12 +24,13 @@ class BestMenuViewHolder(
         model: CategoryMenuModel,
         menuAdapterListener: ModelAdapterListener?
     ) {
-        val bestMenuAdapter = ModelRecyclerAdapter<HomeMenuModel>(menuAdapterListener)
+        val bestMenuAdapter =
+            ModelRecyclerAdapter<HomeMenuModel>(modelAdapterListener = menuAdapterListener)
         binding.rvBest.layoutManager =
             LinearLayoutManager(binding.root.context, LinearLayoutManager.HORIZONTAL, false)
         binding.rvBest.adapter = bestMenuAdapter
         binding.rvBest.addHorizontalAndVerticalScrollListener()
-        if(binding.rvBest.itemDecorationCount != 0)
+        if (binding.rvBest.itemDecorationCount != 0)
             binding.rvBest.removeItemDecorationAt(0)
 
         binding.rvBest.addItemDecoration(BestItemDecoration(binding.root.context))

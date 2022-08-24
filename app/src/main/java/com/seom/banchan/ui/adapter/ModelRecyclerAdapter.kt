@@ -11,8 +11,10 @@ import com.seom.banchan.ui.model.CellType
 import com.seom.banchan.ui.model.Model
 import com.seom.banchan.util.listener.ModelAdapterListener
 import com.seom.banchan.util.mapper.ModelViewHolderMapper
+import com.seom.banchan.util.provider.ResourceProvider
 
 class ModelRecyclerAdapter<M : Model>(
+    private val resourceProvider: ResourceProvider? = null,
     private val modelAdapterListener: ModelAdapterListener? = null
 ) : RecyclerView.Adapter<ModelViewHolder<M>>() {
 
@@ -23,14 +25,14 @@ class ModelRecyclerAdapter<M : Model>(
     override fun getItemViewType(position: Int) = modelList[position].type.ordinal
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ModelViewHolder<M> {
-        if(CellType.values()[viewType] == CellType.SORT_CELL){
+        if (CellType.values()[viewType] == CellType.SORT_CELL) {
             val sortViewHolder = SortViewHolder(
                 ItemHomeSortBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             )
             sortViewHolder.initViewHolder()
             return sortViewHolder as ModelViewHolder<M>
         }
-        return ModelViewHolderMapper.map(parent, CellType.values()[viewType])
+        return ModelViewHolderMapper.map(parent, CellType.values()[viewType], resourceProvider)
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -46,19 +48,22 @@ class ModelRecyclerAdapter<M : Model>(
         notifyDataSetChanged()
     }
 
-    fun updateList(list:List<Model>,startIndex : Int){
-        modelList = (modelList.subList(0,startIndex) + list).toMutableList()
-        notifyItemRangeChanged(modelList.size - list.size , modelList.size - 1)
+    fun updateList(list: List<Model>, startIndex: Int) {
+        modelList = (modelList.subList(0, startIndex) + list).toMutableList()
+        notifyItemRangeChanged(modelList.size - list.size, modelList.size - 1)
     }
 
-    fun updateModelAtPosition(model: Model,position: Int){
-        if(modelList.size<=position) modelList.add(position,model)
+    fun updateModelAtPosition(model: Model, position: Int) {
+        if (modelList.size <= position) modelList.add(position, model)
         else modelList[position] = model
         notifyItemChanged(position)
     }
 
-    fun updateModelsAtPosition(list: List<Model>,startIndex: Int,endIndex : Int){
-        modelList = (modelList.subList(0,startIndex) + list + modelList.subList(modelList.size-3,modelList.size)).toMutableList()
+    fun updateModelsAtPosition(list: List<Model>, startIndex: Int, endIndex: Int) {
+        modelList = (modelList.subList(0, startIndex) + list + modelList.subList(
+            modelList.size - 3,
+            modelList.size
+        )).toMutableList()
         notifyDataSetChanged()
         //            notifyItemRangeChanged(startIndex,endIndex)
     }
