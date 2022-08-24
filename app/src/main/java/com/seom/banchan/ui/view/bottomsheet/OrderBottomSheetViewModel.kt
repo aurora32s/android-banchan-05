@@ -68,6 +68,7 @@ class OrderBottomSheetViewModel @Inject constructor(
 }
 
 sealed interface OrderBottomSheetUiState {
-    object UnInitialized : OrderBottomSheetUiState
-    object SuccessAddToCart : OrderBottomSheetUiState
+    object UnInitialized : OrderBottomSheetUiState // 초기
+    object SuccessAddToCart : OrderBottomSheetUiState // 장바구니 추가 성공
+    object FailAddToCart : OrderBottomSheetUiState // 장바구니 추가 실패
 }

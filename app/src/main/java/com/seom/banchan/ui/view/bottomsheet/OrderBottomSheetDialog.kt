@@ -6,15 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.seom.banchan.R
 import com.seom.banchan.databinding.FragmentOrderBottomSheetBinding
-import com.seom.banchan.ui.base.BaseFragment
 import com.seom.banchan.ui.model.home.HomeMenuModel
+import com.seom.banchan.util.ext.repeatLaunch
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -46,7 +43,6 @@ class OrderBottomSheetDialog(
 
         initBind()
         initObserver()
-        viewModel.init(menuModel)
     }
 
     private fun initBind() = binding?.let {
@@ -61,34 +57,44 @@ class OrderBottomSheetDialog(
     }
 
     private fun initObserver() {
-        lifecycleScope.launch {
-            viewModel.count.collect { binding?.count = it }
+        repeatLaunch {
+            // 현재 선택된 개수
+            launch { viewModel.count.collect { binding?.count = it } }
+            // 총 금액
+            launch { viewModel.totalPrice.collect { binding?.totalPrice = it } }
+            // uiState
+            launch { observeUiState() }
         }
-        lifecycleScope.launch {
-            viewModel.totalPrice.collect { binding?.totalPrice = it }
-        }
-        lifecycleScope.launch {
-            viewModel.orderBottomSheetUiState.collect {
-                when (it) {
-                    OrderBottomSheetUiState.SuccessAddToCart -> {
-                        if (::onSuccessAddToCart.isInitialized) {
-                            onSuccessAddToCart()
-                            dismiss()
-                        }
+    }
+
+    private suspend fun observeUiState() {
+        viewModel.orderBottomSheetUiState.collect {
+            when (it) {
+                OrderBottomSheetUiState.UnInitialized -> viewModel.init(menuModel)
+                OrderBottomSheetUiState.SuccessAddToCart -> {
+                    if (::onSuccessAddToCart.isInitialized) {
+                        onSuccessAddToCart()
+                        dismiss()
                     }
-                    OrderBottomSheetUiState.UnInitialized -> {
-                        viewModel.init(menuModel)
-                    }
+                }
+                OrderBottomSheetUiState.FailAddToCart -> {
+
                 }
             }
         }
     }
 
+    /**
+     * bottom sheet 에 보여줄 메뉴 setting
+     */
     fun setMenu(menuModel: HomeMenuModel): OrderBottomSheetDialog {
         this.menuModel = menuModel
         return this
     }
 
+    /**
+     * 장바구니 추가 성공 시 호출할 event setting
+     */
     fun setOnSuccessAddToCart(onSuccessAddToCart: () -> Unit): OrderBottomSheetDialog {
         this.onSuccessAddToCart = onSuccessAddToCart
         return this
@@ -98,6 +104,9 @@ class OrderBottomSheetDialog(
         show(supportFragmentManager, TAG)
     }
 
+    /**
+     * bottom sheet style 지정
+     */
     override fun getTheme(): Int {
         return R.style.RoundedBottomSheetDialog
     }
