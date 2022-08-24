@@ -19,7 +19,7 @@ class OrderBottomSheetViewModel @Inject constructor(
     private val addOrReplaceMenuToCartUseCase: AddOrReplaceMenuToCartUseCase
 ) : ViewModel() {
 
-    // 사용자가 선택해서 Bottom Sheet에 보여지고 있는 메뉴
+    // 사용자가 선택해서 Bottom Sheet 에 보여지고 있는 메뉴
     var currentMenu: HomeMenuModel? = null
         private set
 
@@ -45,38 +45,43 @@ class OrderBottomSheetViewModel @Inject constructor(
     val totalPrice =
         _totalPrice.asStateFlow().combine(count) { newCount, salePrice -> newCount * salePrice }
 
-    fun init(menuModel: HomeMenuModel?) = viewModelScope.launch {
-        menuModel?.let {
-            currentMenu = it
-            _totalPrice.emit(menuModel.menu.salePrice)
-            _count.emit(menuModel.count)
+    fun init(menuModel: HomeMenuModel?) {
+        viewModelScope.launch {
+            menuModel?.let {
+                currentMenu = it
+                _totalPrice.emit(menuModel.menu.salePrice)
+                _count.emit(menuModel.count)
+            }
         }
     }
 
-    fun addMenuToCart() = viewModelScope.launch {
-        currentMenu?.menu?.let {
-            val cartMenu = CartMenuModel(
-                menuId = it.id,
-                name = it.name,
-                image = it.image,
-                salePrice = it.salePrice,
-                count = count.value,
-                selected = true // 기본은 선택된 상태
-            )
-            addOrReplaceMenuToCartUseCase(cartMenu)
-                .onSuccess {
-//                    _orderBottomSheetUiState.value = OrderBottomSheetUiState.SuccessAddToCart
-                    _orderBottomSheetUiState.value = OrderBottomSheetUiState.FailAddToCart
-                }
-                .onFailure {
-                    _orderBottomSheetUiState.value = OrderBottomSheetUiState.FailAddToCart
-                }
+    fun addMenuToCart() {
+        viewModelScope.launch {
+            _orderBottomSheetUiState.value = OrderBottomSheetUiState.Loading
+            currentMenu?.menu?.let {
+                val cartMenu = CartMenuModel(
+                    menuId = it.id,
+                    name = it.name,
+                    image = it.image,
+                    salePrice = it.salePrice,
+                    count = count.value,
+                    selected = true // 기본은 선택된 상태
+                )
+                addOrReplaceMenuToCartUseCase(cartMenu)
+                    .onSuccess {
+                        _orderBottomSheetUiState.value = OrderBottomSheetUiState.SuccessAddToCart
+                    }
+                    .onFailure {
+                        _orderBottomSheetUiState.value = OrderBottomSheetUiState.FailAddToCart
+                    }
+            }
         }
     }
 }
 
 sealed interface OrderBottomSheetUiState {
     object UnInitialized : OrderBottomSheetUiState // 초기
+    object Loading : OrderBottomSheetUiState
     object SuccessAddToCart : OrderBottomSheetUiState // 장바구니 추가 성공
     object FailAddToCart : OrderBottomSheetUiState // 장바구니 추가 실패
 }
