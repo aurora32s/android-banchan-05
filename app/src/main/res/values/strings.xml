@@ -103,4 +103,7 @@
     <!-- 에러 메세지 -->
     <string name="fail_to_add_cart">장바구니에 추가하는 도중 문제가 발생했어요.</string>
     <string name="warn_none_data">텅!! 비었어요.</string>
+    <string name="warn_exception_occur">헠!! 문제가 발생했어요.</string>
+    <string name="btn_re_request">재요청</string>
+    <string name="msg_data_re_request">다시 요청하려면 오른쪽 버튼을 눌러주세요.</string>
 </resources>
