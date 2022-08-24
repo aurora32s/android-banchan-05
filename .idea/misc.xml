@@ -3,7 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable/background_black_circle.xml" value="0.121" />
         <entry key="app/src/main/res/drawable/background_chip.xml" value="0.1005" />
+        <entry key="app/src/main/res/drawable/background_rounded_button.xml" value="0.121" />
+        <entry key="app/src/main/res/drawable/background_rounded_rect.xml" value="0.121" />
+        <entry key="app/src/main/res/drawable/background_rounded_surface.xml" value="0.121" />
         <entry key="app/src/main/res/drawable/background_toggle_on.xml" value="0.10840557861328126" />
         <entry key="app/src/main/res/drawable/ic_active_indicator.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_cart.xml" value="0.2135" />

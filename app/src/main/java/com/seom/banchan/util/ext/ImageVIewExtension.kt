@@ -1,11 +1,8 @@
 package com.seom.banchan.util.ext
 
 import android.annotation.SuppressLint
-import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
 import androidx.annotation.DrawableRes
-import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -32,12 +29,12 @@ fun ImageView.load(
 fun ImageView.setIconDrawable(
     @DrawableRes
     imageId: Int,
-    corner: Float = 0f
+    circleCrop: Boolean = false
 ) {
     Glide.with(this.context)
-        .load(this.context.getDrawable(imageId))
+        .load(imageId)
         .apply {
-            if (corner > 0) transform(CenterInside(), RoundedCorners(corner.fromDpToPx()))
+            if (circleCrop) circleCrop()
         }
         .into(this)
 }

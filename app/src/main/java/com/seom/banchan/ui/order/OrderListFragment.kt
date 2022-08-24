@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.seom.banchan.R
 import com.seom.banchan.databinding.FragmentOrderListBinding
@@ -20,9 +19,9 @@ import com.seom.banchan.ui.order.detail.OrderDetailFragment
 import com.seom.banchan.util.exception.DatabaseFlowException
 import com.seom.banchan.util.ext.repeatLaunch
 import com.seom.banchan.util.ext.setIconDrawable
+import com.seom.banchan.util.ext.snackBarForReRequest
 import com.seom.banchan.util.listener.ModelAdapterListener
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class OrderListFragment : BaseFragment() {
@@ -79,7 +78,7 @@ class OrderListFragment : BaseFragment() {
                     }
                 }
             } catch (exception: DatabaseFlowException) {
-
+                showReRequestSnackBar()
             }
         }
     }
@@ -91,9 +90,19 @@ class OrderListFragment : BaseFragment() {
 
     private fun hideList() = binding?.let {
         it.rvOrderList.isGone = true
-        it.tvWarnMsg.text = requireContext().getString(R.string.warn_none_data)
+        it.tvWarnMsg.text = getString(R.string.warn_none_data)
         it.ivWarnIcon.setIconDrawable(R.drawable.ic_common_icon)
         it.grWarn.isVisible = true
+    }
+
+    private fun showReRequestSnackBar() = binding?.let {
+        it.rvOrderList.isGone = true
+        it.tvWarnMsg.text = getString(R.string.warn_exception_occur)
+        it.ivWarnIcon.setIconDrawable(R.drawable.ic_error, true)
+        it.grWarn.isVisible = true
+        requireContext().snackBarForReRequest(it.root) {
+            initObserver()
+        }
     }
 
     /**
