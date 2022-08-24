@@ -21,6 +21,7 @@ import com.seom.banchan.util.ext.repeatLaunch
 import com.seom.banchan.util.ext.setIconDrawable
 import com.seom.banchan.util.ext.snackBarForReRequest
 import com.seom.banchan.util.listener.ModelAdapterListener
+import com.seom.banchan.util.provider.impl.ResourceProviderImpl
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -34,7 +35,8 @@ class OrderListFragment : BaseFragment() {
 
     private val orderListAdapter by lazy {
         ModelRecyclerAdapter<OrderListItemUiModel>(
-            object : ModelAdapterListener {
+            resourceProvider = ResourceProviderImpl(requireContext()),
+            modelAdapterListener = object : ModelAdapterListener {
                 override fun onClick(view: View, model: Model, position: Int) {
                     if (model.type == CellType.ORDER_LIST_ITEM) {
                         val orderId = (model as OrderListItemUiModel).orderId

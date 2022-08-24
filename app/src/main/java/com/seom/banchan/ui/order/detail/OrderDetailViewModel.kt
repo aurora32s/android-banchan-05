@@ -1,6 +1,5 @@
 package com.seom.banchan.ui.order.detail
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seom.banchan.domain.model.order.OrderModel
@@ -21,9 +20,9 @@ class OrderDetailViewModel @Inject constructor(
     private val getDetailOrderInfoUseCase: GetDetailOrderInfoUseCase
 ) : ViewModel() {
 
-    private val _orderUiState =
+    private val _orderDetailUiState =
         MutableStateFlow<OrderDetailUiState>(OrderDetailUiState.UnInitialized)
-    val orderUiState = _orderUiState.asStateFlow()
+    val orderDetailUiState = _orderDetailUiState.asStateFlow()
 
     // 주문 배달 상태
     private val _orderDeliveryState = MutableStateFlow(OrderDeliveryState.DELIVERING)
@@ -49,12 +48,12 @@ class OrderDetailViewModel @Inject constructor(
     }
 
     fun fetchData(orderId: Long) {
-        _orderUiState.value = OrderDetailUiState.Loading
+        _orderDetailUiState.value = OrderDetailUiState.Loading
         viewModelScope.launch {
             getDetailOrderInfoUseCase(orderId)
-                .onSuccess {
-                    val order: OrderModel = it.order.first()
-                    val orderMenus = it.menus.map { it.toUiModel() }
+                .onSuccess { orderDetail ->
+                    val order: OrderModel = orderDetail.order.first()
+                    val orderMenus = orderDetail.menus.map { it.toUiModel() }
                     val menuCount = orderMenus.sumOf { it.count }
 
                     _extraTime.value =
@@ -75,19 +74,22 @@ class OrderDetailViewModel @Inject constructor(
                         orderPrice = orderMenus.sumOf { it.salePrice * it.count }
                     )
 
-                    _orderUiState.value = OrderDetailUiState.Success(
+                    _orderDetailUiState.value = OrderDetailUiState.Success(
                         order = orderState,
                         menus = orderMenus,
                         orderInfo = orderInfo
                     )
 
-                    it.order.collect {
-                        _orderDeliveryState.value = it.deliveryState
-                    }
+                    orderDetail.order
+                        .catch {
+                            _orderDetailUiState.value = OrderDetailUiState.Error
+                        }
+                        .collect {
+                            _orderDeliveryState.value = it.deliveryState
+                        }
                 }
                 .onFailure {
-                    // TODO 실패 처리
-                    _orderUiState.value = OrderDetailUiState.Error
+                    _orderDetailUiState.value = OrderDetailUiState.Error
                 }
         }
     }

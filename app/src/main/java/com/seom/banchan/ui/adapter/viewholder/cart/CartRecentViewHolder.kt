@@ -22,12 +22,15 @@ class CartRecentViewHolder(
     }
 
     override fun bindViews(model: CartRecentModel, menuAdapterListener: ModelAdapterListener?) {
-        val recentMenuAdapter = ModelRecyclerAdapter<HomeMenuModel>(menuAdapterListener)
+        val recentMenuAdapter =
+            ModelRecyclerAdapter<HomeMenuModel>(modelAdapterListener = menuAdapterListener)
         binding.rvCartRecent.layoutManager =
             LinearLayoutManager(binding.root.context, LinearLayoutManager.HORIZONTAL, false)
         binding.rvCartRecent.adapter = recentMenuAdapter
 
-        if (binding.rvCartRecent.itemDecorationCount > 0) binding.rvCartRecent.removeItemDecorationAt(0)
+        if (binding.rvCartRecent.itemDecorationCount > 0) binding.rvCartRecent.removeItemDecorationAt(
+            0
+        )
         binding.rvCartRecent.addItemDecoration(BestItemDecoration(binding.root.context))
 
         recentMenuAdapter.submitList(model.recentMenus)
