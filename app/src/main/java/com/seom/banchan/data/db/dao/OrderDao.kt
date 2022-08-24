@@ -35,33 +35,33 @@ interface OrderDao {
      * 주문 내역 리스트 요청
      */
     @Query(
-        "select\n" +
-                "  o.order_id as order_id,\n" +
-                "  i.name as menu_name,\n" +
-                "  i.image as image,\n" +
-                "  sum(i.sale_price * i.count) as total_price,\n" +
-                "  sum(count) as menu_count,\n" +
-                "  o.delivery_state as delivery_state\n" +
-                "from order_table o, order_item_table i\n" +
-                "where o.order_id = i.order_id\n" +
-                "group by o.order_id"
+        "select " +
+        "  o.order_id as order_id, " +
+        "  i.name as menu_name, " +
+        "  i.image as image, " +
+        "  sum(i.sale_price * i.count) as total_price, " +
+        "  sum(count) as menu_count, " +
+        "  o.delivery_state as delivery_state " +
+        "from order_table o, order_item_table i " +
+        "where o.order_id = i.order_id " +
+        "group by o.order_id"
     )
     fun getOrderList(): Flow<List<OrderListEntity>>
 
     @Query(
-        "select \n" +
-                "  order_id as order_id,\n" +
-                "  menu_name as menu_name,\n" +
-                "  total_count as total_count,\n" +
-                "  expected_time as expected_time\n" +
-                "from order_table o, (\n" +
-                "select\n" +
-                "name as menu_name,\n" +
-                "sum(count) as total_count\n" +
-                "from order_item_table\n" +
-                "where order_id = :orderId\n" +
-                ")\n" +
-                "where order_id = :orderId"
+        "select " +
+        "  order_id as order_id, " +
+        "  menu_name as menu_name, " +
+        "  total_count as total_count, " +
+        "  expected_time as expected_time " +
+        "from order_table o, ( " +
+        "  select " +
+        "    name as menu_name, " +
+        "    sum(count) as total_count " +
+        "  from order_item_table " +
+        "  where order_id = :orderId " +
+        ") " +
+        "where order_id = :orderId"
     )
     fun getDeliveryInfoById(orderId: Long): DeliveryInfoEntity
 

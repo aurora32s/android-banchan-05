@@ -180,7 +180,7 @@ class CartViewModel @Inject constructor(
             addOrderUseCase(orderMenus)
                 .onSuccess {
                     val orderId = it
-                    _cartUiEvent.value = CartUiEventModel.SuccessOrder(it)
+                    _cartUiEvent.value = CartUiEventModel.SuccessOrder(orderId)
                     removeItems()
                 }
                 .onFailure {
