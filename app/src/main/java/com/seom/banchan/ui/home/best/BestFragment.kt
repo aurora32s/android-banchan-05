@@ -49,7 +49,7 @@ class BestFragment : BaseFragment() {
             object : ModelAdapterListener {
                 override fun onClick(view: View, model: Model, position: Int) {
                     when (model.type) {
-                        CellType.MENU_CELL -> {
+                        CellType.MENU_BEST_CELL -> {
                             if (view.id == R.id.iv_menu_thumbnail) {
                                 (model as? HomeMenuModel)?.menu?.let {
                                     fragmentNavigation.replaceFragment(

@@ -11,13 +11,17 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
+import java.lang.Error
 import javax.inject.Inject
 
 @HiltViewModel
 class OrderBottomSheetViewModel @Inject constructor(
     private val addOrReplaceMenuToCartUseCase: AddOrReplaceMenuToCartUseCase
 ) : ViewModel() {
-    private var currentMenu: HomeMenuModel? = null
+
+    // 사용자가 선택해서 Bottom Sheet에 보여지고 있는 메뉴
+    var currentMenu: HomeMenuModel? = null
+        private set
 
     private val _orderBottomSheetUiState =
         MutableStateFlow<OrderBottomSheetUiState>(OrderBottomSheetUiState.UnInitialized)
@@ -61,7 +65,11 @@ class OrderBottomSheetViewModel @Inject constructor(
             )
             addOrReplaceMenuToCartUseCase(cartMenu)
                 .onSuccess {
-                    _orderBottomSheetUiState.value = OrderBottomSheetUiState.SuccessAddToCart
+//                    _orderBottomSheetUiState.value = OrderBottomSheetUiState.SuccessAddToCart
+                    _orderBottomSheetUiState.value = OrderBottomSheetUiState.FailAddToCart
+                }
+                .onFailure {
+                    _orderBottomSheetUiState.value = OrderBottomSheetUiState.FailAddToCart
                 }
         }
     }

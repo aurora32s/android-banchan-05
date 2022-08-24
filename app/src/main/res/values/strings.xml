@@ -99,4 +99,7 @@
 
     <!-- 앱바 -->
     <string name="appbar_cart_over">10+</string>
+
+    <!-- 에러 메세지 -->
+    <string name="fail_to_add_cart">장바구니에 추가하는 도중 문제가 발생했어요.</string>
 </resources>

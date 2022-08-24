@@ -38,7 +38,7 @@ class HomeFragment : BaseFragment(), CartBottomSheetManager {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setToolBar(viewLifecycleOwner, viewModel.cartMenus,viewModel.orderList)
+        setToolBar(viewLifecycleOwner, viewModel.cartMenus, viewModel.orderList)
         initViewPager()
     }
 
@@ -64,7 +64,7 @@ class HomeFragment : BaseFragment(), CartBottomSheetManager {
     override fun showBottomSheet(menu: HomeMenuModel) {
         OrderCartBottomSheetManager.build(childFragmentManager)
             .setOnClickMoveToCartListener {
-                fragmentNavigation.replaceFragment(CartFragment.newInstance(),CartFragment.TAG)
+                fragmentNavigation.replaceFragment(CartFragment.newInstance(), CartFragment.TAG)
             }
             .show(currentMenuModel = menu)
     }

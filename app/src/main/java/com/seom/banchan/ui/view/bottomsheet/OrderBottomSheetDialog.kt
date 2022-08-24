@@ -11,13 +11,12 @@ import com.seom.banchan.R
 import com.seom.banchan.databinding.FragmentOrderBottomSheetBinding
 import com.seom.banchan.ui.model.home.HomeMenuModel
 import com.seom.banchan.util.ext.repeatLaunch
+import com.seom.banchan.util.ext.toast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class OrderBottomSheetDialog(
-    private val supportFragmentManager: FragmentManager
-) : BottomSheetDialogFragment() {
+class OrderBottomSheetDialog : BottomSheetDialogFragment() {
 
     private val viewModel: OrderBottomSheetViewModel by viewModels()
 
@@ -39,8 +38,6 @@ class OrderBottomSheetDialog(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding?.menu = menuModel
-
         initBind()
         initObserver()
     }
@@ -70,7 +67,10 @@ class OrderBottomSheetDialog(
     private suspend fun observeUiState() {
         viewModel.orderBottomSheetUiState.collect {
             when (it) {
-                OrderBottomSheetUiState.UnInitialized -> viewModel.init(menuModel)
+                OrderBottomSheetUiState.UnInitialized -> {
+                    viewModel.init(menuModel)
+                    binding?.menu = menuModel
+                }
                 OrderBottomSheetUiState.SuccessAddToCart -> {
                     if (::onSuccessAddToCart.isInitialized) {
                         onSuccessAddToCart()
@@ -78,7 +78,7 @@ class OrderBottomSheetDialog(
                     }
                 }
                 OrderBottomSheetUiState.FailAddToCart -> {
-
+                    requireContext().toast(requireContext().getString(R.string.fail_to_add_cart))
                 }
             }
         }
@@ -100,7 +100,7 @@ class OrderBottomSheetDialog(
         return this
     }
 
-    fun show() {
+    fun show(supportFragmentManager: FragmentManager) {
         show(supportFragmentManager, TAG)
     }
 
@@ -113,7 +113,6 @@ class OrderBottomSheetDialog(
 
     companion object {
         const val TAG = "OrderBottomSheetDialog"
-        fun build(fragmentManager: FragmentManager) =
-            OrderBottomSheetDialog(fragmentManager)
+        fun build() = OrderBottomSheetDialog()
     }
 }
