@@ -18,7 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CartViewModel @Inject constructor(
-    private val getCartMenusIdUseCase: GetCartMenusIdUseCase,
+    private val getCartMenusUseCase: GetCartMenusUseCase,
     private val deleteCartMenuListUseCase: DeleteCartMenuListUseCase,
     private val deleteCartMenuUseCase: DeleteCartMenuUseCase,
     private val updateCartMenuListSelectedUseCase: UpdateCartMenuListSelectedUseCase,
@@ -45,7 +45,7 @@ class CartViewModel @Inject constructor(
     val cartMenus: StateFlow<List<CartMenuUiModel>>
         get() = _cartMenus
 
-    private val _cartCheck = MutableStateFlow<CartCheckModel>(
+    private val _cartCheck = MutableStateFlow(
         CartCheckModel()
     )
     val cartCheck = _cartCheck.asStateFlow()
@@ -57,7 +57,7 @@ class CartViewModel @Inject constructor(
             )
         }
 
-    private val _orderInfo = MutableStateFlow<OrderInfoModel>(OrderInfoModel())
+    private val _orderInfo = MutableStateFlow(OrderInfoModel())
     val orderInfo = _orderInfo.asStateFlow()
         .combine(cartMenus) { _, menus ->
             OrderInfoModel(
@@ -69,7 +69,7 @@ class CartViewModel @Inject constructor(
             )
         }
 
-    private val _cartOrder = MutableStateFlow<CartOrderModel>(CartOrderModel(totalPrice = 0))
+    private val _cartOrder = MutableStateFlow(CartOrderModel(totalPrice = 0))
     val cartOrder = _cartOrder.asStateFlow()
         .combine(orderInfo) { _, info ->
             CartOrderModel(
@@ -77,7 +77,7 @@ class CartViewModel @Inject constructor(
             )
         }
 
-    private val _cartRecent = MutableStateFlow<CartRecentModel>(
+    private val _cartRecent = MutableStateFlow(
         CartRecentModel()
     )
     val cartRecent: StateFlow<CartRecentModel>
@@ -89,7 +89,7 @@ class CartViewModel @Inject constructor(
 
     private fun fetchCartMenus() {
         viewModelScope.launch {
-            getCartMenusIdUseCase().collectLatest { list ->
+            getCartMenusUseCase().collectLatest { list ->
                 _cartMenus.value = list.map {
                     it.toUiModel()
                 }

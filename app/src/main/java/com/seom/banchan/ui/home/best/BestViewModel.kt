@@ -4,7 +4,7 @@ import androidx.lifecycle.*
 import com.seom.banchan.R
 import com.seom.banchan.domain.model.home.CategoryModel
 import com.seom.banchan.domain.model.home.toUiModel
-import com.seom.banchan.domain.usecase.GetCartMenusIdUseCase
+import com.seom.banchan.domain.usecase.GetCartMenusUseCase
 import com.seom.banchan.domain.usecase.GetMenuWithCategoriesUseCase
 import com.seom.banchan.ui.model.Model
 import com.seom.banchan.ui.model.home.HeaderMenuModel
@@ -16,10 +16,10 @@ import javax.inject.Inject
 @HiltViewModel
 class BestViewModel @Inject constructor(
     private val getMenuWithCategoriesUseCase: GetMenuWithCategoriesUseCase,
-    getCartMenusIdUseCase: GetCartMenusIdUseCase
+    getCartMenusUseCase: GetCartMenusUseCase
 ) : ViewModel() {
 
-    private val cartMenus = getCartMenusIdUseCase()
+    private val cartMenus = getCartMenusUseCase()
     private val _bestMenus = MutableStateFlow<List<CategoryModel>>(emptyList())
     val bestMenus = _bestMenus.asStateFlow()
         .combine(cartMenus) { menus, carts ->

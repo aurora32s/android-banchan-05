@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.seom.banchan.databinding.*
 import com.seom.banchan.ui.adapter.viewholder.ModelViewHolder
+import com.seom.banchan.ui.adapter.viewholder.NoneDataViewHolder
 import com.seom.banchan.ui.adapter.viewholder.cart.CartCheckViewHolder
 import com.seom.banchan.ui.adapter.viewholder.cart.CartMenuViewHolder
 import com.seom.banchan.ui.adapter.viewholder.cart.CartOrderViewHolder
@@ -101,6 +102,9 @@ object ModelViewHolderMapper {
             )
             CellType.ORDER_MENU_CELL -> OrderMenuViewHolder(
                 ItemOrderDetailMenuBinding.inflate(inflater, parent, false)
+            )
+            CellType.NONE_DATE_CELL -> NoneDataViewHolder(
+                ItemNoneDataBinding.inflate(inflater, parent, false)
             )
         }
         return viewHolder as ModelViewHolder<M>
