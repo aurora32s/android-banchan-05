@@ -4,9 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.seom.banchan.R
 import com.seom.banchan.databinding.FragmentOrderListBinding
 import com.seom.banchan.ui.adapter.ModelRecyclerAdapter
 import com.seom.banchan.ui.base.BaseFragment
@@ -14,7 +17,9 @@ import com.seom.banchan.ui.model.CellType
 import com.seom.banchan.ui.model.Model
 import com.seom.banchan.ui.model.order.OrderListItemUiModel
 import com.seom.banchan.ui.order.detail.OrderDetailFragment
+import com.seom.banchan.util.exception.DatabaseFlowException
 import com.seom.banchan.util.ext.repeatLaunch
+import com.seom.banchan.util.ext.setIconDrawable
 import com.seom.banchan.util.listener.ModelAdapterListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -64,10 +69,31 @@ class OrderListFragment : BaseFragment() {
      */
     private fun initObserver() {
         repeatLaunch {
-            viewModel.orderList().collect {
-                orderListAdapter.submitList(it)
+            try {
+                viewModel.orderList().collect {
+                    if (it.isEmpty()) {
+                        hideList()
+                    } else {
+                        showList()
+                        orderListAdapter.submitList(it)
+                    }
+                }
+            } catch (exception: DatabaseFlowException) {
+
             }
         }
+    }
+
+    private fun showList() = binding?.let {
+        it.grWarn.isGone = true
+        it.rvOrderList.isVisible = true
+    }
+
+    private fun hideList() = binding?.let {
+        it.rvOrderList.isGone = true
+        it.tvWarnMsg.text = requireContext().getString(R.string.warn_none_data)
+        it.ivWarnIcon.setIconDrawable(R.drawable.ic_common_icon)
+        it.grWarn.isVisible = true
     }
 
     /**

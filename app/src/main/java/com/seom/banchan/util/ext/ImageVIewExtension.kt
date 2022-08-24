@@ -1,5 +1,6 @@
 package com.seom.banchan.util.ext
 
+import android.annotation.SuppressLint
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -26,13 +27,17 @@ fun ImageView.load(
         .into(this)
 }
 
-@BindingAdapter("iconDrawable")
+@SuppressLint("UseCompatLoadingForDrawables")
+@BindingAdapter(value = ["imageId", "corner"], requireAll = false)
 fun ImageView.setIconDrawable(
     @DrawableRes
-    imageId: Int
+    imageId: Int,
+    corner: Float = 0f
 ) {
     Glide.with(this.context)
-        .load(imageId)
+        .load(this.context.getDrawable(imageId))
+        .apply {
+            if (corner > 0) transform(CenterInside(), RoundedCorners(corner.fromDpToPx()))
+        }
         .into(this)
-//    setImageDrawable(ContextCompat.getDrawable(context, imageId))
 }

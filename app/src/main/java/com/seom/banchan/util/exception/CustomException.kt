@@ -1,3 +1,3 @@
 package com.seom.banchan.util.exception
 
-class NoneDataException(message: String) : Exception(message)
+class DatabaseFlowException(message: String) : Exception(message)
