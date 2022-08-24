@@ -7,10 +7,7 @@ import com.seom.banchan.domain.model.home.MenuModel
 import com.seom.banchan.domain.model.home.toHomeMenuModel
 import com.seom.banchan.domain.usecase.*
 import com.seom.banchan.ui.model.CellType
-import com.seom.banchan.ui.model.cart.CartCheckModel
-import com.seom.banchan.ui.model.cart.CartMenuUiModel
-import com.seom.banchan.ui.model.cart.CartOrderModel
-import com.seom.banchan.ui.model.cart.CartRecentModel
+import com.seom.banchan.ui.model.cart.*
 import com.seom.banchan.ui.model.order.OrderInfoModel
 import com.seom.banchan.util.TimeUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,13 +25,18 @@ class CartViewModel @Inject constructor(
     private val updateCartMenuCountIncreaseUseCase: UpdateCartMenuCountIncreaseUseCase,
     private val updateCartMenuCountDecreaseUseCase: UpdateCartMenuCountDecreaseUseCase,
     private val updateCartMenuCountUseCase: UpdateCartMenuCountUseCase,
-    private val getRecentMenusUseCase: GetRecentMenusUseCase
+    private val getRecentMenusUseCase: GetRecentMenusUseCase,
+    private val addOrderUseCase: AddOrderUseCase // 주문하기
 ) : ViewModel() {
 
     init {
         fetchRecentMenus()
         fetchCartMenus()
     }
+
+    // cart ui 상태
+    private val _cartUiEvent = MutableStateFlow<CartUiEventModel>(CartUiEventModel.UnInitialized)
+    val cartUiEvent = _cartUiEvent.asStateFlow()
 
     private val _cartMenus = MutableStateFlow<List<CartMenuUiModel>>(
         mutableListOf()
@@ -81,7 +83,7 @@ class CartViewModel @Inject constructor(
         get() = _cartRecent
 
     private val _orderEventFlow = MutableStateFlow(-1L)
-    val orderEventFlow : StateFlow<Long>
+    val orderEventFlow: StateFlow<Long>
         get() = _orderEventFlow
 
     private fun fetchCartMenus() {
@@ -158,7 +160,7 @@ class CartViewModel @Inject constructor(
         }
     }
 
-    fun updateCount(cartMenuUiModel: CartMenuUiModel, count : Int){
+    fun updateCount(cartMenuUiModel: CartMenuUiModel, count: Int) {
         viewModelScope.launch {
             updateCartMenuCountUseCase(
                 menuId = cartMenuUiModel.menu.id,
@@ -167,15 +169,22 @@ class CartViewModel @Inject constructor(
         }
     }
 
-    fun insertOrderAndRemoveCartMenus(){
+    fun insertOrderAndRemoveCartMenus() {
         viewModelScope.launch {
-            cartMenus.value.filter {
+            val orderMenus = cartMenus.value.filter {
                 it.checked
+            }.map {
+                it.toOrderItemModel()
             }
-            // TODO 주문하는 유즈케이스
-            // 주문 성공하면 카트에서 메뉴 삭제
-            removeItems()
-            _orderEventFlow.value = 0L // order insert 이후 받은 orderId 값
+            addOrderUseCase(orderMenus)
+                .onSuccess {
+                    val orderId = it
+                    _cartUiEvent.value = CartUiEventModel.SuccessOrder(orderId)
+                    removeItems()
+                }
+                .onFailure {
+
+                }
         }
     }
 
@@ -191,4 +200,11 @@ class CartViewModel @Inject constructor(
             }
         }
     }
+}
+
+sealed interface CartUiEventModel {
+    object UnInitialized : CartUiEventModel
+    data class SuccessOrder(
+        val orderId: Long
+    ) : CartUiEventModel
 }

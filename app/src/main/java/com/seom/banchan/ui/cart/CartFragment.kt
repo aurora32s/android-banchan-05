@@ -160,15 +160,16 @@ class CartFragment : BaseFragment() {
                     }
                 }
                 launch {
-                    viewModel.orderEventFlow.collectLatest {
-                        if(it != -1L){
-                            fragmentNavigation.popStack()
-//                    fragmentNavigation.replaceFragment(
-//                        OrderDetailFragment.newInstance(it)
-//                    )  orderId에 해당하는 OrderDetail 이 없으면 OrderDetailViewModel - fetchData 에서
-//                       size가 0인 success 가 나옴. -> 에러 발생 -> 앱 종료
-//                       size 가 0일 때도 error로 처리하게 변경하는게 어떨지 싶습니다.
-                            Toast.makeText(requireContext(),"주문이 완료되었습니다.",Toast.LENGTH_SHORT).show()
+                    viewModel.cartUiEvent.collectLatest {
+                        when (it) {
+                            is CartUiEventModel.SuccessOrder -> {
+                                fragmentNavigation.popStack()
+                                fragmentNavigation.replaceFragment(
+                                    OrderDetailFragment.newInstance(it.orderId),
+                                    OrderDetailFragment.TAG
+                                )
+                            }
+                            CartUiEventModel.UnInitialized -> {}
                         }
                     }
                 }

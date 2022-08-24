@@ -39,3 +39,12 @@ fun OrderItemEntity.toModel() = OrderItemModel(
     salePrice = salePrice,
     count = count
 )
+
+fun OrderItemModel.toEntity(orderId: Long) = OrderItemEntity(
+    menuId = menuId,
+    orderId = orderId,
+    name = name,
+    image = image,
+    salePrice = salePrice,
+    count = count
+)

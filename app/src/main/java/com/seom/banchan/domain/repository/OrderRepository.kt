@@ -1,6 +1,7 @@
 package com.seom.banchan.domain.repository
 
 import com.seom.banchan.domain.model.order.OrderDetailModel
+import com.seom.banchan.domain.model.order.OrderItemModel
 import com.seom.banchan.domain.model.order.OrderListModel
 import kotlinx.coroutines.flow.Flow
 
@@ -19,4 +20,9 @@ interface OrderRepository {
      * 특정 주문 배달 완료 처리
      */
     suspend fun setDeliveryCompletedById(orderId: Long): Result<Int>
+
+    /**
+     * 주문하기
+     */
+    suspend fun addOrder(orderItems: List<OrderItemModel>): Result<Long>
 }

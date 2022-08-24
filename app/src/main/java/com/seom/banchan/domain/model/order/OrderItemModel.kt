@@ -4,7 +4,7 @@ import com.seom.banchan.ui.model.order.OrderMenuUiModel
 
 data class OrderItemModel(
     val menuId: String,
-    val orderId: Long,
+    val orderId: Long? = null,
     val name: String,
     val image: String?,
     val salePrice: Int,

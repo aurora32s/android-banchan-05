@@ -12,15 +12,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class OrderListViewModel @Inject constructor(
-    private val getOrderListUseCase: GetOrderListUseCase,
-    private val orderDataSource: OrderDataSource
+    private val getOrderListUseCase: GetOrderListUseCase
 ) : ViewModel() {
-
-    init {
-        viewModelScope.launch {
-            orderDataSource.insertOrder()
-        }
-    }
     /**
      * 주문 내역 리스트 flow from database
      */
