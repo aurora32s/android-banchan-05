@@ -83,7 +83,7 @@ class CartFragment : BaseFragment() {
                                 )
                             }
                         }
-                        CellType.MENU_RECENT_CELL -> {
+                        CellType.CART_MENU_RECENT_CELL -> {
                             if (view.id == R.id.iv_menu_thumbnail) {
                                 (model as? HomeMenuModel)?.menu?.let {
                                     fragmentNavigation.replaceFragment(
