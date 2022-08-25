@@ -66,7 +66,7 @@ class CartDaoTest {
     }
 
     @Test
-    fun insert_CartList_true() = runTest {
+    fun `카트에_추가가_되었다`() = runTest {
         cartDao.insertOrReplaceCartMenu(cartMenuEntity)
         val menus = cartDao.getCartMenus().first()
 
@@ -76,7 +76,7 @@ class CartDaoTest {
     }
 
     @Test
-    fun update_CartList_true() = runTest {
+    fun `이미_추가된_상품을_다시_추가하면_해당_상품은_업데이트된다`() = runTest {
         cartDao.insertOrReplaceCartMenu(cartMenuEntity.copy(
             name = "오리 주물럭_조리"
         ))
@@ -90,7 +90,7 @@ class CartDaoTest {
     }
 
     @Test
-    fun isSame_CartMenu_true() = runTest {
+    fun `메뉴ID를_통해_카트에_담긴_상품을_조회할_수_있다`() = runTest {
         cartDao.insertOrReplaceCartMenu(cartMenuEntity.copy(
             name = "오리 주물럭_반조리"
         ))
@@ -101,7 +101,7 @@ class CartDaoTest {
     }
 
     @Test
-    fun isSame_CartMenus_true() = runTest {
+    fun `카트에_담긴_상품을_모두_조회할_수_있다`() = runTest {
         cartMenuEntityList.forEach {
             cartDao.insertOrReplaceCartMenu(it)
         }
@@ -113,7 +113,7 @@ class CartDaoTest {
     }
 
     @Test
-    fun isDeleted_CartMenu_true() = runTest {
+    fun `카트에서_메뉴ID를_통해_상품을_삭제할_수_있다`() = runTest {
         cartDao.insertOrReplaceCartMenu(cartMenuEntity)
         cartDao.deleteCartMenu(cartMenuEntity.menuId)
 
@@ -124,12 +124,12 @@ class CartDaoTest {
     }
 
     @Test
-    fun isDeleted_selectedCartMenus_true() = runTest { // 선택한 메뉴가 삭제됐는가
+    fun `선택_상태인_상품읆_모두_삭제할_수_있다`() = runTest { // 선택한 메뉴가 삭제됐는가
 
     }
 
     @Test
-    fun isUpdated_selectedCartMenu_true() = runTest { // 해당 메뉴가 선택 상태로 됐는가
+    fun `메뉴ID를_통해_상품을_선택_상태로_변경할_수_있다`() = runTest { // 해당 메뉴가 선택 상태로 됐는가
         cartDao.insertOrReplaceCartMenu(cartMenuEntity.copy(
             selected = false
         ))
@@ -142,12 +142,17 @@ class CartDaoTest {
     }
 
     @Test
-    fun isUpdated_selectedCartMenus_true() = runTest { // 전체 선택이 제대로 됐는가
+    fun `상품들을_모두_전체_선택_상태로_변경할_수_있다`() = runTest { // 전체 선택이 제대로 됐는가
 
     }
 
     @Test
-    fun isUpdated_countCartMenu_true() = runTest { // 메뉴 개수 변경이 제대로 됐는가
+    fun `선택된_상품들을_모두_선택_해제_상태로_변경할_수_있다`() = runTest {
+
+    }
+
+    @Test
+    fun `상품의_개수를_변경할_수_있다`() = runTest { // 메뉴 개수 변경이 제대로 됐는가
         cartDao.insertOrReplaceCartMenu(cartMenuEntity.copy(
             count = 1
         ))
@@ -160,7 +165,7 @@ class CartDaoTest {
     }
 
     @Test
-    fun isUpdated_increaseCountCartMenu_true() = runTest { // 메뉴 개수 증가가 제대로 됐는가
+    fun `싱픔의_개수를_1_증가시킬_수_있다`() = runTest { // 메뉴 개수 증가가 제대로 됐는가
         cartDao.insertOrReplaceCartMenu(cartMenuEntity.copy(
             count = 1
         ))
@@ -173,7 +178,7 @@ class CartDaoTest {
     }
 
     @Test
-    fun isUpdated_decreaseCountCartMenu_true() = runTest { // 메뉴 개수 감소가 제대로 됐는가
+    fun `상품의_개수를_1_감소시킬_수_있다`() = runTest { // 메뉴 개수 감소가 제대로 됐는가
         cartDao.insertOrReplaceCartMenu(cartMenuEntity.copy(
             count = 30
         ))
