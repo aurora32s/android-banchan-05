@@ -73,7 +73,6 @@ class MainDishFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
         initObserver()
-        viewModel.fetchSortedMainMenus(SortItem.BASE)
     }
 
     private fun initObserver() {

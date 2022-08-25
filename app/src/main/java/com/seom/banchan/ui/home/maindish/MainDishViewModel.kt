@@ -20,6 +20,10 @@ class MainDishViewModel @Inject constructor(
     getCartMenusUseCase: GetCartMenusUseCase
 ) : ViewModel() {
 
+    init {
+        fetchSortedMainMenus(SortItem.BASE)
+    }
+
 //    private val _mainDishUiState = MutableStateFlow<MainDishUiState>(MainDishUiState())
 //    val mainDishUiState: StateFlow<MainDishUiState>
 //        get() = _mainDishUiState
@@ -31,7 +35,7 @@ class MainDishViewModel @Inject constructor(
     private val cartMenus = getCartMenusUseCase()
     private val _mainMenus = MutableStateFlow<List<MenuModel>>(emptyList())
     val mainMenus = _mainMenus
-        .combine(_toggleState) { menus, _ -> menus }
+        .combine(toggleState) { menus, _ -> menus }
         .combine(cartMenus) { menus, carts ->
             menus.map {
                 it.toHomeMenuModel(
@@ -43,6 +47,11 @@ class MainDishViewModel @Inject constructor(
                 )
             }
         }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(1000),
+            initialValue = emptyList()
+        )
 
     private var menuModels = emptyList<MenuModel>()
 
