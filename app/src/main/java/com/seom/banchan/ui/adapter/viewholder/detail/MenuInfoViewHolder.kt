@@ -10,6 +10,7 @@ import com.seom.banchan.ui.model.CellType
 import com.seom.banchan.ui.model.detail.DetailMenuUiModel
 import com.seom.banchan.ui.model.imageSlider.ImageSliderModel
 import com.seom.banchan.util.ext.addIconImageView
+import com.seom.banchan.util.ext.setDrawableRes
 import com.seom.banchan.util.ext.setIconDrawable
 
 class MenuInfoViewHolder(
@@ -58,7 +59,7 @@ class MenuInfoViewHolder(
 
     private fun setCurrentIndicator(position: Int) = with(binding) {
         for (index in 0 until llIndicator.childCount) {
-            (llIndicator.getChildAt(index) as ImageView).setIconDrawable(
+            (llIndicator.getChildAt(index) as ImageView).setDrawableRes(
                 if (index == position) R.drawable.ic_active_indicator
                 else R.drawable.ic_normal_indicator
             )

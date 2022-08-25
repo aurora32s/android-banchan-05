@@ -13,6 +13,7 @@ import com.seom.banchan.databinding.FragmentDetailBinding
 import com.seom.banchan.domain.model.home.MenuModel
 import com.seom.banchan.ui.adapter.ModelRecyclerAdapter
 import com.seom.banchan.ui.base.BaseFragment
+import com.seom.banchan.ui.cart.CartFragment
 import com.seom.banchan.ui.home.HomeFragment
 import com.seom.banchan.ui.model.CellType
 import com.seom.banchan.ui.model.Model
@@ -22,8 +23,11 @@ import com.seom.banchan.ui.model.detail.MenuCountModel
 import com.seom.banchan.ui.model.imageSlider.ImageSliderModel
 import com.seom.banchan.ui.view.dialog.DetailAddCartAlert
 import com.seom.banchan.util.ext.fromDpToPx
+import com.seom.banchan.util.ext.repeatLaunch
+import com.seom.banchan.util.ext.toast
 import com.seom.banchan.util.listener.ModelAdapterListener
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -61,29 +65,44 @@ class DetailFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentDetailBinding.inflate(inflater)
-        // backstack 으로 돌아왔을 때 UiState 상태 값이 마지막 상태에 머물러 있어
-        // onCreateView 에서 UiState 를 초기 값으로 변경
-        viewModel.init()
         return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setToolBar(viewLifecycleOwner,viewModel.cartMenus,viewModel.orderList)
+        setToolBar(viewLifecycleOwner, viewModel.cartMenus, viewModel.orderList)
+
+        // 홈 화면에서 사용자가 선택한 메뉴 정보
         val menu: MenuModel? = arguments?.getSerializable(KEY_MODEL_BUNDLE) as? MenuModel
-        lifecycleScope.launch {
-            viewModel.detailMenuModel.collect {
-                when (it) {
-                    is DetailUiState.Success.SuccessFetch -> {
-                        binding?.detail = it.detailMenu
-                        initRecyclerView(it.detailMenu)
-                        initAppbar()
+        if (menu == null) {
+            fragmentNavigation.popStack()
+            return
+        }
+        initObserve(menu)
+        initAppbar()
+    }
+
+    private fun initObserve(menu: MenuModel) {
+        repeatLaunch {
+            launch {
+                viewModel.currentMenu.collectLatest {
+                    it?.let {
+                        binding?.detail = it
+                        initRecyclerView(it)
                     }
-                    DetailUiState.UnInitialized -> {
-                        viewModel.fetchData(menu)
-                    }
-                    is DetailUiState.Success.SuccessAddToCart -> {
-                        showDialog()
+                }
+            }
+            launch {
+                viewModel.detailUiState.collectLatest {
+                    when (it) {
+                        DetailUiState.UnInitialized -> viewModel.fetchData(menu)
+                        DetailUiState.SuccessAddToCart -> showDialog()
+                        DetailUiState.FailFetchDetail -> {
+
+                        }
+                        DetailUiState.FailAddToCart -> {
+                            requireContext().toast(getString(R.string.fail_to_add_cart))
+                        }
                     }
                 }
             }
@@ -96,6 +115,7 @@ class DetailFragment : BaseFragment() {
             MenuCountModel(id = "menuCount", count = viewModel.count),
             DetailBottomButtonModel(id = "bottomButton", totalCount = viewModel.totalPrice)
         )
+        // 메뉴 설명 이미지들
         detailMenuUiModel.detailMenu.detailImages?.let { image ->
             detailItem += image.map {
                 ImageSliderModel(imageUrl = it, type = CellType.IMAGE_LIST_CELL)
@@ -109,6 +129,9 @@ class DetailFragment : BaseFragment() {
         menuDetailAdapter.submitList(detailItem)
     }
 
+    /**
+     * 사용자가 scroll 시, 화면 상단의 메뉴의 간단 정보 보여주도록 app bar 추가
+     */
     private fun initAppbar() = binding?.let {
         var totalScroll = 0F
         it.rvMenuInfo.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -117,11 +140,7 @@ class DetailFragment : BaseFragment() {
                 totalScroll += dy
 
                 val topPadding = 300f.fromDpToPx().toFloat()
-                if (totalScroll > topPadding) {
-                    it.toolbar.alpha = 1f
-                } else {
-                    it.toolbar.alpha = 0f
-                }
+                it.toolbar.alpha = if (totalScroll > topPadding) 1f else 0f
             }
         })
     }
@@ -130,10 +149,9 @@ class DetailFragment : BaseFragment() {
         // 장바구니 추가 성공 시
         DetailAddCartAlert.build()
             .setOnClickMoveToCart {
-                // TODO 일단 이전화면으로 이동하도록 해두었습니다. 장바구니 화면 완성후 이 부분을 수정하면 될 듯합니다.
                 fragmentNavigation.replaceFragment(
-                    HomeFragment.newInstance(),
-                    HomeFragment.TAG
+                    CartFragment.newInstance(),
+                    CartFragment.TAG
                 )
             }
             .show(childFragmentManager)

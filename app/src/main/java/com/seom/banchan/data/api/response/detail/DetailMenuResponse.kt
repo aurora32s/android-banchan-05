@@ -20,7 +20,7 @@ data class DetailMenuResponse(
  */
 fun DetailMenuResponse.toModel() = DetailMenuModel(
     id = hash,
-    name = data.productDescription ?: "UnKnown",
+    description = data.productDescription ?: "UnKnown",
     thumbnail = data.thumbImages,
     point = data.point?.toIntPrice() ?: 0,
     salePrice = getSalePrice(),

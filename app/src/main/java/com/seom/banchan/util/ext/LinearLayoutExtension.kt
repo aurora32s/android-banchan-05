@@ -12,8 +12,8 @@ fun LinearLayout.addIconImageView(
     marginVertical: Int = 0
 ) {
     val params = LinearLayout.LayoutParams(
-        ViewGroup.LayoutParams.WRAP_CONTENT,
-        ViewGroup.LayoutParams.WRAP_CONTENT
+        LinearLayout.LayoutParams.WRAP_CONTENT,
+        LinearLayout.LayoutParams.WRAP_CONTENT
     )
     params.setMargins(
         marginHorizontal,
@@ -22,7 +22,7 @@ fun LinearLayout.addIconImageView(
         marginVertical
     )
 
-    val image = ImageView(context).apply { setIconDrawable(imageUrl) }
+    val image = ImageView(context).apply { setDrawableRes(imageUrl) }
     image.layoutParams = params
 
     addView(image)

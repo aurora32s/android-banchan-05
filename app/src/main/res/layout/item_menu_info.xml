@@ -30,10 +30,10 @@
             android:gravity="start"
             android:orientation="horizontal"
             android:paddingHorizontal="10dp"
-            android:paddingVertical="16dp"
-            android:paddingBottom="16dp"
+            android:paddingVertical="20dp"
+            app:layout_constraintBottom_toBottomOf="@id/vp_menu_image"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_menu_info"

@@ -24,7 +24,6 @@ fun ImageView.load(
         .into(this)
 }
 
-@SuppressLint("UseCompatLoadingForDrawables")
 @BindingAdapter(value = ["imageId", "corner"], requireAll = false)
 fun ImageView.setIconDrawable(
     @DrawableRes
@@ -37,4 +36,14 @@ fun ImageView.setIconDrawable(
             if (circleCrop) circleCrop()
         }
         .into(this)
+}
+
+@SuppressLint("UseCompatLoadingForDrawables")
+fun ImageView.setDrawableRes(
+    @DrawableRes
+    imageId: Int
+) {
+    this.setImageDrawable(
+        this.context.getDrawable(imageId)
+    )
 }
