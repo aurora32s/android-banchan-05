@@ -6,6 +6,7 @@ import com.seom.banchan.domain.model.home.MenuModel
 import com.seom.banchan.domain.model.home.toHomeMenuModel
 import com.seom.banchan.domain.usecase.GetCartMenusUseCase
 import com.seom.banchan.domain.usecase.GetSoupMenusUseCase
+import com.seom.banchan.ui.home.maindish.MainDishUiState
 import com.seom.banchan.ui.model.Model
 import com.seom.banchan.ui.model.SortItem
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,6 +20,9 @@ class SoupDishViewModel @Inject constructor(
     getCartMenusUseCase: GetCartMenusUseCase
 ) : ViewModel() {
 
+    private val _soupDishUiState = MutableStateFlow<SoupDishUiState>(SoupDishUiState.UnInitialized)
+    val soupDishUiState = _soupDishUiState.asStateFlow()
+
     private val cartMenus = getCartMenusUseCase()
     private val _soupMenus = MutableStateFlow<List<MenuModel>>(emptyList())
     val soupMenus = _soupMenus
@@ -30,23 +34,21 @@ class SoupDishViewModel @Inject constructor(
             started = SharingStarted.WhileSubscribed(1000),
             initialValue = emptyList()
         )
-//    private val _soupDishUiState = MutableStateFlow<SoupDishUiState>(SoupDishUiState())
-//    val soupDishUiState: StateFlow<SoupDishUiState>
-//        get() = _soupDishUiState
 
     fun fetchSortedSoupMenus(sortItem: SortItem) = viewModelScope.launch {
         getSoupMenusUseCase(sortItem.sortCriteria)
             .onSuccess { result ->
                 _soupMenus.value = result
+                _soupDishUiState.value = SoupDishUiState.SuccessFetchMenus
             }
             .onFailure {
-                println(it)
+                _soupDishUiState.value = SoupDishUiState.FailFetchMenus
             }
     }
 }
 
-data class SoupDishUiState(
-    val soupMenus: List<Model> = emptyList(),
-    val isLoading: Boolean = false, // TODO
-    val error: String = "" // TODO
-)
+sealed interface SoupDishUiState {
+    object UnInitialized : SoupDishUiState
+    object SuccessFetchMenus : SoupDishUiState
+    object FailFetchMenus : SoupDishUiState
+}
