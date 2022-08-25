@@ -1,4 +1,4 @@
-package com.seom.banchan
+package com.seom.banchan.data
 
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
