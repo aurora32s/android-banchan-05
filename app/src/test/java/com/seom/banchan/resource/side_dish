@@ -1,5 +1,4 @@
 {
-  "statusCode": 200,
   "body": [
     {
       "detail_hash": "HBBCC",
@@ -29,22 +28,6 @@
       "description": "잔멸치와 호두가 만나 짭쪼름하지만 고소하게!",
       "n_price": "5,800원",
       "s_price": "5,220원",
-      "badge": [
-        "이벤트특가"
-      ]
-    },
-    {
-      "detail_hash": "H8EA5",
-      "image": "http://public.codesquad.kr/jk/storeapp/data/side/26_ZIP_P_4001_T.jpg",
-      "alt": "한돈 매콤 안심장조림",
-      "delivery_type": [
-        "새벽배송",
-        "전국택배"
-      ],
-      "title": "한돈 매콤 안심장조림",
-      "description": "부드러운 한돈 안심살의 매콤함",
-      "n_price": "6,900원",
-      "s_price": "6,210원",
       "badge": [
         "이벤트특가"
       ]
