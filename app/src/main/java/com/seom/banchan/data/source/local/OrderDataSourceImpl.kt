@@ -31,7 +31,6 @@ class OrderDataSourceImpl @Inject constructor(
         val menus = orderItems.map { it.toEntity(orderId) }
         orderDao.insertOrderItem(menus)
 
-        throw java.lang.Exception()
         Result.success(orderId)
     } catch (exception: Exception) {
         Result.failure(exception)
