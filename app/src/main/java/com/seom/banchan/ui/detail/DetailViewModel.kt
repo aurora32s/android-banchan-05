@@ -50,6 +50,10 @@ class DetailViewModel @Inject constructor(
     private val _currentMenu = MutableStateFlow<DetailMenuUiModel?>(null)
     val currentMenu = _currentMenu.asStateFlow()
 
+    fun init() {
+        _detailUiState.value = DetailUiState.UnInitialized
+    }
+
     fun fetchData(menu: MenuModel?) {
         if (menu == null) {
             _detailUiState.value = DetailUiState.FailFetchDetail

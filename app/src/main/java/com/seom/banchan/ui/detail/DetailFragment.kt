@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,6 +26,7 @@ import com.seom.banchan.ui.model.imageSlider.ImageSliderModel
 import com.seom.banchan.ui.view.dialog.DetailAddCartAlert
 import com.seom.banchan.util.ext.fromDpToPx
 import com.seom.banchan.util.ext.repeatLaunch
+import com.seom.banchan.util.ext.setIconDrawable
 import com.seom.banchan.util.ext.toast
 import com.seom.banchan.util.listener.ModelAdapterListener
 import dagger.hilt.android.AndroidEntryPoint
@@ -78,6 +81,9 @@ class DetailFragment : BaseFragment() {
             fragmentNavigation.popStack()
             return
         }
+        if (viewModel.detailUiState.value != DetailUiState.UnInitialized) {
+            viewModel.init()
+        }
         initObserve(menu)
         initAppbar()
     }
@@ -97,9 +103,7 @@ class DetailFragment : BaseFragment() {
                     when (it) {
                         DetailUiState.UnInitialized -> viewModel.fetchData(menu)
                         DetailUiState.SuccessAddToCart -> showDialog()
-                        DetailUiState.FailFetchDetail -> {
-
-                        }
+                        DetailUiState.FailFetchDetail -> handleFailFetchDetail()
                         DetailUiState.FailAddToCart -> {
                             requireContext().toast(getString(R.string.fail_to_add_cart))
                         }
@@ -143,6 +147,14 @@ class DetailFragment : BaseFragment() {
                 it.toolbar.alpha = if (totalScroll > topPadding) 1f else 0f
             }
         })
+    }
+
+    private fun handleFailFetchDetail() = binding?.let {
+        it.rvMenuInfo.isGone = true
+        it.toolbar.isGone = true
+        it.grWarn.isVisible = true
+        it.ivWarnIcon.setIconDrawable(R.drawable.ic_error, true)
+        it.tvWarnMsg.text = getString(R.string.warn_exception_occur)
     }
 
     private fun showDialog() {
