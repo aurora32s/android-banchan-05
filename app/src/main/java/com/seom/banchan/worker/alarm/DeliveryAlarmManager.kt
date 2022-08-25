@@ -28,7 +28,7 @@ object DeliveryAlarmManager {
         )
 
         val triggerTime = SystemClock.elapsedRealtime() + deliveryAlarmModel.expectedTime
-        alarmManager.setExact(
+        alarmManager.setExactAndAllowWhileIdle(
             AlarmManager.ELAPSED_REALTIME_WAKEUP, // 절전모드에서는 작동 안함
             triggerTime,
             pendingIntent

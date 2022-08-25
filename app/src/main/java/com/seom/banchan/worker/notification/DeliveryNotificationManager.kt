@@ -27,7 +27,7 @@ object DeliveryNotificationManager {
         )
     }
 
-    fun createNotificationChannel(notificationManager: NotificationManager) {
+    private fun createNotificationChannel(notificationManager: NotificationManager) {
         // Oreo
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
@@ -78,12 +78,6 @@ object DeliveryNotificationManager {
                     this.color = context.resources.getColor(R.color.primaryAccent, null)
                 }
             }.build()
-//            .run {
-//                notificationManager.notify(
-//                    deliveryAlarmModel.orderId.toInt(),
-//                    this.build()
-//                )
-//            }
     }
 
     private const val CHANNEL_ID = "notification_channel"

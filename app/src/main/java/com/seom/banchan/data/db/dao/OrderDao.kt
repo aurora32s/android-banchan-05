@@ -76,7 +76,7 @@ interface OrderDao {
                 "and o.delivery_state = :deliveryType " +
                 "group by o.order_id"
     )
-    fun getAllDeliveryInfo(deliveryType: OrderDeliveryState = OrderDeliveryState.DELIVERING): List<DeliveryInfoEntity>
+    fun getAllDeliveryInfo(deliveryType: Int = OrderDeliveryState.DELIVERING.type): List<DeliveryInfoEntity>
 
     /**
      * 특정 주문 id 의 주문 정보 받아오기
