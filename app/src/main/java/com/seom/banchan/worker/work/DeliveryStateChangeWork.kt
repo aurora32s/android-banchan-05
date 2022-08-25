@@ -29,12 +29,7 @@ class DeliveryStateChangeWork @AssistedInject constructor(
                 // 해당 주문에 대해 Notification 알림
                 getDeliveryAlarmInfoUseCase(orderId)
                     .onSuccess {
-                        setForeground(
-                            ForegroundInfo(
-                                it.orderId.toInt(),
-                                DeliveryNotificationManager.create(context = context, it)
-                            )
-                        )
+                        DeliveryNotificationManager.create(context = context, it)
                     }
             }
         Result.success()

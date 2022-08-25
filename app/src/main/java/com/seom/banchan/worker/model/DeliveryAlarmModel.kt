@@ -6,5 +6,6 @@ data class DeliveryAlarmModel(
     val orderId: Long, // 주문 id
     val menuName: String, // 메뉴 이름
     val totalCount: Int, // 메뉴 총 개수
-    val expectedTime: Long // 배달 예상 시간
+    val expectedTime: Long, // 배달 예상 시간
+    val createdAt: Long // 생성 시간
 ): Serializable

@@ -35,7 +35,7 @@ class DeliveryAlarmReceiver : BroadcastReceiver() {
                 }
 
             // 2. Notification 알림
-//            DeliveryNotificationManager.create(context, deliveryInfo)
+//            DeliveryNotificationManager.create(context,context deliveryInfo)
         }
     }
 

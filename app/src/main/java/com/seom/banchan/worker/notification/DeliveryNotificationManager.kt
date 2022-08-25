@@ -20,11 +20,12 @@ object DeliveryNotificationManager {
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         createNotificationChannel(notificationManager)
-        return buildNotification(
+        val notification = buildNotification(
             context,
-            notificationManager,
             deliveryAlarmModel
         )
+        notificationManager.notify(deliveryAlarmModel.orderId.toInt(), notification)
+        return notification
     }
 
     private fun createNotificationChannel(notificationManager: NotificationManager) {
@@ -46,7 +47,6 @@ object DeliveryNotificationManager {
     @SuppressLint("ObsoleteSdkInt")
     fun buildNotification(
         context: Context,
-        notificationManager: NotificationManager,
         deliveryAlarmModel: DeliveryAlarmModel
     ): Notification {
         val contentIntent = Intent(context, MainActivity::class.java)

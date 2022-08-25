@@ -53,7 +53,8 @@ interface OrderDao {
                 "  order_id as order_id, " +
                 "  menu_name as menu_name, " +
                 "  total_count as total_count, " +
-                "  expected_time as expected_time " +
+                "  expected_time as expected_time, " +
+                "  o.createdAt as createdAt " +
                 "from order_table o, ( " +
                 "  select " +
                 "    name as menu_name, " +
@@ -70,7 +71,8 @@ interface OrderDao {
                 "  o.order_id as order_id," +
                 "  i.name as menu_name," +
                 "  sum(i.count) as total_count," +
-                "  o.expected_time as expected_time " +
+                "  o.expected_time as expected_time, " +
+                "  o.createdAt as createdAt " +
                 "from order_table o, order_item_table i " +
                 "where o.order_id = i.order_id " +
                 "and o.delivery_state = :deliveryType " +

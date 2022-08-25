@@ -27,7 +27,9 @@ object DeliveryAlarmManager {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
-        val triggerTime = SystemClock.elapsedRealtime() + deliveryAlarmModel.expectedTime
+        val extraTime =
+            deliveryAlarmModel.expectedTime - (System.currentTimeMillis() - deliveryAlarmModel.createdAt)
+        val triggerTime = SystemClock.elapsedRealtime() + extraTime
         alarmManager.setExactAndAllowWhileIdle(
             AlarmManager.ELAPSED_REALTIME_WAKEUP, // 절전모드에서는 작동 안함
             triggerTime,
