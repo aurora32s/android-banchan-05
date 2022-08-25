@@ -187,7 +187,7 @@ class CartFragment : BaseFragment() {
                             )
                         }
                         CartUiStateModel.FailToAddCart -> {
-                            requireContext().toast(getString(R.string.fail_to_add_cart))
+                            requireContext().toast(getString(R.string.fail_to_add_order))
                         }
                     }
                 }
