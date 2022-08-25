@@ -88,7 +88,8 @@ class DetailViewModel @Inject constructor(
                 )
                 addOrUpdateMenuToCartUseCase(cartMenu)
                     .onSuccess {
-                        _detailUiState.value = DetailUiState.SuccessAddToCart
+                        _detailUiState.value = DetailUiState.FailAddToCart
+//                        _detailUiState.value = DetailUiState.SuccessAddToCart
                     }
                     .onFailure {
                         _detailUiState.value = DetailUiState.FailAddToCart
