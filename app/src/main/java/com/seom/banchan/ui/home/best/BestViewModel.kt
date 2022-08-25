@@ -19,6 +19,9 @@ class BestViewModel @Inject constructor(
     getCartMenusUseCase: GetCartMenusUseCase
 ) : ViewModel() {
 
+    private val _bestUiState = MutableStateFlow<BestUiState>(BestUiState.UnInitialized)
+    val bestUiState = _bestUiState.asStateFlow()
+
     private val cartMenus = getCartMenusUseCase()
     private val _bestMenus = MutableStateFlow<List<CategoryModel>>(emptyList())
     val bestMenus = _bestMenus.asStateFlow()
@@ -34,9 +37,16 @@ class BestViewModel @Inject constructor(
         getMenuWithCategoriesUseCase()
             .onSuccess { result ->
                 _bestMenus.value = result
+                _bestUiState.value = BestUiState.SuccessFetchMenus
             }
             .onFailure {
-                println(it)
+                _bestUiState.value = BestUiState.FailFetchMenus
             }
     }
+}
+
+sealed interface BestUiState {
+    object UnInitialized : BestUiState
+    object SuccessFetchMenus : BestUiState
+    object FailFetchMenus : BestUiState
 }
