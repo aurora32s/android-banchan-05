@@ -61,6 +61,16 @@
                     app:text="@{detail.detailMenu.name}" />
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_menu_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/greyScaleDefault"
+                    android:textSize="18sp"
+                    app:layout_constraintStart_toStartOf="@id/tv_menu_name"
+                    app:layout_constraintTop_toBottomOf="@id/tv_menu_name"
+                    app:text="@{detail.detailMenu.description}" />
+
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_menu_discountRate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -70,7 +80,7 @@
                     android:textColor="@color/primaryAccent"
                     android:textSize="18sp"
                     app:layout_constraintStart_toStartOf="@id/tv_menu_name"
-                    app:layout_constraintTop_toBottomOf="@id/tv_menu_name"
+                    app:layout_constraintTop_toBottomOf="@id/tv_menu_description"
                     app:visibilityByData="@{detail.discountRate}"
                     tools:text="hello world" />
 

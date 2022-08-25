@@ -45,9 +45,9 @@ class DetailAddCartAlert : DialogFragment() {
         if (::onClickMoveToCartBtn.isInitialized) {
             binding?.tvMoveCart?.setOnClickListener {
                 onClickMoveToCartBtn()
+                dismiss()
                 // backstack 으로 돌아왔을 때 dismiss 해주지 않으면 dialog 가 그대로 유지되어 있어
                 // 명시적으로 dismiss 추가
-                dismiss()
             }
         }
         binding?.tvCancel?.setOnClickListener { dismiss() }
