@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -20,7 +22,9 @@ import com.seom.banchan.ui.model.home.FilterMenuModel
 import com.seom.banchan.ui.model.home.HeaderMenuModel
 import com.seom.banchan.ui.model.home.HomeMenuModel
 import com.seom.banchan.ui.model.home.SortMenuModel
+import com.seom.banchan.util.ext.repeatLaunch
 import com.seom.banchan.util.ext.setGridLayoutManager
+import com.seom.banchan.util.ext.setIconDrawable
 import com.seom.banchan.util.listener.ModelAdapterListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -65,31 +69,61 @@ class MainDishFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentMainDishBinding.inflate(inflater)
-
         return binding?.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (viewModel.mainUiState.value == MainDishUiState.FailFetchMenus) {
+            viewModel.fetchSortedMainMenus(SortItem.BASE)
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
         initObserver()
-        viewModel.fetchSortedMainMenus(SortItem.BASE)
+        initViews()
     }
 
     private fun initObserver() {
-        lifecycleScope.launch {
-            viewModel.mainMenus.collect {
-                homeAdapter.updateList(
-                    it, getDefaultHeaders().size
-                )
+        repeatLaunch {
+            launch {
+                viewModel.mainMenus.collect {
+                    homeAdapter.updateList(
+                        it, getDefaultHeaders().size
+                    )
+                }
+            }
+            launch {
+                viewModel.toggleState.collect {
+                    setItemDecoration(it == ToggleState.LINEAR)
+                }
+            }
+            launch {
+                viewModel.mainUiState.collect {
+                    when (it) {
+                        MainDishUiState.FailFetchMenus -> handleFailFetchMenus()
+                        MainDishUiState.SuccessFetchMenus -> handleSuccess()
+                        MainDishUiState.UnInitialized -> viewModel.fetchSortedMainMenus(SortItem.BASE)
+                    }
+                }
             }
         }
+    }
 
-        lifecycleScope.launch {
-            viewModel.toggleState.collect {
-                setItemDecoration(it == ToggleState.LINEAR)
-            }
-        }
+    /**
+     * 데이터를 받아오는 도중 문제 발생
+     */
+    private fun handleFailFetchMenus() = binding?.let {
+        it.rvMainDish.isGone = true
+        it.grWarn.isVisible = true
+        it.ivWarnIcon.setIconDrawable(R.drawable.ic_error, true)
+    }
+
+    private fun handleSuccess() = binding?.let {
+        it.rvMainDish.isVisible = true
+        it.grWarn.isGone = true
     }
 
     private fun initRecyclerView() = binding?.let {
@@ -100,6 +134,10 @@ class MainDishFragment : BaseFragment() {
         homeAdapter.submitList(
             getDefaultHeaders()
         )
+    }
+
+    private fun initViews() = binding?.let {
+        it.btnReRequest.setOnClickListener { viewModel.fetchSortedMainMenus(SortItem.BASE) }
     }
 
     private fun setItemDecoration(toggle: Boolean) = binding?.rvMainDish?.let {

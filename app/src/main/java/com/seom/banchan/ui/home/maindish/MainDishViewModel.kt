@@ -6,6 +6,7 @@ import com.seom.banchan.domain.model.home.MenuModel
 import com.seom.banchan.domain.model.home.toHomeMenuModel
 import com.seom.banchan.domain.usecase.GetCartMenusUseCase
 import com.seom.banchan.domain.usecase.GetMainMenusUseCase
+import com.seom.banchan.ui.home.best.BestUiState
 import com.seom.banchan.ui.model.CellType
 import com.seom.banchan.ui.model.Model
 import com.seom.banchan.ui.model.SortItem
@@ -20,9 +21,8 @@ class MainDishViewModel @Inject constructor(
     getCartMenusUseCase: GetCartMenusUseCase
 ) : ViewModel() {
 
-//    private val _mainDishUiState = MutableStateFlow<MainDishUiState>(MainDishUiState())
-//    val mainDishUiState: StateFlow<MainDishUiState>
-//        get() = _mainDishUiState
+    private val _mainUiState = MutableStateFlow<MainDishUiState>(MainDishUiState.UnInitialized)
+    val mainUiState = _mainUiState.asStateFlow()
 
     private val _toggleState = MutableStateFlow(ToggleState.GRID)
     val toggleState: StateFlow<ToggleState>
@@ -51,9 +51,10 @@ class MainDishViewModel @Inject constructor(
             .onSuccess { result ->
                 menuModels = result
                 _mainMenus.value = result
+                _mainUiState.value = MainDishUiState.SuccessFetchMenus
             }
             .onFailure {
-                println(it)
+                _mainUiState.value = MainDishUiState.FailFetchMenus
             }
     }
 
@@ -62,11 +63,11 @@ class MainDishViewModel @Inject constructor(
     }
 }
 
-data class MainDishUiState(
-    val mainMenus: List<Model> = emptyList(),
-    val isLoading: Boolean = false, // TODO
-    val error: String = "" // TODO
-)
+sealed interface MainDishUiState {
+    object UnInitialized : MainDishUiState
+    object SuccessFetchMenus : MainDishUiState
+    object FailFetchMenus : MainDishUiState
+}
 
 enum class ToggleState(val spanCount: Int) {
     LINEAR(1),
