@@ -21,20 +21,22 @@ class OrderDataSourceImpl @Inject constructor(
      * 1. 주문 추가
      * 2. 추가된 주문 id로 메뉴들 추가
      */
-    override suspend fun insertOrder(orderItems: List<OrderItemModel>): Result<Long> = try {
-        val orderId = orderDao.insertOrder(
-            OrderEntity(
-                createdAt = System.currentTimeMillis(),
-                expectedTime = 20 * 1000
+    override suspend fun insertOrder(orderItems: List<OrderItemModel>): Result<DeliveryAlarmModel> =
+        try {
+            val orderId = orderDao.insertOrder(
+                OrderEntity(
+                    createdAt = System.currentTimeMillis(),
+                    expectedTime = 20 * 1000
+                )
             )
-        )
-        val menus = orderItems.map { it.toEntity(orderId) }
-        orderDao.insertOrderItem(menus)
+            val menus = orderItems.map { it.toEntity(orderId) }
+            orderDao.insertOrderItem(menus)
 
-        Result.success(orderId)
-    } catch (exception: Exception) {
-        Result.failure(exception)
-    }
+            val deliveryAlarmInfo = orderDao.getDeliveryInfoById(orderId)
+            Result.success(deliveryAlarmInfo.toModel())
+        } catch (exception: Exception) {
+            Result.failure(exception)
+        }
 
     // 주문 내역 리스트 요청
     override fun getOrderList(): Flow<List<OrderListModel>> {
@@ -65,6 +67,13 @@ class OrderDataSourceImpl @Inject constructor(
     override suspend fun getDeliveryInfoById(orderId: Long): Result<DeliveryAlarmModel> = try {
         val result = orderDao.getDeliveryInfoById(orderId)
         Result.success(result.toModel())
+    } catch (exception: Exception) {
+        Result.failure(exception)
+    }
+
+    override suspend fun getAllDeliveryInfo(): Result<List<DeliveryAlarmModel>> = try {
+        val result = orderDao.getAllDeliveryInfo()
+        Result.success(result.map { it.toModel() })
     } catch (exception: Exception) {
         Result.failure(exception)
     }

@@ -1,6 +1,5 @@
 package com.seom.banchan.ui.cart
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seom.banchan.domain.model.cart.toUiModel
@@ -183,8 +182,7 @@ class CartViewModel @Inject constructor(
             }
             addOrderUseCase(orderMenus)
                 .onSuccess {
-                    val orderId = it
-                    _cartUiState.value = CartUiStateModel.SuccessOrder(orderId)
+                    _cartUiState.value = CartUiStateModel.SuccessOrder(deliveryAlarmModel = it)
                     removeItems()
                 }
                 .onFailure {
@@ -218,8 +216,7 @@ sealed interface CartUiStateModel {
     object UnInitialized : CartUiStateModel
     object Loading : CartUiStateModel
     data class SuccessOrder(
-        val orderId: Long
+        val deliveryAlarmModel: DeliveryAlarmModel
     ) : CartUiStateModel
-
     object FailToAddCart : CartUiStateModel
 }

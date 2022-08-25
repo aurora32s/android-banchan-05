@@ -12,31 +12,26 @@ import com.seom.banchan.worker.model.DeliveryAlarmModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-class DeliveryAlarmManager(
-    private val getDeliveryAlarmInfoUseCase: GetDeliveryAlarmInfoUseCase
-) {
+object DeliveryAlarmManager {
 
-    suspend fun create(context: Context, orderId: Long) {
-        getDeliveryAlarmInfoUseCase(orderId)
-            .onSuccess {
-                val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+    fun create(context: Context, deliveryAlarmModel: DeliveryAlarmModel) {
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
-                val intent = Intent(context, DeliveryAlarmReceiver::class.java)
-                intent.putExtra(DeliveryAlarmReceiver.KEY_ORDER_ITEM, it)
+        val intent = Intent(context, DeliveryAlarmReceiver::class.java)
+        intent.putExtra(DeliveryAlarmReceiver.KEY_ORDER_ITEM, deliveryAlarmModel)
 
-                val pendingIntent = PendingIntent.getBroadcast(
-                    context,
-                    it.orderId.toInt(),
-                    intent,
-                    PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-                )
+        val pendingIntent = PendingIntent.getBroadcast(
+            context,
+            deliveryAlarmModel.orderId.toInt(),
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
 
-                val triggerTime = SystemClock.elapsedRealtime() + it.expectedTime
-                alarmManager.setExact(
-                    AlarmManager.ELAPSED_REALTIME_WAKEUP, // 절전모드에서는 작동 안함
-                    triggerTime,
-                    pendingIntent
-                )
-            }
+        val triggerTime = SystemClock.elapsedRealtime() + deliveryAlarmModel.expectedTime
+        alarmManager.setExact(
+            AlarmManager.ELAPSED_REALTIME_WAKEUP, // 절전모드에서는 작동 안함
+            triggerTime,
+            pendingIntent
+        )
     }
 }
