@@ -1,16 +1,14 @@
 package com.seom.banchan.ui.cart
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seom.banchan.domain.model.cart.toUiModel
-import com.seom.banchan.domain.model.home.MenuModel
 import com.seom.banchan.domain.model.home.toHomeMenuModel
 import com.seom.banchan.domain.usecase.*
 import com.seom.banchan.ui.model.CellType
 import com.seom.banchan.ui.model.cart.*
 import com.seom.banchan.ui.model.order.OrderInfoModel
-import com.seom.banchan.util.TimeUtil
-import com.seom.banchan.worker.model.DeliveryAlarmModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -36,8 +34,8 @@ class CartViewModel @Inject constructor(
     }
 
     // cart ui 상태
-    private val _cartUiEvent = MutableStateFlow<CartUiEventModel>(CartUiEventModel.UnInitialized)
-    val cartUiEvent = _cartUiEvent.asStateFlow()
+    private val _cartUiState = MutableStateFlow<CartUiStateModel>(CartUiStateModel.UnInitialized)
+    val cartUiState = _cartUiState.asStateFlow()
 
     private val _cartMenus = MutableStateFlow<List<CartMenuUiModel>>(
         mutableListOf()
@@ -89,11 +87,16 @@ class CartViewModel @Inject constructor(
 
     private fun fetchCartMenus() {
         viewModelScope.launch {
-            getCartMenusUseCase().collectLatest { list ->
-                _cartMenus.value = list.map {
-                    it.toUiModel()
+            getCartMenusUseCase()
+                .catch {
+                    Log.e(CartFragment.TAG, it.toString())
+                    _cartMenus.value = emptyList()
                 }
-            }
+                .collectLatest { list ->
+                    _cartMenus.value = list.map {
+                        it.toUiModel()
+                    }
+                }
         }
     }
 
@@ -171,6 +174,7 @@ class CartViewModel @Inject constructor(
     }
 
     fun insertOrderAndRemoveCartMenus() {
+        _cartUiState.value = CartUiStateModel.Loading
         viewModelScope.launch {
             val orderMenus = cartMenus.value.filter {
                 it.checked
@@ -180,32 +184,42 @@ class CartViewModel @Inject constructor(
             addOrderUseCase(orderMenus)
                 .onSuccess {
                     val orderId = it
-                    _cartUiEvent.value = CartUiEventModel.SuccessOrder(orderId)
+                    _cartUiState.value = CartUiStateModel.SuccessOrder(orderId)
                     removeItems()
                 }
                 .onFailure {
-
+                    _cartUiState.value = CartUiStateModel.FailToAddCart
                 }
         }
     }
 
     private fun fetchRecentMenus() {
         viewModelScope.launch {
-            getRecentMenusUseCase(isLatest = true).collectLatest { list ->
-                _cartRecent.value = cartRecent.value.copy(
-                    recentMenus = list
-                        .map { menuModel ->
-                            menuModel.toHomeMenuModel(cellType = CellType.CART_MENU_RECENT_CELL)
-                        }
-                )
-            }
+            getRecentMenusUseCase(isLatest = true)
+                .catch {
+                    Log.e(CartFragment.TAG, it.toString())
+                    // 에러가 발생했을 때는 빈 배열로 반환
+                    _cartRecent.value = cartRecent.value.copy(
+                        recentMenus = emptyList()
+                    )
+                }.collectLatest { list ->
+                    _cartRecent.value = cartRecent.value.copy(
+                        recentMenus = list
+                            .map { menuModel ->
+                                menuModel.toHomeMenuModel(cellType = CellType.CART_MENU_RECENT_CELL)
+                            }
+                    )
+                }
         }
     }
 }
 
-sealed interface CartUiEventModel {
-    object UnInitialized : CartUiEventModel
+sealed interface CartUiStateModel {
+    object UnInitialized : CartUiStateModel
+    object Loading : CartUiStateModel
     data class SuccessOrder(
         val orderId: Long
-    ) : CartUiEventModel
+    ) : CartUiStateModel
+
+    object FailToAddCart : CartUiStateModel
 }

@@ -4,11 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.seom.banchan.R
 import com.seom.banchan.databinding.FragmentCartBinding
@@ -28,6 +24,7 @@ import com.seom.banchan.ui.order.detail.OrderDetailFragment
 import com.seom.banchan.ui.recent.RecentFragment
 import com.seom.banchan.ui.view.dialog.CartMenuCountAlert
 import com.seom.banchan.util.ext.repeatLaunch
+import com.seom.banchan.util.ext.toast
 import com.seom.banchan.util.listener.ModelAdapterListener
 import com.seom.banchan.util.provider.impl.ResourceProviderImpl
 import com.seom.banchan.worker.alarm.DeliveryAlarmManager
@@ -175,9 +172,9 @@ class CartFragment : BaseFragment() {
                 }
             }
             launch {
-                viewModel.cartUiEvent.collectLatest {
+                viewModel.cartUiState.collectLatest {
                     when (it) {
-                        is CartUiEventModel.SuccessOrder -> {
+                        is CartUiStateModel.SuccessOrder -> {
                             // 알람 발생
                             deliveryAlarmManager.create(
                                 requireContext(),
@@ -189,7 +186,9 @@ class CartFragment : BaseFragment() {
                                 OrderDetailFragment.TAG
                             )
                         }
-                        CartUiEventModel.UnInitialized -> {}
+                        CartUiStateModel.FailToAddCart -> {
+                            requireContext().toast(getString(R.string.fail_to_add_cart))
+                        }
                     }
                 }
             }
