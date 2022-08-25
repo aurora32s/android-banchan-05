@@ -64,7 +64,6 @@ class ModelRecyclerAdapter<M : Model>(
             modelList.size - 3,
             modelList.size
         )).toMutableList()
-        notifyDataSetChanged()
-        //            notifyItemRangeChanged(startIndex,endIndex)
+        notifyItemRangeChanged(0,modelList.size-2)
     }
 }

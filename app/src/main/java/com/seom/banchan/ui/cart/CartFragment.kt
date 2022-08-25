@@ -119,6 +119,7 @@ class CartFragment : BaseFragment() {
     }
 
     private fun initRecyclerView() = binding?.let {
+        it.rvCart.itemAnimator = null
         it.rvCart.adapter = cartAdapter
         it.rvCart.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
