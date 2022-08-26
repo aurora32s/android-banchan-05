@@ -6,7 +6,6 @@
 |------------------------------------|-------------------------------------|
 | <img src="https://avatars.githubusercontent.com/u/22411296?v=4" width="150px" /> | <img src="https://avatars.githubusercontent.com/u/50227341?v=4" width="150px" /> |
 |Android|Android|
-|홈화면-기획전, 상세화면, 주문 내역 및 상세 화면|홈화면-메인, 국물, 반찬, 장바구니 화면|
 
 ## 📌 화면 Flow
 [화면 flow 문서](https://miro.com/welcomeonboard/UEg3RkY3TFNKYWpTdjltVjVoSzdUaXdwMjlydFlieWJ1QUprSFhrdmEzbDFGOFUxREFWcWJRb2Mwc3JJOTFHeXwzNDU4NzY0NTMxMjAyMzk0Njg5?share_link_id=934664191487)
