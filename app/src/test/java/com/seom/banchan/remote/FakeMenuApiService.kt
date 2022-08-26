@@ -6,43 +6,11 @@ import com.seom.banchan.data.api.response.best.BestMenuResponse
 import com.seom.banchan.data.api.response.best.Category
 import com.seom.banchan.data.api.response.best.Menu
 import com.seom.banchan.data.api.response.detail.DetailMenuResponse
-import junit.framework.Assert.assertEquals
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.runBlocking
-import okhttp3.mockwebserver.MockResponse
-import okhttp3.mockwebserver.MockWebServer
-import org.junit.After
-import org.junit.Before
-import org.junit.Test
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
-import java.io.File
+import retrofit2.Response
 
-@OptIn(ExperimentalCoroutinesApi::class)
-class MenuApiServiceTest {
-
-    private lateinit var server : MockWebServer
-    private lateinit var menuApiService: MenuApiService
-
-    @Before
-    fun setup(){
-        server = MockWebServer()
-        menuApiService = Retrofit.Builder()
-            .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl(server.url(""))
-            .build()
-            .create()
-    }
-
-    @Test
-    fun `기획전_메뉴를_조회할_수_있다`() = runBlocking{
-        val response = MockResponse().setBody(
-            File("src/test/java/com/seom/banchan/resource/best").readText()
-        )
-        server.enqueue(response)
-
-        val expected = BestMenuResponse(
+class FakeMenuApiService : MenuApiService {
+    override suspend fun getBestMenus(): Response<BestMenuResponse> = Response.success(
+        BestMenuResponse(
             body = listOf(
                 Category(
                     categoryId = "17011000",
@@ -84,57 +52,10 @@ class MenuApiServiceTest {
                 )
             )
         )
-        val actual = menuApiService.getBestMenus().body()
-        assertEquals(
-            actual, expected
-        )
-    }
+    )
 
-    @Test
-    fun `메뉴_상세_정보를_조회할_수_있다`() = runBlocking {
-        val response = MockResponse().setBody(
-            File("src/test/java/com/seom/banchan/resource/detail").readText()
-        )
-        server.enqueue(response)
-
-        val expected = DetailMenuResponse(
-            hash = "HBDEF",
-            data = com.seom.banchan.data.api.response.detail.Menu(
-                topImage = "http://public.codesquad.kr/jk/storeapp/data/1155_ZIP_P_0081_T.jpg",
-                thumbImages = listOf(
-                    "http://public.codesquad.kr/jk/storeapp/data/main/1155_ZIP_P_0081_T.jpg",
-                    "http://public.codesquad.kr/jk/storeapp/data/main/1155_ZIP_P_0081_S.jpg"
-                ),
-                productDescription = "오리 주물럭_반조리",
-                point = "126원",
-                deliveryInfo = "서울 경기 새벽 배송, 전국 택배 배송",
-                deliveryFee = "2,500원 (40,000원 이상 구매 시 무료)",
-                prices = listOf(
-                    "15,800원",
-                    "12,640원"
-                ),
-                detailSection = listOf(
-                    "http://public.codesquad.kr/jk/storeapp/data/main/1155_ZIP_P_0081_D1.jpg",
-                    "http://public.codesquad.kr/jk/storeapp/data/main/1155_ZIP_P_0081_D2.jpg",
-                    "http://public.codesquad.kr/jk/storeapp/data/pakage_regular.jpg"
-                )
-
-            )
-        )
-        val actual = menuApiService.getMenuDetail("HBDEF").body()
-        assertEquals(
-            actual, expected
-        )
-    }
-
-    @Test
-    fun `메인_음식_메뉴를_조회할_수_있다`() = runBlocking {
-        val response = MockResponse().setBody(
-            File("src/test/java/com/seom/banchan/resource/main_dish").readText()
-        )
-        server.enqueue(response)
-
-        val expected = MenuResponse(
+    override suspend fun getMainMenus(): Response<MenuResponse> = Response.success(
+        MenuResponse(
             body = listOf(
                 Menu(
                     alt = "오리 주물럭_반조리",
@@ -170,21 +91,11 @@ class MenuApiServiceTest {
                 )
             )
         )
+    )
 
-        val actual = menuApiService.getMainMenus().body()
-        assertEquals(
-            actual, expected
-        )
-    }
 
-    @Test
-    fun `국물_메뉴를_조회할_수_있다`() = runBlocking {
-        val response = MockResponse().setBody(
-            File("src/test/java/com/seom/banchan/resource/soup_dish").readText()
-        )
-        server.enqueue(response)
-
-        val expected = MenuResponse(
+    override suspend fun getSoupMenus(): Response<MenuResponse> = Response.success(
+        MenuResponse(
             body = listOf(
                 Menu(
                     alt = "한돈 돼지 김치찌개",
@@ -220,21 +131,10 @@ class MenuApiServiceTest {
                 )
             )
         )
+    )
 
-        val actual = menuApiService.getSoupMenus().body()
-        assertEquals(
-            actual, expected
-        )
-    }
-
-    @Test
-    fun `반찬_메뉴를_조회할_수_있다`() = runBlocking {
-        val response = MockResponse().setBody(
-            File("src/test/java/com/seom/banchan/resource/side_dish").readText()
-        )
-        server.enqueue(response)
-
-        val expected = MenuResponse(
+    override suspend fun getSideMenus(): Response<MenuResponse> = Response.success(
+        MenuResponse(
             body = listOf(
                 Menu(
                     alt = "새콤달콤 오징어무침",
@@ -270,10 +170,32 @@ class MenuApiServiceTest {
                 )
             )
         )
+    )
 
-        val actual = menuApiService.getSideMenus().body()
-        assertEquals(
-            actual, expected
+    override suspend fun getMenuDetail(id: String): Response<DetailMenuResponse> = Response.success(
+        DetailMenuResponse(
+            hash = "HBDEF",
+            data = com.seom.banchan.data.api.response.detail.Menu(
+                topImage = "http://public.codesquad.kr/jk/storeapp/data/1155_ZIP_P_0081_T.jpg",
+                thumbImages = listOf(
+                    "http://public.codesquad.kr/jk/storeapp/data/main/1155_ZIP_P_0081_T.jpg",
+                    "http://public.codesquad.kr/jk/storeapp/data/main/1155_ZIP_P_0081_S.jpg"
+                ),
+                productDescription = "오리 주물럭_반조리",
+                point = "126원",
+                deliveryInfo = "서울 경기 새벽 배송, 전국 택배 배송",
+                deliveryFee = "2,500원 (40,000원 이상 구매 시 무료)",
+                prices = listOf(
+                    "15,800원",
+                    "12,640원"
+                ),
+                detailSection = listOf(
+                    "http://public.codesquad.kr/jk/storeapp/data/main/1155_ZIP_P_0081_D1.jpg",
+                    "http://public.codesquad.kr/jk/storeapp/data/main/1155_ZIP_P_0081_D2.jpg",
+                    "http://public.codesquad.kr/jk/storeapp/data/pakage_regular.jpg"
+                )
+
+            )
         )
-    }
+    )
 }

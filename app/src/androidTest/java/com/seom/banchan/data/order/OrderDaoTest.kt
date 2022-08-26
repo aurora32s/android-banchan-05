@@ -1,4 +1,4 @@
-package com.seom.banchan.data
+package com.seom.banchan.data.order
 
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
@@ -8,7 +8,6 @@ import com.seom.banchan.data.db.BanChanDatabase
 import com.seom.banchan.data.db.dao.OrderDao
 import com.seom.banchan.data.db.entity.OrderEntity
 import com.seom.banchan.data.db.entity.OrderItemEntity
-import com.seom.banchan.data.db.entity.OrderListEntity
 import com.seom.banchan.ui.model.order.OrderDeliveryState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
