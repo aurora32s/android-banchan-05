@@ -217,7 +217,7 @@ class MenuDataSourceTest {
                     "http://public.codesquad.kr/jk/storeapp/data/main/1155_ZIP_P_0081_T.jpg",
                     "http://public.codesquad.kr/jk/storeapp/data/main/1155_ZIP_P_0081_S.jpg"
                 ),
-                name = "오리 주물럭_반조리",
+                description = "오리 주물럭_반조리",
                 point = 126,
                 deliveryInfo = "서울 경기 새벽 배송, 전국 택배 배송",
                 deliveryFee = "2,500원 (40,000원 이상 구매 시 무료)",
