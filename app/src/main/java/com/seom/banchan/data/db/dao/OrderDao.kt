@@ -36,34 +36,49 @@ interface OrderDao {
      */
     @Query(
         "select " +
-        "  o.order_id as order_id, " +
-        "  i.name as menu_name, " +
-        "  i.image as image, " +
-        "  sum(i.sale_price * i.count) as total_price, " +
-        "  sum(count) as menu_count, " +
-        "  o.delivery_state as delivery_state " +
-        "from order_table o, order_item_table i " +
-        "where o.order_id = i.order_id " +
-        "group by o.order_id"
+                "  o.order_id as order_id, " +
+                "  i.name as menu_name, " +
+                "  i.image as image, " +
+                "  sum(i.sale_price * i.count) as total_price, " +
+                "  sum(count) as menu_count, " +
+                "  o.delivery_state as delivery_state " +
+                "from order_table o, order_item_table i " +
+                "where o.order_id = i.order_id " +
+                "group by o.order_id"
     )
     fun getOrderList(): Flow<List<OrderListEntity>>
 
     @Query(
         "select " +
-        "  order_id as order_id, " +
-        "  menu_name as menu_name, " +
-        "  total_count as total_count, " +
-        "  expected_time as expected_time " +
-        "from order_table o, ( " +
-        "  select " +
-        "    name as menu_name, " +
-        "    sum(count) as total_count " +
-        "  from order_item_table " +
-        "  where order_id = :orderId " +
-        ") " +
-        "where order_id = :orderId"
+                "  order_id as order_id, " +
+                "  menu_name as menu_name, " +
+                "  total_count as total_count, " +
+                "  expected_time as expected_time, " +
+                "  o.createdAt as createdAt " +
+                "from order_table o, ( " +
+                "  select " +
+                "    name as menu_name, " +
+                "    sum(count) as total_count " +
+                "  from order_item_table " +
+                "  where order_id = :orderId " +
+                ") " +
+                "where order_id = :orderId"
     )
     fun getDeliveryInfoById(orderId: Long): DeliveryInfoEntity
+
+    @Query(
+        "select " +
+                "  o.order_id as order_id," +
+                "  i.name as menu_name," +
+                "  sum(i.count) as total_count," +
+                "  o.expected_time as expected_time, " +
+                "  o.createdAt as createdAt " +
+                "from order_table o, order_item_table i " +
+                "where o.order_id = i.order_id " +
+                "and o.delivery_state = :deliveryType " +
+                "group by o.order_id"
+    )
+    fun getAllDeliveryInfo(deliveryType: Int = OrderDeliveryState.DELIVERING.type): List<DeliveryInfoEntity>
 
     /**
      * 특정 주문 id 의 주문 정보 받아오기

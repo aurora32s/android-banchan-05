@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.seom.banchan.R
@@ -13,12 +15,15 @@ import com.seom.banchan.ui.adapter.ModelRecyclerAdapter
 import com.seom.banchan.ui.base.BaseFragment
 import com.seom.banchan.ui.detail.DetailFragment
 import com.seom.banchan.ui.home.CartBottomSheetManager
+import com.seom.banchan.ui.home.soupdish.SoupDishUiState
 import com.seom.banchan.ui.model.*
 import com.seom.banchan.ui.model.home.HeaderMenuModel
 import com.seom.banchan.ui.model.home.HomeMenuModel
 import com.seom.banchan.ui.model.home.SortMenuModel
 import com.seom.banchan.ui.model.home.TotalMenuModel
+import com.seom.banchan.util.ext.repeatLaunch
 import com.seom.banchan.util.ext.setGridLayoutManager
+import com.seom.banchan.util.ext.setIconDrawable
 import com.seom.banchan.util.listener.ModelAdapterListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -72,21 +77,54 @@ class SideDishFragment : BaseFragment() {
         initRecyclerView()
 
         initObserver()
+        initViews()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (viewModel.sideDishUiState.value == SideDishUiState.FailFetchMenus) {
+            viewModel.fetchSortedSideMenus(SortItem.BASE)
+        }
     }
 
     private fun initObserver() {
-        lifecycleScope.launch {
-            viewModel.sideMenus.collect {
-                homeAdapter.updateList(it, getDefaultHeaders().size)
-                homeAdapter.updateModelAtPosition(
-                    TotalMenuModel(
-                        id = ModelId.TOTAL.name,
-                        count = it.size, // 따로 구현
-                    ),
-                    1
-                )
+        repeatLaunch {
+            launch {
+                viewModel.sideMenus.collect {
+                    homeAdapter.updateList(it, getDefaultHeaders().size)
+                    homeAdapter.updateModelAtPosition(
+                        TotalMenuModel(
+                            id = ModelId.TOTAL.name,
+                            count = it.size, // 따로 구현
+                        ),
+                        1
+                    )
+                }
+            }
+            launch {
+                viewModel.sideDishUiState.collect {
+                    when (it) {
+                        SideDishUiState.FailFetchMenus -> handleFailFetchMenus()
+                        SideDishUiState.SuccessFetchMenus -> handleSuccess()
+                        SideDishUiState.UnInitialized -> viewModel.fetchSortedSideMenus(SortItem.BASE)
+                    }
+                }
             }
         }
+    }
+
+    /**
+     * 데이터를 받아오는 도중 문제 발생
+     */
+    private fun handleFailFetchMenus() = binding?.let {
+        it.rvSideDish.isGone = true
+        it.grWarn.isVisible = true
+        it.ivWarnIcon.setIconDrawable(R.drawable.ic_error, true)
+    }
+
+    private fun handleSuccess() = binding?.let {
+        it.rvSideDish.isVisible = true
+        it.grWarn.isGone = true
     }
 
     private fun initRecyclerView() = binding?.let {
@@ -102,6 +140,10 @@ class SideDishFragment : BaseFragment() {
         homeAdapter.submitList(
             getDefaultHeaders()
         )
+    }
+
+    private fun initViews() = binding?.let {
+        it.btnReRequest.setOnClickListener { viewModel.fetchSortedSideMenus(SortItem.BASE) }
     }
 
     private fun getDefaultHeaders() = listOf(

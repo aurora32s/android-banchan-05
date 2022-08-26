@@ -25,10 +25,15 @@ interface OrderRepository {
     /**
      * 주문하기
      */
-    suspend fun addOrder(orderItems: List<OrderItemModel>): Result<Long>
+    suspend fun addOrder(orderItems: List<OrderItemModel>): Result<DeliveryAlarmModel>
 
     /**
      * 배달 정보 관련 정보 요청
      */
     suspend fun getDeliveryInfoById(orderId: Long): Result<DeliveryAlarmModel>
+
+    /**
+     * 배달이 완료되지 않은 모든 배달 정보 요청
+     */
+    suspend fun getAllDeliveryInfo(): Result<List<DeliveryAlarmModel>>
 }

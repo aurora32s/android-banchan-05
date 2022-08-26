@@ -29,12 +29,17 @@ class OrderRepositoryImpl @Inject constructor(
     }
 
     // 주문 아이템 추가하기
-    override suspend fun addOrder(orderItems: List<OrderItemModel>): Result<Long> {
+    override suspend fun addOrder(orderItems: List<OrderItemModel>): Result<DeliveryAlarmModel> {
         return orderDataSource.insertOrder(orderItems)
     }
 
     // 특정 주문의 배달 정보 받아오기
     override suspend fun getDeliveryInfoById(orderId: Long): Result<DeliveryAlarmModel> {
         return orderDataSource.getDeliveryInfoById(orderId)
+    }
+
+    // 배달이 완료되지 않은 모든 배달 정보 요청
+    override suspend fun getAllDeliveryInfo(): Result<List<DeliveryAlarmModel>> {
+        return orderDataSource.getAllDeliveryInfo()
     }
 }

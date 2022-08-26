@@ -29,8 +29,8 @@ class RecentViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val cartMenus = getCartMenusUseCase()
-
     private val _recentMenus = MutableStateFlow<PagingData<MenuModel>>(PagingData.empty())
+    
     val recentMenus = _recentMenus
         .combine(cartMenus) { menus, carts ->
             menus.map {

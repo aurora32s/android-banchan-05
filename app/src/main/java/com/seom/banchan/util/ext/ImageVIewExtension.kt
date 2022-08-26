@@ -8,6 +8,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.CenterInside
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.seom.banchan.R
 
 @BindingAdapter(value = ["imageUrl", "corner"], requireAll = false)
 fun ImageView.load(
@@ -18,6 +19,7 @@ fun ImageView.load(
     Glide.with(this.context)
         .load(imageUrl)
         .diskCacheStrategy(DiskCacheStrategy.ALL)
+        .placeholder(R.drawable.ic_app_icon_small)
         .apply {
             if (corner > 0) transform(CenterInside(), RoundedCorners(corner.fromDpToPx()))
         }

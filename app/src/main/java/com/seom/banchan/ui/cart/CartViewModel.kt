@@ -9,6 +9,7 @@ import com.seom.banchan.domain.usecase.*
 import com.seom.banchan.ui.model.CellType
 import com.seom.banchan.ui.model.cart.*
 import com.seom.banchan.ui.model.order.OrderInfoModel
+import com.seom.banchan.worker.model.DeliveryAlarmModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -183,8 +184,7 @@ class CartViewModel @Inject constructor(
             }
             addOrderUseCase(orderMenus)
                 .onSuccess {
-                    val orderId = it
-                    _cartUiState.value = CartUiStateModel.SuccessOrder(orderId)
+                    _cartUiState.value = CartUiStateModel.SuccessOrder(deliveryAlarmModel = it)
                     removeItems()
                 }
                 .onFailure {
@@ -218,7 +218,7 @@ sealed interface CartUiStateModel {
     object UnInitialized : CartUiStateModel
     object Loading : CartUiStateModel
     data class SuccessOrder(
-        val orderId: Long
+        val deliveryAlarmModel: DeliveryAlarmModel
     ) : CartUiStateModel
 
     object FailToAddCart : CartUiStateModel

@@ -28,6 +28,7 @@ import com.seom.banchan.util.ext.toast
 import com.seom.banchan.util.listener.ModelAdapterListener
 import com.seom.banchan.util.provider.impl.ResourceProviderImpl
 import com.seom.banchan.worker.alarm.DeliveryAlarmManager
+import com.seom.banchan.worker.model.DeliveryAlarmModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -38,8 +39,6 @@ class CartFragment : BaseFragment() {
     private var _binding: FragmentCartBinding? = null
     private val binding get() = _binding
 
-    @Inject
-    lateinit var deliveryAlarmManager: DeliveryAlarmManager
     private val viewModel: CartViewModel by viewModels()
 
     private val cartAdapter: ModelRecyclerAdapter<Model> by lazy {
@@ -177,13 +176,13 @@ class CartFragment : BaseFragment() {
                     when (it) {
                         is CartUiStateModel.SuccessOrder -> {
                             // 알람 발생
-                            deliveryAlarmManager.create(
+                            DeliveryAlarmManager.create(
                                 requireContext(),
-                                it.orderId
+                                it.deliveryAlarmModel
                             )
                             fragmentNavigation.popStack()
                             fragmentNavigation.replaceFragment(
-                                OrderDetailFragment.newInstance(it.orderId),
+                                OrderDetailFragment.newInstance(it.deliveryAlarmModel.orderId),
                                 OrderDetailFragment.TAG
                             )
                         }

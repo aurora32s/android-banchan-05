@@ -8,6 +8,8 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.coroutineScope
@@ -26,6 +28,8 @@ import com.seom.banchan.ui.model.Model
 import com.seom.banchan.ui.model.home.CategoryMenuModel
 import com.seom.banchan.ui.model.home.HeaderMenuModel
 import com.seom.banchan.ui.model.home.HomeMenuModel
+import com.seom.banchan.util.ext.repeatLaunch
+import com.seom.banchan.util.ext.setIconDrawable
 import com.seom.banchan.util.listener.ModelAdapterListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -83,15 +87,50 @@ class BestFragment : BaseFragment() {
         initRecyclerView()
 
         initObserver()
-        viewModel.fetchBestMenus()
+        initViews()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        /**
+         * 다시 해당 page 로 돌아왔을 때 데이터 요청 상태라면 재요청 시도
+         */
+        if (viewModel.bestUiState.value == BestUiState.FailFetchMenus) {
+            viewModel.fetchBestMenus()
+        }
     }
 
     private fun initObserver() {
-        lifecycleScope.launch {
-            viewModel.bestMenus.collect {
-                homeAdapter.submitList(it)
+        repeatLaunch {
+            launch {
+                viewModel.bestMenus.collect {
+                    homeAdapter.submitList(it)
+                }
+            }
+            launch {
+                viewModel.bestUiState.collect {
+                    when (it) {
+                        BestUiState.FailFetchMenus -> handleFailFetchMenus()
+                        BestUiState.UnInitialized -> viewModel.fetchBestMenus()
+                        BestUiState.SuccessFetchMenus -> handleSuccess()
+                    }
+                }
             }
         }
+    }
+
+    /**
+     * 데이터를 받아오는 도중 문제 발생
+     */
+    private fun handleFailFetchMenus() = binding?.let {
+        it.rvBest.isGone = true
+        it.grWarn.isVisible = true
+        it.ivWarnIcon.setIconDrawable(R.drawable.ic_error, true)
+    }
+
+    private fun handleSuccess() = binding?.let {
+        it.rvBest.isVisible = true
+        it.grWarn.isGone = true
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -99,6 +138,10 @@ class BestFragment : BaseFragment() {
         it.rvBest.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         it.rvBest.adapter = homeAdapter
+    }
+
+    private fun initViews() = binding?.let {
+        it.btnReRequest.setOnClickListener { viewModel.fetchBestMenus() }
     }
 
     private fun showCartBottomSheetDialog(menuModel: HomeMenuModel) {

@@ -1,6 +1,7 @@
 package com.seom.banchan.worker.notification
 
 import android.annotation.SuppressLint
+import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -14,19 +15,20 @@ import com.seom.banchan.ui.main.MainActivity
 import com.seom.banchan.worker.model.DeliveryAlarmModel
 
 object DeliveryNotificationManager {
-    fun create(context: Context, deliveryAlarmModel: DeliveryAlarmModel) {
+    fun create(context: Context, deliveryAlarmModel: DeliveryAlarmModel): Notification {
         val notificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         createNotificationChannel(notificationManager)
-        buildNotification(
+        val notification = buildNotification(
             context,
-            notificationManager,
             deliveryAlarmModel
         )
+        notificationManager.notify(deliveryAlarmModel.orderId.toInt(), notification)
+        return notification
     }
 
-    fun createNotificationChannel(notificationManager: NotificationManager) {
+    private fun createNotificationChannel(notificationManager: NotificationManager) {
         // Oreo
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
@@ -45,12 +47,11 @@ object DeliveryNotificationManager {
     @SuppressLint("ObsoleteSdkInt")
     fun buildNotification(
         context: Context,
-        notificationManager: NotificationManager,
         deliveryAlarmModel: DeliveryAlarmModel
-    ) {
+    ): Notification {
         val contentIntent = Intent(context, MainActivity::class.java)
         contentIntent.putExtra(MainActivity.KEY_ORDER_ID, deliveryAlarmModel.orderId)
-        
+
         val contentPendingIntent = PendingIntent.getActivity(
             context,
             deliveryAlarmModel.orderId.toInt(),
@@ -58,7 +59,7 @@ object DeliveryNotificationManager {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
-        NotificationCompat.Builder(context, CHANNEL_ID)
+        return NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_app_icon_small)
             .setContentTitle("배달이 도착했어요!")
             .setContentText(
@@ -76,13 +77,7 @@ object DeliveryNotificationManager {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     this.color = context.resources.getColor(R.color.primaryAccent, null)
                 }
-            }
-            .run {
-                notificationManager.notify(
-                    deliveryAlarmModel.orderId.toInt(),
-                    this.build()
-                )
-            }
+            }.build()
     }
 
     private const val CHANNEL_ID = "notification_channel"

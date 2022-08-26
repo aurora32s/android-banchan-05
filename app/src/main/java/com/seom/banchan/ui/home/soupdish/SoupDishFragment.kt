@@ -4,7 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.seom.banchan.R
@@ -14,15 +15,15 @@ import com.seom.banchan.ui.adapter.ModelRecyclerAdapter
 import com.seom.banchan.ui.base.BaseFragment
 import com.seom.banchan.ui.detail.DetailFragment
 import com.seom.banchan.ui.home.CartBottomSheetManager
-import com.seom.banchan.ui.model.CellType
-import com.seom.banchan.ui.model.Model
-import com.seom.banchan.ui.model.ModelId
-import com.seom.banchan.ui.model.defaultSortItems
+import com.seom.banchan.ui.home.maindish.MainDishUiState
+import com.seom.banchan.ui.model.*
 import com.seom.banchan.ui.model.home.HeaderMenuModel
 import com.seom.banchan.ui.model.home.HomeMenuModel
 import com.seom.banchan.ui.model.home.SortMenuModel
 import com.seom.banchan.ui.model.home.TotalMenuModel
+import com.seom.banchan.util.ext.repeatLaunch
 import com.seom.banchan.util.ext.setGridLayoutManager
+import com.seom.banchan.util.ext.setIconDrawable
 import com.seom.banchan.util.listener.ModelAdapterListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -60,13 +61,13 @@ class SoupDishFragment : BaseFragment() {
             }
         )
     }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentSoupDishBinding.inflate(inflater)
-
         return binding?.root
     }
 
@@ -75,30 +76,73 @@ class SoupDishFragment : BaseFragment() {
         initRecyclerView()
 
         initObserver()
+        initViews()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (viewModel.soupDishUiState.value == SoupDishUiState.FailFetchMenus) {
+            viewModel.fetchSortedSoupMenus(SortItem.BASE)
+        }
     }
 
     private fun initObserver() {
-        lifecycleScope.launch {
-            viewModel.soupMenus.collect {
-                homeAdapter.updateList(it,getDefaultHeaders().size)
-                homeAdapter.updateModelAtPosition(
-                    TotalMenuModel(
-                        id = ModelId.TOTAL.name,
-                        count = it.size
-                    ),
-                    1
-                )
+        repeatLaunch {
+            launch {
+                viewModel.soupMenus.collect {
+                    homeAdapter.updateList(it, getDefaultHeaders().size)
+                    homeAdapter.updateModelAtPosition(
+                        TotalMenuModel(
+                            id = ModelId.TOTAL.name,
+                            count = it.size
+                        ),
+                        1
+                    )
+                }
+            }
+            launch {
+                viewModel.soupDishUiState.collect {
+                    when (it) {
+                        SoupDishUiState.FailFetchMenus -> handleFailFetchMenus()
+                        SoupDishUiState.SuccessFetchMenus -> handleSuccess()
+                        SoupDishUiState.UnInitialized -> viewModel.fetchSortedSoupMenus(SortItem.BASE)
+                    }
+                }
             }
         }
+    }
+
+    /**
+     * 데이터를 받아오는 도중 문제 발생
+     */
+    private fun handleFailFetchMenus() = binding?.let {
+        it.rvSoupDish.isGone = true
+        it.grWarn.isVisible = true
+        it.ivWarnIcon.setIconDrawable(R.drawable.ic_error, true)
+    }
+
+    private fun handleSuccess() = binding?.let {
+        it.rvSoupDish.isVisible = true
+        it.grWarn.isGone = true
     }
 
     private fun initRecyclerView() = binding?.let {
         it.rvSoupDish.adapter = homeAdapter
         it.rvSoupDish.setGridLayoutManager(requireContext())
-        it.rvSoupDish.addItemDecoration(GridItemDecoration(requireContext(),true,noneApplyIndex =3))
+        it.rvSoupDish.addItemDecoration(
+            GridItemDecoration(
+                requireContext(),
+                true,
+                noneApplyIndex = 3
+            )
+        )
         homeAdapter.submitList(
             getDefaultHeaders()
         )
+    }
+
+    private fun initViews() = binding?.let {
+        it.btnReRequest.setOnClickListener { viewModel.fetchSortedSoupMenus(SortItem.BASE) }
     }
 
     private fun getDefaultHeaders() = listOf(
