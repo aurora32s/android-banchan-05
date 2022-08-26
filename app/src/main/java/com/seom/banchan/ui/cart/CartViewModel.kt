@@ -1,5 +1,6 @@
 package com.seom.banchan.ui.cart
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seom.banchan.domain.model.cart.toUiModel
@@ -8,6 +9,7 @@ import com.seom.banchan.domain.usecase.*
 import com.seom.banchan.ui.model.CellType
 import com.seom.banchan.ui.model.cart.*
 import com.seom.banchan.ui.model.order.OrderInfoModel
+import com.seom.banchan.worker.model.DeliveryAlarmModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -218,5 +220,6 @@ sealed interface CartUiStateModel {
     data class SuccessOrder(
         val deliveryAlarmModel: DeliveryAlarmModel
     ) : CartUiStateModel
+
     object FailToAddCart : CartUiStateModel
 }
