@@ -6,10 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.GridLayoutManager
 import com.seom.banchan.R
 import com.seom.banchan.databinding.FragmentRecentBinding
 import com.seom.banchan.ui.adapter.ItemDecoration.GridItemDecoration
 import com.seom.banchan.ui.adapter.ModelRecyclerAdapter
+import com.seom.banchan.ui.adapter.RecentPagingAdapter
 import com.seom.banchan.ui.base.BaseFragment
 import com.seom.banchan.ui.cart.CartFragment
 import com.seom.banchan.ui.detail.DetailFragment
@@ -31,8 +33,7 @@ class RecentFragment : BaseFragment(), CartBottomSheetManager {
 
     private val viewModel: RecentViewModel by viewModels()
 
-    private val recentAdapter: ModelRecyclerAdapter<Model> by lazy {
-        ModelRecyclerAdapter(modelAdapterListener =
+    private val recentAdapter = RecentPagingAdapter(
         object : ModelAdapterListener {
             override fun onClick(view: View, model: Model, position: Int) {
                 when (model.type) {
@@ -53,8 +54,8 @@ class RecentFragment : BaseFragment(), CartBottomSheetManager {
                     else -> {}
                 }
             }
-        })
-    }
+        }
+    )
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -72,19 +73,18 @@ class RecentFragment : BaseFragment(), CartBottomSheetManager {
         initObserver()
 
         viewModel.getRecentMenus()
-
     }
 
     private fun initRecyclerView() = binding?.let {
         it.rvRecent.adapter = recentAdapter
-        it.rvRecent.setGridLayoutManager(requireContext())
+        it.rvRecent.layoutManager = GridLayoutManager(context, 2)
         it.rvRecent.addItemDecoration(GridItemDecoration(requireContext(),true,noneApplyIndex =0))
     }
 
     private fun initObserver(){
         lifecycleScope.launch{
             viewModel.recentMenus.collectLatest {
-                recentAdapter.submitList(it)
+                recentAdapter.submitData(it)
             }
         }
     }

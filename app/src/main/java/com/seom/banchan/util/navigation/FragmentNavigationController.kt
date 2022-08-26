@@ -4,6 +4,7 @@ import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.commit
+import com.seom.banchan.ui.cart.CartFragment
 import com.seom.banchan.ui.order.OrderListFragment
 
 class FragmentNavigationController(
@@ -19,6 +20,10 @@ class FragmentNavigationController(
 
     // 필요한 Transaction 추가 ..
     fun replaceFragment(fragment: Fragment, fragmentTag: String? = null) {
+        if(fragment is CartFragment){ // 추가할 Fragment가 CartFragment이면 backstack에서 CartFragment를 지운다 -> CartFragment는 하나만!
+            fragmentManager.popBackStack(CartFragment.TAG,FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        }
+
         fragmentManager.commit {
             setReorderingAllowed(true)
             addToBackStack(fragmentTag)

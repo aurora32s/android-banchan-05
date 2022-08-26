@@ -27,7 +27,8 @@ object DatabaseModule {
             context,
             BanChanDatabase::class.java,
             BanChanDatabase.DATABASE_NAME
-        ).build()
+        ).fallbackToDestructiveMigration() // Migration을 찾지 못하여 crash 발생 시 db 재생성, 데이터 모두 유실
+            .build()
     }
 }
 

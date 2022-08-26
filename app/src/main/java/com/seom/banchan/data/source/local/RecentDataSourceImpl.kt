@@ -1,5 +1,9 @@
 package com.seom.banchan.data.source.local
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.map
 import com.seom.banchan.data.db.dao.RecentDao
 import com.seom.banchan.data.db.entity.toMenuModel
 import com.seom.banchan.data.db.entity.toRecentEntity
@@ -12,7 +16,7 @@ import javax.inject.Inject
 class RecentDataSourceImpl @Inject constructor(
     private val recentDao: RecentDao
 ) : RecentDataSource {
-    override suspend fun getRecents() : Flow<List<MenuModel>> {
+    override suspend fun getRecents(): Flow<List<MenuModel>> {
         return recentDao.getRecents().map {
             it.map {
                 it.toMenuModel()
@@ -30,5 +34,16 @@ class RecentDataSourceImpl @Inject constructor(
 
     override suspend fun upsertRecent(menuModel: MenuModel) {
         recentDao.upsertRecent(menuModel.toRecentEntity())
+    }
+
+    override suspend fun getRecentsPaging(): Flow<PagingData<MenuModel>> {
+        return Pager(PagingConfig(10)) {
+            recentDao.getRecentPaging()
+        }.flow
+            .map {
+                it.map {
+                    it.toMenuModel()
+                }
+            }
     }
 }
