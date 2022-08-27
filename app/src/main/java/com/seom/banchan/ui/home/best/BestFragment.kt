@@ -65,6 +65,7 @@ class BestFragment : BaseFragment() {
                                 }
                             } else if (view.id == R.id.iv_cart) {
                                 showCartBottomSheetDialog((model as HomeMenuModel))
+                                viewModel.selectedCart = model
                             }
                         } // 메뉴 아이템 클릭
                         else -> {}
@@ -104,7 +105,7 @@ class BestFragment : BaseFragment() {
         repeatLaunch {
             launch {
                 viewModel.bestMenus.collect {
-                    homeAdapter.submitList(it)
+                    homeAdapter.updateListWithPayloads(it,1,viewModel.selectedCart)
                 }
             }
             launch {
@@ -138,6 +139,9 @@ class BestFragment : BaseFragment() {
         it.rvBest.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         it.rvBest.adapter = homeAdapter
+        homeAdapter.submitList(
+            viewModel.baseMenu
+        )
     }
 
     private fun initViews() = binding?.let {

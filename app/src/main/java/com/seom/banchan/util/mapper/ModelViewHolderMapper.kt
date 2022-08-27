@@ -24,6 +24,7 @@ import com.seom.banchan.ui.adapter.viewholder.order.OrderListItemViewHolder
 import com.seom.banchan.ui.adapter.viewholder.order.OrderMenuViewHolder
 import com.seom.banchan.ui.model.CellType
 import com.seom.banchan.ui.model.Model
+import com.seom.banchan.util.listener.ModelAdapterListener
 import com.seom.banchan.util.provider.ResourceProvider
 
 object ModelViewHolderMapper {
@@ -32,7 +33,8 @@ object ModelViewHolderMapper {
     fun <M : Model> map(
         parent: ViewGroup,
         type: CellType,
-        resourceProvider: ResourceProvider?
+        resourceProvider: ResourceProvider?,
+        menuAdapterListener: ModelAdapterListener? = null
     ): ModelViewHolder<M> {
         val inflater = LayoutInflater.from(parent.context)
         val viewHolder = when (type) {
@@ -40,7 +42,8 @@ object ModelViewHolderMapper {
                 ItemHomeHeaderBinding.inflate(inflater, parent, false)
             )
             CellType.MENU_LIST_CELL -> BestMenuViewHolder(
-                ItemBestMenuBinding.inflate(inflater, parent, false)
+                ItemBestMenuBinding.inflate(inflater, parent, false),
+                menuAdapterListener
             )
             CellType.MENU_CELL,
             CellType.MENU_BEST_CELL -> SmallMenuViewHolder(

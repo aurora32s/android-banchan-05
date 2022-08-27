@@ -14,4 +14,10 @@ abstract class ModelViewHolder<M : Model>(
         menuAdapterListener: ModelAdapterListener?
     ) {
     }
+    open fun bindDataWithPayLoads(
+        model: M,
+        payload: MutableList<Any>,
+    ){
+
+    }
 }

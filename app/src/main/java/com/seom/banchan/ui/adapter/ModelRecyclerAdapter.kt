@@ -4,8 +4,10 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.seom.banchan.databinding.ItemBestMenuBinding
 import com.seom.banchan.databinding.ItemHomeSortBinding
 import com.seom.banchan.ui.adapter.viewholder.ModelViewHolder
+import com.seom.banchan.ui.adapter.viewholder.home.BestMenuViewHolder
 import com.seom.banchan.ui.adapter.viewholder.home.SortViewHolder
 import com.seom.banchan.ui.model.CellType
 import com.seom.banchan.ui.model.Model
@@ -31,15 +33,35 @@ class ModelRecyclerAdapter<M : Model>(
             )
             sortViewHolder.initViewHolder()
             return sortViewHolder as ModelViewHolder<M>
+        } else if(CellType.values()[viewType] == CellType.MENU_LIST_CELL){
+            val bestViewHolder = BestMenuViewHolder(
+                ItemBestMenuBinding.inflate(LayoutInflater.from(parent.context),parent,false),
+                modelAdapterListener
+            )
+            return bestViewHolder as ModelViewHolder<M>
         }
         return ModelViewHolderMapper.map(parent, CellType.values()[viewType], resourceProvider)
     }
 
-    @Suppress("UNCHECKED_CAST")
+
     override fun onBindViewHolder(holder: ModelViewHolder<M>, position: Int) {
         val model = modelList[position] as M
         holder.bindData(model = model)
         holder.bindViews(model = model, menuAdapterListener = modelAdapterListener)
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    override fun onBindViewHolder(
+        holder: ModelViewHolder<M>,
+        position: Int,
+        payloads: MutableList<Any>
+    ) {
+        if(payloads.isEmpty()) {
+            super.onBindViewHolder(holder, position, payloads)
+        }
+        else {
+            holder.bindDataWithPayLoads(modelList[position] as M,payloads)
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -52,6 +74,18 @@ class ModelRecyclerAdapter<M : Model>(
         modelList = (modelList.subList(0, startIndex) + list).toMutableList()
         notifyItemRangeChanged(modelList.size - list.size, modelList.size - 1)
     }
+    fun updateListWithPayloads(list: List<Model>, startIndex: Int,payload : Any?) {
+        modelList = (modelList.subList(0, startIndex) + list).toMutableList()
+        if(payload == null){
+            notifyItemRangeChanged(modelList.size - list.size, modelList.size - 1)
+        }else {
+            notifyItemRangeChanged(
+                modelList.size - list.size, modelList.size - 1,
+                payload
+            )
+        }
+    }
+
 
     fun updateModelAtPosition(model: Model, position: Int) {
         if (modelList.size <= position) modelList.add(position, model)
