@@ -23,13 +23,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RecentViewModel @Inject constructor(
-    private val getRecentMenusUseCase: GetRecentMenusUseCase,
-    private val getRecentMenusPagingUseCase: GetRecentMenusPagingUseCase,
+    getRecentMenusPagingUseCase: GetRecentMenusPagingUseCase,
     getCartMenusUseCase: GetCartMenusUseCase
 ) : ViewModel() {
 
     private val cartMenus = getCartMenusUseCase()
-    private val _recentMenus = MutableStateFlow<PagingData<MenuModel>>(PagingData.empty())
+    private val _recentMenus = getRecentMenusPagingUseCase().cachedIn(viewModelScope)
     
     val recentMenus = _recentMenus
         .combine(cartMenus) { menus, carts ->
@@ -40,14 +39,4 @@ class RecentViewModel @Inject constructor(
                 )
             }
         }
-
-    fun getRecentMenus() {
-        viewModelScope.launch {
-            getRecentMenusPagingUseCase()
-                .cachedIn(viewModelScope)
-                .collectLatest {
-                _recentMenus.value = it
-            }
-        }
-    }
 }

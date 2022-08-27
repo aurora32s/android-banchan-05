@@ -14,7 +14,7 @@ class GetRecentMenusPagingUseCase @Inject constructor(
     @IODispatcher
     private val ioDispatcher: CoroutineDispatcher
 ) {
-    suspend operator fun invoke() : Flow<PagingData<MenuModel>> {
+    operator fun invoke() : Flow<PagingData<MenuModel>> {
         return recentRepository.getRecentsPaging()
     }
 }

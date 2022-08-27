@@ -23,5 +23,5 @@ interface RecentRepository {
     /*
    최근 본 상품 목록 조회 paging
     */
-    suspend fun getRecentsPaging() : Flow<PagingData<MenuModel>>
+    fun getRecentsPaging() : Flow<PagingData<MenuModel>>
 }

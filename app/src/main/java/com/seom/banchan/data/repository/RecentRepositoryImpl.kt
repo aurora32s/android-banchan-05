@@ -22,7 +22,7 @@ class RecentRepositoryImpl @Inject constructor(
         recentDataSource.upsertRecent(menuModel)
     }
 
-    override suspend fun getRecentsPaging(): Flow<PagingData<MenuModel>> {
+    override fun getRecentsPaging(): Flow<PagingData<MenuModel>> {
         return recentDataSource.getRecentsPaging()
     }
 }

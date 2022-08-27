@@ -71,8 +71,6 @@ class RecentFragment : BaseFragment(), CartBottomSheetManager {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
         initObserver()
-
-        viewModel.getRecentMenus()
     }
 
     private fun initRecyclerView() = binding?.let {

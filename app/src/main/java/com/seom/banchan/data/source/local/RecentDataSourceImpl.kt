@@ -36,7 +36,7 @@ class RecentDataSourceImpl @Inject constructor(
         recentDao.upsertRecent(menuModel.toRecentEntity())
     }
 
-    override suspend fun getRecentsPaging(): Flow<PagingData<MenuModel>> {
+    override fun getRecentsPaging(): Flow<PagingData<MenuModel>> {
         return Pager(PagingConfig(10)) {
             recentDao.getRecentPaging()
         }.flow

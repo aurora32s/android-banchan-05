@@ -21,5 +21,5 @@ interface RecentDataSource {
     /*
     최근 본 상품 목록 조회 paigng
      */
-    suspend fun getRecentsPaging() : Flow<PagingData<MenuModel>>
+    fun getRecentsPaging() : Flow<PagingData<MenuModel>>
 }
