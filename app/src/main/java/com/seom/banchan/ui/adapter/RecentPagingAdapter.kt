@@ -61,7 +61,7 @@ class RecentPagingAdapter(
         }
 
         override fun areContentsTheSame(oldItem: HomeMenuModel, newItem: HomeMenuModel): Boolean {
-            return oldItem.id == newItem.id && oldItem.isLoadedCart == newItem.isLoadedCart
+            return oldItem == newItem
         }
 
     }
