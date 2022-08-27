@@ -95,9 +95,7 @@ class RecentFragment : BaseFragment(), CartBottomSheetManager {
     override fun showBottomSheet(menu: HomeMenuModel) {
         OrderCartBottomSheetManager.build(childFragmentManager)
             .setOnClickMoveToCartListener {
-                fragmentNavigation.popStack() // 최근 본 상품은 장바구니 화면에서만 이동 가능 -> 뒤로 가면 장바구니 -> popStack()
-                // 기존의 CartFragment는 지우고 새로운 CartFragment.newInstance를 띄우고 싶음.. 어떻게?
-                //fragmentNavigation.replaceFragment(CartFragment.newInstance(), CartFragment.TAG)
+                fragmentNavigation.popStack()
             }
             .show(currentMenuModel = menu)
     }
