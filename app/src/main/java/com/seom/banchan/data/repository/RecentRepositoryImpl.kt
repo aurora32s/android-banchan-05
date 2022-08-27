@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class RecentRepositoryImpl @Inject constructor(
-    private val recentDataSource: RecentDataSource,
+    private val recentDataSource: RecentDataSource
 ) : RecentRepository {
     override suspend fun getRecents(): Flow<List<MenuModel>> {
        return recentDataSource.getRecents()
