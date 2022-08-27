@@ -1,16 +1,27 @@
-# No 반찬, No 밥
+## No 반찬, No 밥
 <img width="1000" alt="스크린샷 2022-08-27 오전 11 23 50" src="https://user-images.githubusercontent.com/22411296/187010855-ec74d2bc-1ad7-4d57-8647-5e8971844bc3.png">
 
-### 🌹 개발자
+## 🌹 개발자
 |[진연주](https://github.com/aurora32s)|[정석준](https://github.com/eshc123)|
 |------------------------------------|-------------------------------------|
 | <img src="https://avatars.githubusercontent.com/u/22411296?v=4" width="100px" /> | <img src="https://avatars.githubusercontent.com/u/50227341?v=4" width="100px" /> |
 |Android|Android|
+<br/>
 
-## 📌 화면 Flow
-[화면 flow 문서](https://miro.com/welcomeonboard/UEg3RkY3TFNKYWpTdjltVjVoSzdUaXdwMjlydFlieWJ1QUprSFhrdmEzbDFGOFUxREFWcWJRb2Mwc3JJOTFHeXwzNDU4NzY0NTMxMjAyMzk0Njg5?share_link_id=934664191487)
+## 🛠 사용기술 & tool
+|tooll|Android Studio|
+|-----|--------------------------------|
+|Language|Kotlin|
+|비동기|Coroutine|
+|Remote통신|Retrofit|
+|local Database|Room|
+|이미지|Glide|
+|의존성 주입|Hilt|
+|알림기능|AlarmManager, WorkManager|
+<br/>
 
-## 🔥 화면
+## 🔥 화면[[flow 문서]](https://miro.com/welcomeonboard/UEg3RkY3TFNKYWpTdjltVjVoSzdUaXdwMjlydFlieWJ1QUprSFhrdmEzbDFGOFUxREFWcWJRb2Mwc3JJOTFHeXwzNDU4NzY0NTMxMjAyMzk0Njg5?share_link_id=934664191487)
+
 ```
 캐릭터 디자인은 진연주의 자체 제작 이모티콘이며, 복제 사용을 금합니다.
 ```
