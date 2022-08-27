@@ -8,5 +8,6 @@ import com.seom.banchan.ui.model.SortItem
 data class FilterMenuModel(
     override val id: String,
     override val type: CellType = CellType.FILTER_CELL,
+    val toggleState: ToggleState,
     val onToggle : (ToggleState) -> Unit,
 ) : Model(id, type)

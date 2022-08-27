@@ -6,14 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.seom.banchan.R
 import com.seom.banchan.databinding.FragmentMainDishBinding
 import com.seom.banchan.ui.adapter.ItemDecoration.GridItemDecoration
 import com.seom.banchan.ui.adapter.ModelRecyclerAdapter
+import com.seom.banchan.ui.adapter.SortSpinnerAdapter
 import com.seom.banchan.ui.base.BaseFragment
 import com.seom.banchan.ui.detail.DetailFragment
 import com.seom.banchan.ui.home.CartBottomSheetManager
@@ -36,30 +34,33 @@ class MainDishFragment : BaseFragment() {
 
     private val viewModel: MainDishViewModel by viewModels()
 
+    private val sortSpinnerAdapter: SortSpinnerAdapter by lazy {
+        SortSpinnerAdapter(requireContext())
+    }
+
     private val homeAdapter: ModelRecyclerAdapter<Model> by lazy {
         ModelRecyclerAdapter(modelAdapterListener =
-        object : ModelAdapterListener {
-            override fun onClick(view: View, model: Model, position: Int) {
-                println(model.type)
-                when (model.type) {
-                    CellType.MENU_CELL, CellType.MENU_LARGE_CELL -> {
-                        if (view.id == R.id.iv_menu_thumbnail) {
-                            (model as? HomeMenuModel)?.menu?.let {
-                                fragmentNavigation.replaceFragment(
-                                    DetailFragment.newInstance(
-                                        menuModel = it
-                                    ),
-                                    DetailFragment.TAG
-                                )
+            object : ModelAdapterListener {
+                override fun onClick(view: View, model: Model, position: Int) {
+                    when (model.type) {
+                        CellType.MENU_CELL, CellType.MENU_LARGE_CELL -> {
+                            if (view.id == R.id.iv_menu_thumbnail) {
+                                (model as? HomeMenuModel)?.menu?.let {
+                                    fragmentNavigation.replaceFragment(
+                                        DetailFragment.newInstance(
+                                            menuModel = it
+                                        ),
+                                        DetailFragment.TAG
+                                    )
+                                }
+                            } else if (view.id == R.id.iv_cart) {
+                                showCartBottomSheetDialog((model as HomeMenuModel))
                             }
-                        } else if (view.id == R.id.iv_cart) {
-                            showCartBottomSheetDialog((model as HomeMenuModel))
                         }
+                        else -> {}
                     }
-                    else -> {}
                 }
             }
-        }
         )
     }
 
@@ -75,7 +76,7 @@ class MainDishFragment : BaseFragment() {
     override fun onResume() {
         super.onResume()
         if (viewModel.mainUiState.value == MainDishUiState.FailFetchMenus) {
-            viewModel.fetchSortedMainMenus(SortItem.BASE)
+            viewModel.fetchSortedMainMenus()
         }
     }
 
@@ -105,7 +106,7 @@ class MainDishFragment : BaseFragment() {
                     when (it) {
                         MainDishUiState.FailFetchMenus -> handleFailFetchMenus()
                         MainDishUiState.SuccessFetchMenus -> handleSuccess()
-                        MainDishUiState.UnInitialized -> viewModel.fetchSortedMainMenus(SortItem.BASE)
+                        MainDishUiState.UnInitialized -> viewModel.fetchSortedMainMenus()
                     }
                 }
             }
@@ -137,7 +138,7 @@ class MainDishFragment : BaseFragment() {
     }
 
     private fun initViews() = binding?.let {
-        it.btnReRequest.setOnClickListener { viewModel.fetchSortedMainMenus(SortItem.BASE) }
+        it.btnReRequest.setOnClickListener { viewModel.fetchSortedMainMenus() }
     }
 
     private fun setItemDecoration(toggle: Boolean) = binding?.rvMainDish?.let {
@@ -150,15 +151,17 @@ class MainDishFragment : BaseFragment() {
         HeaderMenuModel(id = ModelId.HEADER.name, title = R.string.header_main),
         FilterMenuModel(
             id = ModelId.FILTER.name,
+            toggleState = viewModel.toggleState.value,
             onToggle = { it ->
                 viewModel.updateToggle(it)
             },
         ),
         SortMenuModel(
             id = ModelId.SORT.name,
-            sortItems = defaultSortItems(),
+            sortState = viewModel.sortState,
             onSort = { sortItem ->
-                viewModel.fetchSortedMainMenus(sortItem)
+                viewModel.updateSort(sortItem)
+                viewModel.fetchSortedMainMenus()
             }
         )
     )

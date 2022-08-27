@@ -15,8 +15,10 @@ import com.seom.banchan.ui.model.defaultSortItems
 class SortSpinnerAdapter(
     context : Context
 ) : ArrayAdapter<SortItem>(context, R.layout.item_spinner) {
+
     var selectedSortItem = SortItem.BASE
-    private val items = defaultSortItems()
+
+    val items = defaultSortItems()
 
     override fun getCount() = items.size
 

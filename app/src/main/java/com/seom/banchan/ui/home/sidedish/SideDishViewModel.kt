@@ -24,6 +24,10 @@ class SideDishViewModel @Inject constructor(
     private val _sideDishUiState = MutableStateFlow<SideDishUiState>(SideDishUiState.UnInitialized)
     val sideDishUiState = _sideDishUiState.asStateFlow()
 
+    private var _sortState = SortItem.BASE
+    val sortState : SortItem
+        get() = _sortState
+
     private val cartMenus = getCartMenusUseCase()
     private val _sideMenus = MutableStateFlow<List<MenuModel>>(emptyList())
     val sideMenus = _sideMenus
@@ -36,8 +40,8 @@ class SideDishViewModel @Inject constructor(
             initialValue = emptyList()
         )
 
-    fun fetchSortedSideMenus(sortItem: SortItem) = viewModelScope.launch {
-        getSideMenusUseCase(sortItem.sortCriteria)
+    fun fetchSortedSideMenus() = viewModelScope.launch {
+        getSideMenusUseCase(sortState.sortCriteria)
             .onSuccess { result ->
                 _sideMenus.value = result
                 _sideDishUiState.value = SideDishUiState.SuccessFetchMenus
@@ -45,6 +49,10 @@ class SideDishViewModel @Inject constructor(
             .onFailure {
                 _sideDishUiState.value = SideDishUiState.FailFetchMenus
             }
+    }
+
+    fun updateSort(sortItem: SortItem){
+        _sortState = sortItem
     }
 }
 

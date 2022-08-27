@@ -7,6 +7,6 @@ import com.seom.banchan.ui.model.SortItem
 data class SortMenuModel(
     override val id: String,
     override val type: CellType = CellType.SORT_CELL,
-    val sortItems : List<SortItem>,
-    val onSort : (SortItem) -> Unit
+    val onSort : (SortItem) -> Unit,
+    val sortState : SortItem
 ) : Model(id, type)

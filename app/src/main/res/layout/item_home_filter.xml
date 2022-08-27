@@ -31,7 +31,6 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:background="@drawable/selector_toggle_grid"
-                android:checked="true"
                 android:button="@null" />
 
             <androidx.appcompat.widget.AppCompatRadioButton

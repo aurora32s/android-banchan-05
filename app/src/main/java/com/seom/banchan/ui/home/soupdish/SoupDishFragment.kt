@@ -82,7 +82,7 @@ class SoupDishFragment : BaseFragment() {
     override fun onResume() {
         super.onResume()
         if (viewModel.soupDishUiState.value == SoupDishUiState.FailFetchMenus) {
-            viewModel.fetchSortedSoupMenus(SortItem.BASE)
+            viewModel.fetchSortedSoupMenus()
         }
     }
 
@@ -105,7 +105,7 @@ class SoupDishFragment : BaseFragment() {
                     when (it) {
                         SoupDishUiState.FailFetchMenus -> handleFailFetchMenus()
                         SoupDishUiState.SuccessFetchMenus -> handleSuccess()
-                        SoupDishUiState.UnInitialized -> viewModel.fetchSortedSoupMenus(SortItem.BASE)
+                        SoupDishUiState.UnInitialized -> viewModel.fetchSortedSoupMenus()
                     }
                 }
             }
@@ -142,7 +142,7 @@ class SoupDishFragment : BaseFragment() {
     }
 
     private fun initViews() = binding?.let {
-        it.btnReRequest.setOnClickListener { viewModel.fetchSortedSoupMenus(SortItem.BASE) }
+        it.btnReRequest.setOnClickListener { viewModel.fetchSortedSoupMenus() }
     }
 
     private fun getDefaultHeaders() = listOf(
@@ -156,10 +156,11 @@ class SoupDishFragment : BaseFragment() {
         ),
         SortMenuModel(
             id = ModelId.SORT.name,
-            sortItems = defaultSortItems(),
             onSort = { sortItem ->
-                viewModel.fetchSortedSoupMenus(sortItem)
-            }
+                viewModel.updateSort(sortItem)
+                viewModel.fetchSortedSoupMenus()
+            },
+            sortState = viewModel.sortState
         )
     )
 

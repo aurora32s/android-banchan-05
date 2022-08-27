@@ -23,6 +23,10 @@ class SoupDishViewModel @Inject constructor(
     private val _soupDishUiState = MutableStateFlow<SoupDishUiState>(SoupDishUiState.UnInitialized)
     val soupDishUiState = _soupDishUiState.asStateFlow()
 
+    private var _sortState = SortItem.BASE
+    val sortState : SortItem
+        get() = _sortState
+
     private val cartMenus = getCartMenusUseCase()
     private val _soupMenus = MutableStateFlow<List<MenuModel>>(emptyList())
     val soupMenus = _soupMenus
@@ -35,8 +39,8 @@ class SoupDishViewModel @Inject constructor(
             initialValue = emptyList()
         )
 
-    fun fetchSortedSoupMenus(sortItem: SortItem) = viewModelScope.launch {
-        getSoupMenusUseCase(sortItem.sortCriteria)
+    fun fetchSortedSoupMenus() = viewModelScope.launch {
+        getSoupMenusUseCase(sortState.sortCriteria)
             .onSuccess { result ->
                 _soupMenus.value = result
                 _soupDishUiState.value = SoupDishUiState.SuccessFetchMenus
@@ -44,6 +48,10 @@ class SoupDishViewModel @Inject constructor(
             .onFailure {
                 _soupDishUiState.value = SoupDishUiState.FailFetchMenus
             }
+    }
+
+    fun updateSort(sortItem: SortItem){
+        _sortState = sortItem
     }
 }
 

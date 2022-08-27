@@ -14,6 +14,10 @@ class FilterViewHolder (
 
     override fun bindData(model: FilterMenuModel) {
         binding.filter = model
+
+        binding.rbLinear.isChecked = model.toggleState == ToggleState.LINEAR
+        binding.rbGrid.isChecked = model.toggleState == ToggleState.GRID
+
         binding.rbGrid.setOnClickListener {
             model.onToggle(
                 ToggleState.GRID
@@ -24,10 +28,5 @@ class FilterViewHolder (
                 ToggleState.LINEAR
             )
         }
-//        binding.rgFilter.setOnCheckedChangeListener { _, _ ->
-//            model.onToggle(
-//                binding.rbLinear.isChecked
-//            )
-//        }
     }
 }

@@ -2,6 +2,7 @@ package com.seom.banchan.ui.home.maindish
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.seom.banchan.data.api.SortCriteria
 import com.seom.banchan.domain.model.home.MenuModel
 import com.seom.banchan.domain.model.home.toHomeMenuModel
 import com.seom.banchan.domain.usecase.GetCartMenusUseCase
@@ -23,7 +24,11 @@ class MainDishViewModel @Inject constructor(
 
     private val _mainUiState = MutableStateFlow<MainDishUiState>(MainDishUiState.UnInitialized)
     val mainUiState = _mainUiState.asStateFlow()
-    
+
+    private var _sortState = SortItem.BASE
+    val sortState : SortItem
+        get() = _sortState
+
     private val _toggleState = MutableStateFlow(ToggleState.GRID)
     val toggleState: StateFlow<ToggleState>
         get() = _toggleState
@@ -51,8 +56,8 @@ class MainDishViewModel @Inject constructor(
 
     private var menuModels = emptyList<MenuModel>()
 
-    fun fetchSortedMainMenus(sortItem: SortItem) = viewModelScope.launch {
-        getMainMenusUseCase(sortItem.sortCriteria)
+    fun fetchSortedMainMenus() = viewModelScope.launch {
+        getMainMenusUseCase(sortState.sortCriteria)
             .onSuccess { result ->
                 menuModels = result
                 _mainMenus.value = result
@@ -65,6 +70,10 @@ class MainDishViewModel @Inject constructor(
 
     fun updateToggle(toggle: ToggleState) {
         _toggleState.value = toggle
+    }
+
+    fun updateSort(sortItem: SortItem){
+        _sortState = sortItem
     }
 }
 

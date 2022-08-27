@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.seom.banchan.R
 import com.seom.banchan.databinding.FragmentSideDishBinding
 import com.seom.banchan.ui.adapter.ItemDecoration.GridItemDecoration
@@ -15,7 +14,6 @@ import com.seom.banchan.ui.adapter.ModelRecyclerAdapter
 import com.seom.banchan.ui.base.BaseFragment
 import com.seom.banchan.ui.detail.DetailFragment
 import com.seom.banchan.ui.home.CartBottomSheetManager
-import com.seom.banchan.ui.home.soupdish.SoupDishUiState
 import com.seom.banchan.ui.model.*
 import com.seom.banchan.ui.model.home.HeaderMenuModel
 import com.seom.banchan.ui.model.home.HomeMenuModel
@@ -83,7 +81,7 @@ class SideDishFragment : BaseFragment() {
     override fun onResume() {
         super.onResume()
         if (viewModel.sideDishUiState.value == SideDishUiState.FailFetchMenus) {
-            viewModel.fetchSortedSideMenus(SortItem.BASE)
+            viewModel.fetchSortedSideMenus()
         }
     }
 
@@ -106,7 +104,7 @@ class SideDishFragment : BaseFragment() {
                     when (it) {
                         SideDishUiState.FailFetchMenus -> handleFailFetchMenus()
                         SideDishUiState.SuccessFetchMenus -> handleSuccess()
-                        SideDishUiState.UnInitialized -> viewModel.fetchSortedSideMenus(SortItem.BASE)
+                        SideDishUiState.UnInitialized -> viewModel.fetchSortedSideMenus()
                     }
                 }
             }
@@ -143,7 +141,7 @@ class SideDishFragment : BaseFragment() {
     }
 
     private fun initViews() = binding?.let {
-        it.btnReRequest.setOnClickListener { viewModel.fetchSortedSideMenus(SortItem.BASE) }
+        it.btnReRequest.setOnClickListener { viewModel.fetchSortedSideMenus() }
     }
 
     private fun getDefaultHeaders() = listOf(
@@ -157,10 +155,11 @@ class SideDishFragment : BaseFragment() {
         ),
         SortMenuModel(
             id = ModelId.SORT.name,
-            sortItems = defaultSortItems(),
             onSort = { sortItem ->
-                viewModel.fetchSortedSideMenus(sortItem)
-            }
+                viewModel.updateSort(sortItem)
+                viewModel.fetchSortedSideMenus()
+            },
+            sortState = viewModel.sortState
         )
     )
 
