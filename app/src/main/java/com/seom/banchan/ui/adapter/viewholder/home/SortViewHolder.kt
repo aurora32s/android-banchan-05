@@ -17,7 +17,7 @@ class SortViewHolder(
         context = binding.root.context
     )
 
-    fun initViewHolder() {
+    init {
         binding.spSort.adapter = adapter
     }
 

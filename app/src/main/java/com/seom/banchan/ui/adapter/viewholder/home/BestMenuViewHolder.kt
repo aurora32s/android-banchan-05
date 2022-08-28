@@ -40,6 +40,7 @@ class BestMenuViewHolder(
         model.menus.forEachIndexed { index, menu ->
             if((menu as HomeMenuModel).id == changedMenu.id){
                 bestMenuAdapter.updateModelAtPosition(menu, index)
+                return@forEachIndexed
             }
         }
     }

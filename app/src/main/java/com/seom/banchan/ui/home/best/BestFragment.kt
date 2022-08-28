@@ -65,7 +65,7 @@ class BestFragment : BaseFragment() {
                                 }
                             } else if (view.id == R.id.iv_cart) {
                                 showCartBottomSheetDialog((model as HomeMenuModel))
-                                viewModel.selectedCart = model
+                                viewModel.updateSelectedCart(model)
                             }
                         } // 메뉴 아이템 클릭
                         else -> {}
@@ -105,7 +105,7 @@ class BestFragment : BaseFragment() {
         repeatLaunch {
             launch {
                 viewModel.bestMenus.collect {
-                    homeAdapter.updateListWithPayloads(it,1,viewModel.selectedCart)
+                    homeAdapter.updateList(it,1,viewModel.selectedCart)
                 }
             }
             launch {

@@ -36,6 +36,7 @@ class BestViewModel @Inject constructor(
     )
 
     var selectedCart : HomeMenuModel? = null
+        private set
 
     fun fetchBestMenus() = viewModelScope.launch {
         getMenuWithCategoriesUseCase()
@@ -46,6 +47,10 @@ class BestViewModel @Inject constructor(
             .onFailure {
                 _bestUiState.value = BestUiState.FailFetchMenus
             }
+    }
+
+    fun updateSelectedCart(homeMenuModel : HomeMenuModel) {
+        selectedCart = homeMenuModel
     }
 }
 

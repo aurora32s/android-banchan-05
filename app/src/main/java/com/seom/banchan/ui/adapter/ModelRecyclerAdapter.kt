@@ -31,16 +31,9 @@ class ModelRecyclerAdapter<M : Model>(
             val sortViewHolder = SortViewHolder(
                 ItemHomeSortBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             )
-            sortViewHolder.initViewHolder()
             return sortViewHolder as ModelViewHolder<M>
-        } else if(CellType.values()[viewType] == CellType.MENU_LIST_CELL){
-            val bestViewHolder = BestMenuViewHolder(
-                ItemBestMenuBinding.inflate(LayoutInflater.from(parent.context),parent,false),
-                modelAdapterListener
-            )
-            return bestViewHolder as ModelViewHolder<M>
         }
-        return ModelViewHolderMapper.map(parent, CellType.values()[viewType], resourceProvider)
+        return ModelViewHolderMapper.map(parent, CellType.values()[viewType], resourceProvider,modelAdapterListener)
     }
 
 
@@ -70,20 +63,9 @@ class ModelRecyclerAdapter<M : Model>(
         notifyDataSetChanged()
     }
 
-    fun updateList(list: List<Model>, startIndex: Int) {
+    fun updateList(list: List<Model>, startIndex: Int,payload : Any? = null) {
         modelList = (modelList.subList(0, startIndex) + list).toMutableList()
-        notifyItemRangeChanged(modelList.size - list.size, modelList.size - 1)
-    }
-    fun updateListWithPayloads(list: List<Model>, startIndex: Int,payload : Any?) {
-        modelList = (modelList.subList(0, startIndex) + list).toMutableList()
-        if(payload == null){
-            notifyItemRangeChanged(modelList.size - list.size, modelList.size - 1)
-        }else {
-            notifyItemRangeChanged(
-                modelList.size - list.size, modelList.size - 1,
-                payload
-            )
-        }
+        notifyItemRangeChanged(modelList.size - list.size, modelList.size - 1,payload)
     }
 
 
