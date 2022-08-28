@@ -34,10 +34,6 @@ class MainDishFragment : BaseFragment() {
 
     private val viewModel: MainDishViewModel by viewModels()
 
-    private val sortSpinnerAdapter: SortSpinnerAdapter by lazy {
-        SortSpinnerAdapter(requireContext())
-    }
-
     private val homeAdapter: ModelRecyclerAdapter<Model> by lazy {
         ModelRecyclerAdapter(modelAdapterListener =
             object : ModelAdapterListener {
