@@ -2,6 +2,7 @@ package com.seom.banchan.ui.main
 
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -15,14 +16,19 @@ import com.seom.banchan.ui.home.HomeFragment
 import com.seom.banchan.ui.order.OrderListFragment
 import com.seom.banchan.ui.order.detail.OrderDetailFragment
 import com.seom.banchan.ui.recent.RecentFragment
+import com.seom.banchan.util.ext.repeatLaunch
 import com.seom.banchan.util.navigation.FragmentNavigationController
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), BaseFragment.FragmentNavigation,
     FragmentManager.OnBackStackChangedListener {
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding
+
+    private val viewModel: MainViewModel by viewModels()
 
     lateinit var fragmentNavigationController: FragmentNavigationController
 
@@ -35,10 +41,27 @@ class MainActivity : AppCompatActivity(), BaseFragment.FragmentNavigation,
         binding?.let {
             it.lifecycleOwner = this
         }
+        println("hello world")
 
         initToolbar()
         initContainer()
-        checkIntentExtra()
+        initObserve()
+    }
+
+    private fun initObserve() {
+        repeatLaunch {
+            launch {
+                viewModel.mainUiState.collectLatest {
+                    when (it) {
+                        MainUiState.UnInitialized -> {
+                            initFragment()
+                            viewModel.setLoadSuccess()
+                        }
+                        MainUiState.SuccessLoad -> {}
+                    }
+                }
+            }
+        }
     }
 
     private fun initToolbar() = binding?.let {
@@ -47,19 +70,25 @@ class MainActivity : AppCompatActivity(), BaseFragment.FragmentNavigation,
     }
 
     private fun initContainer() = binding?.let {
+        println("hello world")
         fragmentNavigationController =
             FragmentNavigationController(supportFragmentManager, it.flMain.id)
         supportFragmentManager.addOnBackStackChangedListener(this)
-        replaceFragment(HomeFragment.newInstance(), HomeFragment.TAG)
     }
 
-    private fun checkIntentExtra() {
+    private fun initFragment() {
         val orderId = intent?.getLongExtra(KEY_ORDER_ID, -1L) ?: -1L
+        /**
+         * order Id 가 전달된 경우에는 주문 내역 상세 화면으로 이동
+         */
         if (orderId >= 0) {
             fragmentNavigationController.replaceFragment(
                 OrderDetailFragment.newInstance(orderId),
                 OrderDetailFragment.TAG
             )
+        } else {
+            // 처음 MainActivity 에 들어온 경우에는 홈 화면으로 이동
+            replaceFragment(HomeFragment.newInstance(), HomeFragment.TAG)
         }
     }
 
