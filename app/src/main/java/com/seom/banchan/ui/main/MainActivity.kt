@@ -41,7 +41,6 @@ class MainActivity : AppCompatActivity(), BaseFragment.FragmentNavigation,
         binding?.let {
             it.lifecycleOwner = this
         }
-        println("hello world")
 
         initToolbar()
         initContainer()
@@ -70,7 +69,6 @@ class MainActivity : AppCompatActivity(), BaseFragment.FragmentNavigation,
     }
 
     private fun initContainer() = binding?.let {
-        println("hello world")
         fragmentNavigationController =
             FragmentNavigationController(supportFragmentManager, it.flMain.id)
         supportFragmentManager.addOnBackStackChangedListener(this)
