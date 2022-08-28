@@ -20,6 +20,9 @@
 |알림기능|AlarmManager, WorkManager|
 <br/>
 
+## 🍿 Project 구조
+<img width="1000" alt="스크린샷 2022-08-28 오전 9 39 37" src="https://user-images.githubusercontent.com/22411296/187052864-1e95feb9-27f5-4d2e-9f98-1df73d5ec013.png">
+
 ## 🔥 화면[[flow 문서]](https://miro.com/welcomeonboard/UEg3RkY3TFNKYWpTdjltVjVoSzdUaXdwMjlydFlieWJ1QUprSFhrdmEzbDFGOFUxREFWcWJRb2Mwc3JJOTFHeXwzNDU4NzY0NTMxMjAyMzk0Njg5?share_link_id=934664191487)
 
 ```
