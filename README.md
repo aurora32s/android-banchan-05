@@ -9,8 +9,9 @@
 <br/>
 
 ## 🛠 사용기술 & tool
-|tooll|Android Studio|
+|내용|사용기술|
 |-----|--------------------------------|
+|tooll|Android Studio|
 |Language|Kotlin|
 |비동기|Coroutine|
 |Remote통신|Retrofit|
@@ -34,3 +35,7 @@
 <img width="895" alt="스크린샷 2022-08-27 오전 11 29 32" src="https://user-images.githubusercontent.com/22411296/187010858-e2458d21-5c44-4034-8260-1c4c1871f4c2.png">
 
 <img width="925" alt="스크린샷 2022-08-27 오전 11 32 11" src="https://user-images.githubusercontent.com/22411296/187010860-00aa5206-102b-4b02-8286-270ef6599134.png">
+
+## 📌 DB 구조
+<img width="1087" alt="스크린샷 2022-08-28 오후 5 27 07" src="https://user-images.githubusercontent.com/22411296/187064988-c2f0ff3f-34a1-4a3d-9ab4-e0ca11c3bbf4.png">
+
