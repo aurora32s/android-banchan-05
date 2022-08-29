@@ -11,7 +11,7 @@ import com.seom.banchan.util.mapper.ModelViewHolderMapper
 
 class PagingAdapter<M : Model>(
     private val modelAdapterListener: ModelAdapterListener? = null,
-    diffUtilItemCallback: DiffItemCallback<M>
+    diffUtilItemCallback: DiffItemCallback<M> = DiffItemCallback()
 ) : PagingDataAdapter<M, ModelViewHolder<M>>(
     diffUtilItemCallback
 ) {
@@ -25,6 +25,6 @@ class PagingAdapter<M : Model>(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ModelViewHolder<M> {
-        return ModelViewHolderMapper.map(parent, CellType.values()[viewType],null)
+        return ModelViewHolderMapper.map(parent, CellType.values()[viewType], null)
     }
 }

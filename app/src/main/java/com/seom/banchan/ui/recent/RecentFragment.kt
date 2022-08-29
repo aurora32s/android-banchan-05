@@ -5,12 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.paging.map
 import androidx.recyclerview.widget.GridLayoutManager
 import com.seom.banchan.R
 import com.seom.banchan.databinding.FragmentRecentBinding
-import com.seom.banchan.ui.adapter.DiffItemCallback
 import com.seom.banchan.ui.adapter.ItemDecoration.GridItemDecoration
 import com.seom.banchan.ui.adapter.PagingAdapter
 import com.seom.banchan.ui.base.BaseFragment
@@ -20,10 +18,10 @@ import com.seom.banchan.ui.model.CellType
 import com.seom.banchan.ui.model.Model
 import com.seom.banchan.ui.model.home.HomeMenuModel
 import com.seom.banchan.ui.view.OrderCartBottomSheetManager
+import com.seom.banchan.util.ext.repeatLaunch
 import com.seom.banchan.util.listener.ModelAdapterListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class RecentFragment : BaseFragment(), CartBottomSheetManager {
@@ -54,8 +52,7 @@ class RecentFragment : BaseFragment(), CartBottomSheetManager {
                         else -> {}
                     }
                 }
-            },
-            diffUtilItemCallback = DiffItemCallback()
+            }
         )
     }
 
@@ -65,7 +62,6 @@ class RecentFragment : BaseFragment(), CartBottomSheetManager {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentRecentBinding.inflate(inflater)
-
         return binding?.root
     }
 
@@ -88,18 +84,11 @@ class RecentFragment : BaseFragment(), CartBottomSheetManager {
     }
 
     private fun initObserver() {
-        lifecycleScope.launch {
-            viewModel.recentMenus.collectLatest {
-                recentAdapter.submitData(it.map {
-                    it
-                })
+        repeatLaunch {
+            viewModel.recentMenus.collectLatest { menus ->
+                recentAdapter.submitData(menus.map { it })
             }
         }
-    }
-
-    companion object {
-        const val TAG = ".RecentFragment"
-        fun newInstance() = RecentFragment()
     }
 
     override fun showBottomSheet(menu: HomeMenuModel) {
@@ -108,5 +97,10 @@ class RecentFragment : BaseFragment(), CartBottomSheetManager {
                 fragmentNavigation.popStack()
             }
             .show(currentMenuModel = menu)
+    }
+
+    companion object {
+        const val TAG = ".RecentFragment"
+        fun newInstance() = RecentFragment()
     }
 }
