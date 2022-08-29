@@ -55,14 +55,7 @@ class RecentFragment : BaseFragment(), CartBottomSheetManager {
                     }
                 }
             },
-            diffUtilItemCallback = DiffItemCallback<Model>(
-                onAreItemsTheSame = { oldItem, newItem ->
-                    (oldItem as HomeMenuModel).menu == (newItem as HomeMenuModel).menu
-                },
-                onAreContentsTheSame = { oldItem, newItem ->
-                    oldItem == newItem
-                }
-            )
+            diffUtilItemCallback = DiffItemCallback()
         )
     }
 
@@ -98,7 +91,7 @@ class RecentFragment : BaseFragment(), CartBottomSheetManager {
         lifecycleScope.launch {
             viewModel.recentMenus.collectLatest {
                 recentAdapter.submitData(it.map {
-                    it as Model
+                    it
                 })
             }
         }
