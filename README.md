@@ -24,8 +24,8 @@
 ## 🎉 참고 문서
 1. [참고 사이트 및 트러블 슈팅 Wiki](https://github.com/woowa-techcamp-2022/android-banchan-05/wiki/%EC%B0%B8%EA%B3%A0-%EC%82%AC%EC%9D%B4%ED%8A%B8-&-%ED%8A%B8%EB%9F%AC%EB%B8%94-%EC%8A%88%ED%8C%85)
 2. [Git Rule](https://github.com/woowa-techcamp-2022/android-banchan-05/wiki/Git-Rule)
-<br/>
 3. [요구사항 분석](https://docs.google.com/spreadsheets/d/1LcwTISCh2--PPAtEyBYlRBuxiJtD5_h0nZkgTM3z-bA/edit?usp=sharing)
+<br/>
 
 ## 🍿 Project 구조
 <img width="1000" alt="스크린샷 2022-08-28 오전 9 39 37" src="https://user-images.githubusercontent.com/22411296/187052864-1e95feb9-27f5-4d2e-9f98-1df73d5ec013.png">
